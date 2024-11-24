@@ -5,12 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
-public class testCaculator extends JFrame {
+public class TestCalculator extends JFrame {
     private String command = "=";
     private JTextField jTextField;
     private JPanel jPanel = new JPanel();
@@ -20,7 +19,7 @@ public class testCaculator extends JFrame {
     //存储历史记录的列表模型
     private DefaultListModel<String> historyModel;
 
-    public testCaculator(){
+    public TestCalculator(){
         this.setTitle("科学计算器");
         this.setSize(800,600);
         this.setLocationRelativeTo(null);
@@ -111,7 +110,7 @@ public class testCaculator extends JFrame {
 //    }
 
     public static void main(String[] args){
-        testCaculator testCaculator = new testCaculator();
+        TestCalculator testCalculator = new TestCalculator();
     }
 
 
