@@ -214,35 +214,27 @@ public class MyCalculator extends JFrame{
 
             //实现加减乘除等 数字+运算符+数字 形式的运算
             else {
-                if(!start) {
-
-                    if(command.equals("+"))
-                        result += Double.parseDouble(jTextField.getText());
-                    else if(command.equals("-"))
-                        result -= Double.parseDouble(jTextField.getText());
-                    else if(command.equals("*"))
-                        result *= Double.parseDouble(jTextField.getText());
-                    else if(command.equals("/")) {
-                        if(Double.parseDouble(jTextField.getText()) != 0) {
+                switch (command) {
+                    case "+" -> result += Double.parseDouble(jTextField.getText());
+                    case "-" -> result -= Double.parseDouble(jTextField.getText());
+                    case "*" -> result *= Double.parseDouble(jTextField.getText());
+                    case "/" -> {
+                        if (Double.parseDouble(jTextField.getText()) != 0) {
                             result /= Double.parseDouble(jTextField.getText());
-                        }else {
-                            jTextField.setText(""+"对不起，除数不能为零");
+                        } else {
+                            jTextField.setText("" + "对不起，除数不能为零");
                             JOptionPane.showMessageDialog(null, "对不起，除数不能为零", "Error!", JOptionPane.ERROR_MESSAGE);
                             command = "=";
                             start = true;
                             throw new ArithmeticException("除数为零");
                         }
-
                     }
-                    else if(command.equals("="))
-                        result = Double.parseDouble(jTextField.getText());
-
-                    else if(command.equals("X^y"))
-                        result = Math.pow(result, Double.parseDouble(jTextField.getText()));
-                    jTextField.setText(""+getPrettyNumber(Double.toString(result)));
-                    command = input;
-                    start = true;
+                    case "=" -> result = Double.parseDouble(jTextField.getText());
+                    case "X^y" -> result = Math.pow(result, Double.parseDouble(jTextField.getText()));
                 }
+                jTextField.setText(""+getPrettyNumber(Double.toString(result)));
+                command = input;
+                start = true;
             }
         }
     }
