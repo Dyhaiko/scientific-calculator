@@ -1,16 +1,17 @@
 package firstcalculator;
 
+import function.Expre;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
-public class testCaculator extends JFrame {
+public class TestCalculator extends JFrame {
     private String command = "=";
     private JTextField jTextField;
     private JPanel jPanel = new JPanel();
@@ -20,7 +21,7 @@ public class testCaculator extends JFrame {
     //存储历史记录的列表模型
     private DefaultListModel<String> historyModel;
 
-    public testCaculator(){
+    public TestCalculator(){
         this.setTitle("科学计算器");
         this.setSize(800,600);
         this.setLocationRelativeTo(null);
@@ -46,10 +47,11 @@ public class testCaculator extends JFrame {
                 "ln","+/-","0",".","="
         };
         jButtons = new JButton[name.length];
-//        MyActionListener actionListener = new MyActionListener();
+        MyActionListener actionListener = new MyActionListener();
         for(int i = 0; i < name.length; i++){
 
             jButtons[i] = new JButton(name[i]);
+            jButtons[i].addActionListener(actionListener);//为按钮添加到监视器
             jButtons[i].setBackground(Color.lightGray);
             if(name[i].equals("="))
                 jButtons[i].setBackground(Color.RED);
@@ -105,13 +107,25 @@ public class testCaculator extends JFrame {
         this.setVisible(true);
 
     }
-
-//    class MyActionListener implements ActionListener{
-//
-//    }
+    //初步的事件监视器(已经可以做到根据光标来输入)
+    class MyActionListener implements ActionListener{
+        public void actionPerformed(ActionEvent e){
+            String input = e.getActionCommand();
+            if(input.equals("C")) {
+                jTextField.setText("");
+            }
+            else if(input.equals("=")){
+                jTextField.setText(String.valueOf(Expre.count(jTextField.getText())));
+            }
+            else{
+                int p=jTextField.getCaretPosition();
+                jTextField.setText(jTextField.getText().substring(0,p)+input+jTextField.getText().substring(p));
+            }
+        }
+    }
 
     public static void main(String[] args){
-        testCaculator testCaculator = new testCaculator();
+        TestCalculator testCalculator = new TestCalculator();
     }
 
 
