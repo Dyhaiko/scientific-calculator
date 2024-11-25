@@ -21,7 +21,7 @@ public class MyCalculator extends JFrame{
     //存放加减乘除等于等
     private String command = "=";
     private JTextField jTextField;
-    private JPanel jPanel = new JPanel();
+    private static JPanel jPanel_2 = new JPanel();
     private JButton[] jButtons;
 
     //用构造方法进行必要的设置
@@ -38,7 +38,7 @@ public class MyCalculator extends JFrame{
         this.add(jTextField,"North");
 
         //添加按钮
-        jPanel.setLayout(new GridLayout(5,7,3,3));
+        jPanel_2.setLayout(new GridLayout(5,7,3,3));
         String name[] = {
                 "+/-","PI","1/X","C","/","*","Back","X^2","X^3",
                 "X^y","7","8","9","-","X!","√X","3^√X","4","5",
@@ -64,10 +64,10 @@ public class MyCalculator extends JFrame{
             else if(name[i].equals("Back"))
                 jButtons[i].setBackground(Color.GRAY);
 
-            jPanel.add(jButtons[i]);
+            jPanel_2.add(jButtons[i]);
         }
 
-        this.add(jPanel);
+        this.add(jPanel_2);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setVisible(true);
 
@@ -255,6 +255,10 @@ public class MyCalculator extends JFrame{
     public static void main(String[] args) {
         MyCalculator myCalculator = new MyCalculator();
 
+    }
+
+    public static JPanel getjPanel_2() {
+        return jPanel_2;
     }
 
 }
