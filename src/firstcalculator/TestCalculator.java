@@ -20,7 +20,7 @@ public class TestCalculator extends JFrame {
     private JList<String> historyList;
     //存储历史记录的列表模型
     private DefaultListModel<String> historyModel;
-
+    private int cursorPosition;//用于存放鼠标光标的位置
 //    private CardLayout cardLayout = new CardLayout();
 //    private JPanel cardPanel = new JPanel();
 
@@ -34,6 +34,7 @@ public class TestCalculator extends JFrame {
         JMenuItem item2 = new JMenuItem("绘图计算器");
         menu.add(item1);
         menu.add(item2);
+        cursorPosition=0;
         item2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -52,7 +53,7 @@ public class TestCalculator extends JFrame {
 
         Border margain = new EmptyBorder(new Insets(100,0,100,0));
         jTextField = new JTextField(30);
-        jTextField.setText("Please enter");
+        jTextField.setText("");
         jTextField.setEditable(false);
         jTextField.setBorder(margain);
         jTextField.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -125,23 +126,65 @@ public class TestCalculator extends JFrame {
         this.setVisible(true);
 
     }
-    //初步的事件监视器(已经可以做到根据光标来输入)
+    //事件监视器
     class MyActionListener implements ActionListener{
         public void actionPerformed(ActionEvent e){
             String input = e.getActionCommand();
+            int cursorPosition=jTextField.getCaretPosition();
             if(input.equals("C")) {
                 jTextField.setText("");
+                cursorPosition=0;
             }
             else if(input.equals("=")){
-                jTextField.setText(String.valueOf(Expre.count(jTextField.getText())));
+                String temp=jTextField.getText();
+                temp=Expre.translate(temp);
+                try{
+                    jTextField.setText(String.valueOf(Expre.count(temp)));
+                }
+                catch (ArithmeticException exception){
+                    jTextField.setText("Answer is not existing");
+                }
+                catch (Exception exception){
+                    jTextField.setText("There is something wrong!");
+                }
+                cursorPosition=jTextField.getText().length();
             }
-            else if(input.equals("Draw")){
+            else if(input.equals("√x")) {
+                jTextField.setText(jTextField.getText().substring(0,cursorPosition)+"√()"+jTextField.getText().substring(cursorPosition));
+                cursorPosition+=2;
+            }
+            else if(input.equals("x^y")){
+                jTextField.setText(jTextField.getText().substring(0,cursorPosition)+"()^()"+jTextField.getText().substring(cursorPosition));
+                cursorPosition+=1;
+            }
+            else if(input.equals("x^2")){
+                jTextField.setText(jTextField.getText().substring(0,cursorPosition)+"()^2"+jTextField.getText().substring(cursorPosition));
+                cursorPosition+=1;
+            }
+            else if(input.equals("10^x")) {
+                jTextField.setText(jTextField.getText().substring(0,cursorPosition)+"10^()"+jTextField.getText().substring(cursorPosition));
+                cursorPosition+=4;
+            }
+            else if(input.equals("sin")||input.equals("cos")||input.equals("tan")||input.equals("log")){
+                jTextField.setText(jTextField.getText().substring(0,cursorPosition)+input+"()"+jTextField.getText().substring(cursorPosition));
+                cursorPosition+=4;
+            }
+            else if(input.equals("Back")) {
+                jTextField.setText(jTextField.getText().substring(0,cursorPosition-1)+jTextField.getText().substring(cursorPosition));
+                cursorPosition+=-1;
+            }
+            else if(input.equals("|x|")){
+                jTextField.setText(jTextField.getText().substring(0,cursorPosition)+"||"+jTextField.getText().substring(cursorPosition));
+                cursorPosition+=1;
+            }
+            else if(input.equals("log")){
 
             }
             else{
-                int p=jTextField.getCaretPosition();
-                jTextField.setText(jTextField.getText().substring(0,p)+input+jTextField.getText().substring(p));
+                jTextField.setText(jTextField.getText().substring(0,cursorPosition)+input+jTextField.getText().substring(cursorPosition));
+                cursorPosition+=1;
             }
+            jTextField.setCaretPosition(cursorPosition);
         }
     }
 
