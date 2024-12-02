@@ -53,7 +53,6 @@ public class TestCalculator extends JFrame {
         this.setSize(800,600);
         this.setLocationRelativeTo(null);
 
-
         Border margain = new EmptyBorder(new Insets(100,0,100,0));
         jTextField = new JTextField(30);
         jTextField.setText("");
@@ -64,13 +63,13 @@ public class TestCalculator extends JFrame {
 
         jPanel.setLayout(new GridLayout(7,5,3,3));
         String name[] = {
-                "|x|","PI","e","C","Back",
-                "x^2","1/x","sin","cos","tan",
-                "√x","(",")","!","/",
-                "x^y","7","8","9","*",
-                "10^x","4","5","6","-",
-                "log","1","2","3","+",
-                "ln","+/-","0",".","="
+                "x^2","PI","e","C","Back",
+                "√x","1/x","sin","cos","tan",
+                "x^y","(",")","|x|","/",
+                "10^x","7","8","9","*",
+                "log","4","5","6","-",
+                "lg","1","2","3","+",
+                "ln","[x]","0",".","="
         };
         jButtons = new JButton[name.length];
         MyActionListener actionListener = new MyActionListener();
@@ -97,7 +96,6 @@ public class TestCalculator extends JFrame {
 
         //模拟添加历史记录
         //如果要添加表达式到李时记录中，就将表达式与计算结果一起添加到historyModel中就好了 参照test是如何添加进去的
-//
         for(int i = 1;i <= 10;i++){
             if(i % 2 == 1){
                 historyModel.addElement("Expression" + (i/2+1));
@@ -174,7 +172,7 @@ public class TestCalculator extends JFrame {
                 jTextField.setText(jTextField.getText().substring(0,cursorPosition)+"1/()"+jTextField.getText().substring(cursorPosition));
                 cursorPosition+=3;
             }
-            else if(input.equals("sin")||input.equals("cos")||input.equals("tan")||input.equals("ln")){
+            else if(input.equals("sin")||input.equals("cos")||input.equals("tan")||input.equals("ln")||input.equals("lg")){
                 jTextField.setText(jTextField.getText().substring(0,cursorPosition)+" "+input+" ()"+jTextField.getText().substring(cursorPosition));
                 cursorPosition+=input.length()+3;
             }
@@ -190,6 +188,11 @@ public class TestCalculator extends JFrame {
             else if(input.equals("log")){
                 jTextField.setText(jTextField.getText().substring(0,cursorPosition)+" log (,)"+jTextField.getText().substring(cursorPosition));
                 cursorPosition+=6;
+            }
+            else if(input.equals("[x]"))
+            {
+                jTextField.setText(jTextField.getText().substring(0,cursorPosition)+"[]"+jTextField.getText().substring(cursorPosition));
+                cursorPosition+=1;
             }
             else{
                 jTextField.setText(jTextField.getText().substring(0,cursorPosition)+input+jTextField.getText().substring(cursorPosition));
