@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -21,6 +23,7 @@ public class TestCalculator extends JFrame {
     //存储历史记录的列表模型
     private DefaultListModel<String> historyModel;
     private int cursorPosition;//用于存放鼠标光标的位置
+    private String expression;
 //    private CardLayout cardLayout = new CardLayout();
 //    private JPanel cardPanel = new JPanel();
 
@@ -59,12 +62,11 @@ public class TestCalculator extends JFrame {
         jTextField.setFont(new Font("Arial", Font.PLAIN, 20));
         this.add(jTextField,"North");
 
-
         jPanel.setLayout(new GridLayout(7,5,3,3));
         String name[] = {
                 "|x|","PI","e","C","Back",
                 "x^2","1/x","sin","cos","tan",
-                "√x","(",")","x","/",
+                "√x","(",")","!","/",
                 "x^y","7","8","9","*",
                 "10^x","4","5","6","-",
                 "log","1","2","3","+",
@@ -131,7 +133,10 @@ public class TestCalculator extends JFrame {
         public void actionPerformed(ActionEvent e){
             String input = e.getActionCommand();
             int cursorPosition=jTextField.getCaretPosition();
+            //更新历史记录
+            //根据输入改变输入栏
             if(input.equals("C")) {
+
                 jTextField.setText("");
                 cursorPosition=0;
             }
@@ -141,8 +146,8 @@ public class TestCalculator extends JFrame {
                 try{
                     jTextField.setText(String.valueOf(Expre.count(temp)));
                 }
-                catch (ArithmeticException exception){
-                    jTextField.setText("Answer is not existing");
+                catch(StringIndexOutOfBoundsException exception) {
+                    jTextField.setText("Grammar error");
                 }
                 catch (Exception exception){
                     jTextField.setText("There is something wrong!");
@@ -165,20 +170,26 @@ public class TestCalculator extends JFrame {
                 jTextField.setText(jTextField.getText().substring(0,cursorPosition)+"10^()"+jTextField.getText().substring(cursorPosition));
                 cursorPosition+=4;
             }
-            else if(input.equals("sin")||input.equals("cos")||input.equals("tan")||input.equals("log")){
-                jTextField.setText(jTextField.getText().substring(0,cursorPosition)+input+"()"+jTextField.getText().substring(cursorPosition));
-                cursorPosition+=4;
+            else if(input.equals("1/x")){
+                jTextField.setText(jTextField.getText().substring(0,cursorPosition)+"1/()"+jTextField.getText().substring(cursorPosition));
+                cursorPosition+=3;
+            }
+            else if(input.equals("sin")||input.equals("cos")||input.equals("tan")||input.equals("ln")){
+                jTextField.setText(jTextField.getText().substring(0,cursorPosition)+" "+input+" ()"+jTextField.getText().substring(cursorPosition));
+                cursorPosition+=input.length()+3;
             }
             else if(input.equals("Back")) {
-                jTextField.setText(jTextField.getText().substring(0,cursorPosition-1)+jTextField.getText().substring(cursorPosition));
-                cursorPosition+=-1;
+                int temp=Expre.getPosition(jTextField.getText(),cursorPosition);
+                jTextField.setText(Expre.doBack(jTextField.getText(),cursorPosition));
+                cursorPosition=temp;
             }
             else if(input.equals("|x|")){
-                jTextField.setText(jTextField.getText().substring(0,cursorPosition)+"||"+jTextField.getText().substring(cursorPosition));
-                cursorPosition+=1;
+                jTextField.setText(jTextField.getText().substring(0,cursorPosition)+"|()|"+jTextField.getText().substring(cursorPosition));
+                cursorPosition+=2;
             }
             else if(input.equals("log")){
-
+                jTextField.setText(jTextField.getText().substring(0,cursorPosition)+" log (,)"+jTextField.getText().substring(cursorPosition));
+                cursorPosition+=6;
             }
             else{
                 jTextField.setText(jTextField.getText().substring(0,cursorPosition)+input+jTextField.getText().substring(cursorPosition));
