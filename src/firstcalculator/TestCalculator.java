@@ -14,7 +14,6 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 public class TestCalculator extends JFrame {
-    private String command = "=";
     private JTextField jTextField;
     private JPanel jPanel = new JPanel();
     private JButton[] jButtons;
@@ -23,12 +22,13 @@ public class TestCalculator extends JFrame {
     //存储历史记录的列表模型
     private DefaultListModel<String> historyModel;
     private int cursorPosition;//用于存放鼠标光标的位置
-    private String expression;
+    private int historyNum;
 //    private CardLayout cardLayout = new CardLayout();
 //    private JPanel cardPanel = new JPanel();
 
     public TestCalculator(){
         //切换界面
+        historyNum=0;
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
         JMenu menu = new JMenu("切换");
@@ -96,13 +96,13 @@ public class TestCalculator extends JFrame {
 
         //模拟添加历史记录
         //如果要添加表达式到李时记录中，就将表达式与计算结果一起添加到historyModel中就好了 参照test是如何添加进去的
-        for(int i = 1;i <= 10;i++){
-            if(i % 2 == 1){
-                historyModel.addElement("Expression" + (i/2+1));
-            }else{
-                historyModel.addElement("Outcome" + i/2);
-            }
-        }
+//        for(int i = 1;i <= 10;i++){
+//            if(i % 2 == 1){
+//                historyModel.addElement("Expression" + (i/2+1));
+//            }else{
+//                historyModel.addElement("Outcome" + i/2);
+//            }
+//        }
 
         // 创建历史记录列表组件
         historyList = new JList<>(historyModel);
@@ -132,7 +132,11 @@ public class TestCalculator extends JFrame {
             String input = e.getActionCommand();
             int cursorPosition=jTextField.getCaretPosition();
             //更新历史记录
-            //根据输入改变输入栏
+            //优化鼠标位置
+            if(cursorPosition!=0){
+                cursorPosition=Expre.updateCursorPosition(jTextField.getText(),cursorPosition);
+            }
+            //根据输入改变展示栏
             if(input.equals("C")) {
 
                 jTextField.setText("");
@@ -140,6 +144,7 @@ public class TestCalculator extends JFrame {
             }
             else if(input.equals("=")){
                 String temp=jTextField.getText();
+                historyModel.addElement(temp);
                 temp=Expre.translate(temp);
                 try{
                     jTextField.setText(String.valueOf(Expre.count(temp)));
@@ -150,6 +155,7 @@ public class TestCalculator extends JFrame {
                 catch (Exception exception){
                     jTextField.setText("There is something wrong!");
                 }
+                historyModel.addElement(jTextField.getText());
                 cursorPosition=jTextField.getText().length();
             }
             else if(input.equals("√x")) {
@@ -189,10 +195,13 @@ public class TestCalculator extends JFrame {
                 jTextField.setText(jTextField.getText().substring(0,cursorPosition)+" log (,)"+jTextField.getText().substring(cursorPosition));
                 cursorPosition+=6;
             }
-            else if(input.equals("[x]"))
-            {
+            else if(input.equals("[x]")) {
                 jTextField.setText(jTextField.getText().substring(0,cursorPosition)+"[]"+jTextField.getText().substring(cursorPosition));
                 cursorPosition+=1;
+            }
+            else if(input.equals("PI")){
+                jTextField.setText(jTextField.getText().substring(0,cursorPosition)+input+jTextField.getText().substring(cursorPosition));
+                cursorPosition+=2;
             }
             else{
                 jTextField.setText(jTextField.getText().substring(0,cursorPosition)+input+jTextField.getText().substring(cursorPosition));

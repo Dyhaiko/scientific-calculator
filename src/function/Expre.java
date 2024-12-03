@@ -54,7 +54,7 @@ public class Expre {
                     return "";
                 }
                 else {
-                    input=input.substring(0,point1)+"fab"+input.substring(point1+1,point2)+input.substring(point2+1);
+                    input=input.substring(0,point1)+"abs"+input.substring(point1+1,point2)+input.substring(point2+1);
                 }
 
             }
@@ -120,7 +120,7 @@ public class Expre {
         if((input.charAt(position-1)<='9'&&input.charAt(position-1)>='0')){
             position=position-1;
         }
-        else if(input.charAt(position-1)=='('||input.charAt(position-1)==')'||input.charAt(position-1)=='^'||input.charAt(position-1)=='√'||input.charAt(position-1)=='+'||input.charAt(position-1)=='-'||input.charAt(position-1)=='*'||input.charAt(position-1)=='/'||input.charAt(position-1)=='.'||input.charAt(position-1)=='|'||input.charAt(position-1)==','||input.charAt(position-1)=='e'||input.charAt(position-1)=='!') {
+        else if(input.charAt(position-1)=='('||input.charAt(position-1)==')'||input.charAt(position-1)=='^'||input.charAt(position-1)=='√'||input.charAt(position-1)=='+'||input.charAt(position-1)=='-'||input.charAt(position-1)=='*'||input.charAt(position-1)=='/'||input.charAt(position-1)=='.'||input.charAt(position-1)=='|'||input.charAt(position-1)==','||input.charAt(position-1)=='e') {
             position=position-1;
         }
         else if(input.charAt(position-1)=='c'||input.charAt(position-1)=='o'||input.charAt(position-1)=='s'||input.charAt(position-1)=='i'||input.charAt(position-1)=='n'||input.charAt(position-1)=='l'||input.charAt(position-1)=='g'||input.charAt(position-1)=='t') {
@@ -213,5 +213,16 @@ public class Expre {
             input=input.substring(0,position-1)+input.substring(position+1);
         }
         return input;
+    }
+    static public int updateCursorPosition(String input,int position){
+        if(input.charAt(position-1)=='c'||input.charAt(position-1)=='o'||input.charAt(position-1)=='s'||input.charAt(position-1)=='i'||input.charAt(position-1)=='n'){
+            for(int i=position-1;i<input.length();i++){
+                if(input.charAt(i)==' '){
+                    position=i+2;
+                    break;
+                }
+            }
+        }
+        return position;
     }
 }
