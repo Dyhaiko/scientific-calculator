@@ -94,16 +94,6 @@ public class TestCalculator extends JFrame {
         // 创建历史记录列表模型
         historyModel = new DefaultListModel<>();
 
-        //模拟添加历史记录
-        //如果要添加表达式到李时记录中，就将表达式与计算结果一起添加到historyModel中就好了 参照test是如何添加进去的
-//        for(int i = 1;i <= 10;i++){
-//            if(i % 2 == 1){
-//                historyModel.addElement("Expression" + (i/2+1));
-//            }else{
-//                historyModel.addElement("Outcome" + i/2);
-//            }
-//        }
-
         // 创建历史记录列表组件
         historyList = new JList<>(historyModel);
         // 设置列表的可见行数
@@ -144,6 +134,7 @@ public class TestCalculator extends JFrame {
             }
             else if(input.equals("=")){
                 String temp=jTextField.getText();
+                //在历史记录中添加表达式
                 historyModel.addElement(temp);
                 temp=Expre.translate(temp);
                 try{
@@ -155,6 +146,7 @@ public class TestCalculator extends JFrame {
                 catch (Exception exception){
                     jTextField.setText("There is something wrong!");
                 }
+                //在历史记录中添加答案
                 historyModel.addElement(jTextField.getText());
                 cursorPosition=jTextField.getText().length();
             }
