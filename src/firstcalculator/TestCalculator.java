@@ -97,19 +97,31 @@ public class TestCalculator extends JFrame {
         // 创建历史记录列表组件
         historyList = new JList<>(historyModel);
         // 设置列表的可见行数
-        historyList.setVisibleRowCount(13);
+        historyList.setVisibleRowCount(30);
         // 设置列表的背景色
 //        historyList.setBackground(Color.LIGHT_GRAY);
         // 设置列表的字体大小
         Font listFont = new Font("Arial", Font.PLAIN, 20);
         historyList.setFont(listFont);
 //        设置列表的大小
-        historyList.setPreferredSize(new Dimension(300, 500));
+//        historyList.setPreferredSize(new Dimension(300, 500));
 
         // 设置自定义的 ListCellRenderer 以增加间距和设置间距颜色
         historyList.setCellRenderer(new HistoryListCellRenderer());
-//         将历史记录列表添加到界面右侧
-        this.add(historyList, "East");
+        JScrollPane scrollPane = new JScrollPane(historyList);
+        // 设置滚动条的大小
+        scrollPane.setPreferredSize(new Dimension(300, 500));
+
+//        JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+    // 设置垂直滚动条的滚动幅度
+//        verticalScrollBar.setUnitIncrement(20);
+// 获取水平滚动条
+//        JScrollBar horizontalScrollBar = scrollPane.getHorizontalScrollBar();
+// 设置水平滚动条的滚动幅度
+//        horizontalScrollBar.setUnitIncrement(20);
+
+//         将历史记录列表（包含滚动条）添加到界面右侧
+        this.add(scrollPane, "East");
         this.add(jPanel);
 
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
