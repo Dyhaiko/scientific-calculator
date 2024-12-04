@@ -21,7 +21,30 @@ public class TestCalculator extends JFrame {
     //存储历史记录的列表模型
     private DefaultListModel<String> historyModel;
 
+//    private CardLayout cardLayout = new CardLayout();
+//    private JPanel cardPanel = new JPanel();
+
     public TestCalculator(){
+        //切换界面
+        JMenuBar menuBar = new JMenuBar();
+        setJMenuBar(menuBar);
+        JMenu menu = new JMenu("切换");
+        menuBar.add(menu);
+        JMenuItem item1 = new JMenuItem("科学计算器");
+        JMenuItem item2 = new JMenuItem("绘图计算器");
+        menu.add(item1);
+        menu.add(item2);
+        item2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // 创建绘图界面
+                GraphicCalculator graphicCalculator = new GraphicCalculator();
+                graphicCalculator.setVisible(true);
+                // 隐藏当前界面
+                setVisible(false);
+            }
+        });
+
         this.setTitle("科学计算器");
         this.setSize(800,600);
         this.setLocationRelativeTo(null);
@@ -29,7 +52,7 @@ public class TestCalculator extends JFrame {
 
         Border margain = new EmptyBorder(new Insets(100,0,100,0));
         jTextField = new JTextField(30);
-        jTextField.setText("test input");
+        jTextField.setText("Please enter");
         jTextField.setEditable(false);
         jTextField.setBorder(margain);
         jTextField.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -38,10 +61,10 @@ public class TestCalculator extends JFrame {
 
         jPanel.setLayout(new GridLayout(7,5,3,3));
         String name[] = {
-                "Draw","PI","e","C","Back",
+                "|x|","PI","e","C","Back",
                 "x^2","1/x","sin","cos","tan",
                 "√x","(",")","x","/",
-                "x^y","7","8","9","X",
+                "x^y","7","8","9","*",
                 "10^x","4","5","6","-",
                 "log","1","2","3","+",
                 "ln","+/-","0",".","="
@@ -96,11 +119,6 @@ public class TestCalculator extends JFrame {
         historyList.setCellRenderer(new HistoryListCellRenderer());
 //         将历史记录列表添加到界面右侧
         this.add(historyList, "East");
-
-
-
-
-
         this.add(jPanel);
 
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -116,6 +134,9 @@ public class TestCalculator extends JFrame {
             }
             else if(input.equals("=")){
                 jTextField.setText(String.valueOf(Expre.count(jTextField.getText())));
+            }
+            else if(input.equals("Draw")){
+
             }
             else{
                 int p=jTextField.getCaretPosition();
