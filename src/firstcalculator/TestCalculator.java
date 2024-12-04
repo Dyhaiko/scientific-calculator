@@ -52,7 +52,6 @@ public class TestCalculator extends JFrame {
 
         Border margain = new EmptyBorder(new Insets(100,0,100,0));
         jTextField = new JTextField(30);
-        jTextField.setText("Please enter");
         jTextField.setEditable(false);
         jTextField.setBorder(margain);
         jTextField.setFont(new Font("Arial", Font.PLAIN, 20));
