@@ -1,6 +1,7 @@
 
 package firstcalculator.GraphicCalculator;
 
+import firstcalculator.FunctionCalculator.Definite_Integral_Calculator;
 import firstcalculator.FunctionCalculator.UncertaintyCalculator;
 import firstcalculator.ScientificCalculator;
 
@@ -52,14 +53,26 @@ public class Funcion_Draw {
         JMenuItem item1 = new JMenuItem("科学计算器");
         JMenuItem item2 = new JMenuItem("绘图计算器");
         JMenuItem item3 = new JMenuItem("不确定度计算器");
+        JMenuItem item4 = new JMenuItem("函数图像");
+        JMenuItem item5 = new JMenuItem("定积分");
         menu.add(item1);
         menu.add(item2);
         menu.add(item3);
+        menu.add(item4);
+        menu.add(item5);
         item1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ScientificCalculator scientificCalculator = new ScientificCalculator();
                 scientificCalculator.setVisible(true);
+                jf.setVisible(false);
+            }
+        });
+        item2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Function_Input fi = new Function_Input();
+                // 隐藏当前界面
                 jf.setVisible(false);
             }
         });
@@ -71,6 +84,17 @@ public class Funcion_Draw {
                 jf.setVisible(false);
             }
         });
+        item5.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // 创建绘图界面
+                Definite_Integral_Calculator definite_Integral_Calculator = new Definite_Integral_Calculator();
+                definite_Integral_Calculator.init();
+                // 隐藏当前界面
+                jf.setVisible(false);
+            }
+        });
+
 
 
         functionField.setColumns(20);

@@ -7,8 +7,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class UncertaintyCalculator {
-
+public class Definite_Integral_Calculator {
     private JFrame jf = new JFrame("不确定度计算器");
 
     //窗口尺寸可以修改 请自行设计
@@ -48,21 +47,21 @@ public class UncertaintyCalculator {
                 jf.setVisible(false);
             }
         });
+        item3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // 创建绘图界面
+                UncertaintyCalculator uncertaintyCalculator = new UncertaintyCalculator();
+                uncertaintyCalculator.init();
+                // 隐藏当前界面
+                jf.setVisible(false);
+            }
+        });
         item4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Funcion_Draw funcion_draw = new Funcion_Draw();
                 funcion_draw.init();
-                jf.setVisible(false);
-            }
-        });
-        item5.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // 创建绘图界面
-                Definite_Integral_Calculator definite_Integral_Calculator = new Definite_Integral_Calculator();
-                definite_Integral_Calculator.init();
-                // 隐藏当前界面
                 jf.setVisible(false);
             }
         });
@@ -79,6 +78,4 @@ public class UncertaintyCalculator {
     public static void main(String[] args){
         new UncertaintyCalculator().init();
     }
-
-
 }
