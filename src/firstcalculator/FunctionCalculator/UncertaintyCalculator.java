@@ -1,0 +1,62 @@
+package firstcalculator.FunctionCalculator;
+
+import firstcalculator.GraphicCalculator.Funcion_Draw;
+import firstcalculator.ScientificCalculator;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class UncertaintyCalculator {
+
+    private JFrame jf = new JFrame("不确定度计算器");
+
+    //窗口尺寸可以修改 请自行设计
+    private static final int MYWIDTH = 1000;
+    private static final int MYHEIGHT = 800;
+
+    public void init(){
+        //设置菜单栏
+        JMenuBar menuBar = new JMenuBar();
+        jf.setJMenuBar(menuBar);
+        JMenu menu = new JMenu("切换");
+        menuBar.add(menu);
+        JMenuItem item1 = new JMenuItem("科学计算器");
+        JMenuItem item2 = new JMenuItem("绘图计算器");
+        JMenuItem item3 = new JMenuItem("不确定度计算器");
+        menu.add(item1);
+        menu.add(item2);
+        menu.add(item3);
+
+        item1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ScientificCalculator scientificCalculator = new ScientificCalculator();
+                scientificCalculator.setVisible(true);
+                jf.setVisible(false);
+            }
+        });
+        item2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Funcion_Draw funcion_draw = new Funcion_Draw();
+                funcion_draw.init();
+                jf.setVisible(false);
+            }
+        });
+
+        //设置主窗口的大小，可见，默认关闭方式，位于windows窗口中间
+        jf.setSize(MYWIDTH,MYHEIGHT);
+        jf.setVisible(true);
+        jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jf.setLocationRelativeTo(null);
+
+    }
+
+
+    public static void main(String[] args){
+        new UncertaintyCalculator().init();
+    }
+
+
+}

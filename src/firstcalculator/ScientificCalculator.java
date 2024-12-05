@@ -1,19 +1,17 @@
 package firstcalculator;
 
+import firstcalculator.FunctionCalculator.UncertaintyCalculator;
+import firstcalculator.GraphicCalculator.Funcion_Draw;
 import function.Expre;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
-public class TestCalculator extends JFrame {
+public class ScientificCalculator extends JFrame {
     private JTextField jTextField;
     private JPanel jPanel = new JPanel();
     private JButton[] jButtons;
@@ -26,7 +24,7 @@ public class TestCalculator extends JFrame {
 //    private CardLayout cardLayout = new CardLayout();
 //    private JPanel cardPanel = new JPanel();
 
-    public TestCalculator(){
+    public ScientificCalculator(){
         //切换界面
         historyNum=0;
         JMenuBar menuBar = new JMenuBar();
@@ -35,15 +33,29 @@ public class TestCalculator extends JFrame {
         menuBar.add(menu);
         JMenuItem item1 = new JMenuItem("科学计算器");
         JMenuItem item2 = new JMenuItem("绘图计算器");
+        JMenuItem item3 = new JMenuItem("不确定度计算器");
         menu.add(item1);
         menu.add(item2);
+        menu.add(item3);
         cursorPosition=0;
         item2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 创建绘图界面
-                GraphicCalculator graphicCalculator = new GraphicCalculator();
-                graphicCalculator.setVisible(true);
+//                firstcalculator.GraphicCalculator graphicCalculator = new firstcalculator.GraphicCalculator();
+//                graphicCalculator.setVisible(true);
+                Funcion_Draw graphicCalculator = new Funcion_Draw();
+                graphicCalculator.init();
+                // 隐藏当前界面
+                setVisible(false);
+            }
+        });
+        item3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // 创建绘图界面
+                UncertaintyCalculator uncertaintyCalculator = new UncertaintyCalculator();
+                uncertaintyCalculator.init();
                 // 隐藏当前界面
                 setVisible(false);
             }
@@ -112,15 +124,6 @@ public class TestCalculator extends JFrame {
         // 设置滚动条的大小
         scrollPane.setPreferredSize(new Dimension(300, 500));
 
-//        JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
-    // 设置垂直滚动条的滚动幅度
-//        verticalScrollBar.setUnitIncrement(20);
-// 获取水平滚动条
-//        JScrollBar horizontalScrollBar = scrollPane.getHorizontalScrollBar();
-// 设置水平滚动条的滚动幅度
-//        horizontalScrollBar.setUnitIncrement(20);
-
-//         将历史记录列表（包含滚动条）添加到界面右侧
         this.add(scrollPane, "East");
         this.add(jPanel);
 
@@ -216,7 +219,7 @@ public class TestCalculator extends JFrame {
     }
 
     public static void main(String[] args){
-        TestCalculator testCalculator = new TestCalculator();
+        ScientificCalculator scientificCalculator = new ScientificCalculator();
     }
 
 
