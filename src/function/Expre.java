@@ -225,4 +225,68 @@ public class Expre {
         }
         return position;
     }
+    static public String transition(String input,int prePosition){
+        String temp=input;
+        temp=temp.substring(0,prePosition)+"\uFFFD"+temp.substring(prePosition);
+        for(int i=0;i<temp.length();i++){
+            if(temp.charAt(i)=='C'){
+                temp=temp.substring(0,i)+"cos("+temp.substring(i+1);
+            }
+            else if(temp.charAt(i)=='S'){
+                temp=temp.substring(0,i)+"sin("+temp.substring(i+1);
+            }
+            else if(temp.charAt(i)=='T'){
+                temp=temp.substring(0,i)+"tan("+temp.substring(i+1);
+            }
+            else if(temp.charAt(i)=='p'){
+                temp=temp.substring(0,i)+"PI"+temp.substring(i+1);
+            }
+            else if(temp.charAt(i)=='L'){
+                temp=temp.substring(0,i)+"lg("+temp.substring(i+1);
+            }
+            else if(temp.charAt(i)=='N'){
+                temp=temp.substring(0,i)+"ln("+temp.substring(i+1);
+            }
+            else if(temp.charAt(i)=='Q'){
+                temp=temp.substring(0,i)+"√("+temp.substring(i+1);
+            }
+            else if(temp.charAt(i)=='G'){
+                temp=temp.substring(0,i)+"log("+temp.substring(i+1);
+            }
+            else if(temp.charAt(i)=='A'){
+                temp=temp.substring(0,i)+"abs("+temp.substring(i+1);
+            }
+        }
+        return temp;
+    }
+    static public int getBackPosition(String input,int prePosition){
+        return prePosition-1;
+    }
+    static public String goBack(String input,int prePosition){
+        if(input.charAt(prePosition-1)==','){
+            return goBack(input,prePosition-1);
+        }
+        else{
+            if(input.charAt(prePosition-1)=='G'){
+                int count=0;
+                int position = 0;
+                for(int i=prePosition-1;i<input.length();i++){
+                    if(input.charAt(i)=='G'){
+                        count++;
+                    }
+                    else if(input.charAt(i)==','){
+                        count--;
+                        if(count==0){
+                            position=i;
+                            break;
+                        }
+                    }
+                }
+                return input.substring(0,prePosition-1)+input.substring(position+1);
+            }
+            else {
+                return input.substring(0,prePosition-1)+input.substring(prePosition);
+            }
+        }
+    }
 }

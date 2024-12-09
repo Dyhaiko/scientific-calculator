@@ -20,6 +20,8 @@ public class Function_Input extends JFrame {
 //    private CardLayout cardLayout = new CardLayout();
 //    private JPanel cardPanel = new JPanel();
     public String function_expression;
+    private String preExpression;
+    private int prePosition;
 
     public Function_Input() {
         //切换界面
@@ -93,21 +95,23 @@ public class Function_Input extends JFrame {
 
         Border margain = new EmptyBorder(new Insets(100, 0, 100, 0));
         jTextField = new JTextField(30);
-        jTextField.setText("");
+        jTextField.setText("\uFFFD");
         jTextField.setEditable(false);
         jTextField.setBorder(margain);
         jTextField.setFont(new Font("Arial", Font.PLAIN, 20));
         this.add(jTextField, "North");
+        preExpression="";
+        prePosition=0;
 
         jPanel.setLayout(new GridLayout(7, 6, 3, 3));
         String name[] = {
-                "x^2", "PI", "e", "C", "Back","y",
-                "√x", "1/x", "sin", "cos", "tan","x",
-                "x^y", "(", ")", "|x|", "/","a",
-                "10^x", "7", "8", "9", "*","b",
-                "log", "4", "5", "6", "-","c",
-                "lg", "1", "2", "3", "+","Draw",
-                "ln", "[x]", "0", ".", "=","save"
+                "x^2", "x^3", "1/x", "[x]", "C","Back",
+                "√x", "sin", "cos", "tan", "<-","->",
+                "x^y", "e^x", "(", ")", "/","*",
+                "10^x", "7", "8", "9", "-","+",
+                "log", "4", "5", "6", "x","y",
+                "lg", "1", "2", "3", "PI","Draw",
+                "ln", "abs", "0", ".", "e","save"
         };
         jButtons = new JButton[name.length];
         MyActionListener actionListener = new MyActionListener();
@@ -138,80 +142,179 @@ public class Function_Input extends JFrame {
 
     //事件监视器
     class MyActionListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            String input = e.getActionCommand();
-            int cursorPosition = jTextField.getCaretPosition();
-            //更新历史记录
-            //优化鼠标位置
-            if (cursorPosition != 0) {
-                cursorPosition = Expre.updateCursorPosition(jTextField.getText(), cursorPosition);
+        public void actionPerformed(ActionEvent e){
+            String input=e.getActionCommand();
+            if(input.equals("C")){
+                preExpression="";
+                prePosition=0;
             }
-            //根据输入改变展示栏
-            if (input.equals("C")) {
-
-                jTextField.setText("");
-                cursorPosition = 0;
-            } else if (input.equals("=")) {
-                String temp = jTextField.getText();
-                temp = Expre.translate(temp);
-                try {
-                    jTextField.setText(String.valueOf(Expre.count(temp)));
-                } catch (StringIndexOutOfBoundsException exception) {
-                    jTextField.setText("Grammar error");
-                } catch (Exception exception) {
-                    jTextField.setText("There is something wrong!");
+            else if(input.equals("sin")){
+                preExpression=preExpression.substring(0,prePosition)+"S"+preExpression.substring(prePosition);
+                prePosition+=1;
+            }
+            else if(input.equals("cos")){
+                preExpression=preExpression.substring(0,prePosition)+"C"+preExpression.substring(prePosition);
+                prePosition+=1;
+            }
+            else if(input.equals("tan")){
+                preExpression=preExpression.substring(0,prePosition)+"T"+preExpression.substring(prePosition);
+                prePosition+=1;
+            }
+            else if(input.equals("lg")){
+                preExpression=preExpression.substring(0,prePosition)+"L"+preExpression.substring(prePosition);
+                prePosition+=1;
+            }
+            else if(input.equals("ln")){
+                preExpression=preExpression.substring(0,prePosition)+"N"+preExpression.substring(prePosition);
+                prePosition+=1;
+            }
+            else if(input.equals("abs")){
+                preExpression=preExpression.substring(0,prePosition)+"A"+preExpression.substring(prePosition);
+                prePosition+=1;
+            }
+            else if(input.equals("->")){
+                if(prePosition<preExpression.length()){
+                    prePosition=prePosition+1;
                 }
-                cursorPosition = jTextField.getText().length();
+            }
+            else if(input.equals("<-")){
+                if(prePosition>0){
+                    prePosition=prePosition-1;
+                }
+            }
+            else if(input.equals("x^y")){
+                preExpression=preExpression.substring(0,prePosition)+"()^()"+preExpression.substring(prePosition);
+                prePosition++;
+            }
+            else if(input.equals("10^x")){
+                preExpression=preExpression.substring(0,prePosition)+"10^()"+preExpression.substring(prePosition);
+                prePosition+=4;
+            }
+            else if(input.equals("PI")){
+                preExpression=preExpression.substring(0,prePosition)+"p"+preExpression.substring(prePosition);
+                prePosition+=1;
+            }
+            else if(input.equals("x^2")){
+                preExpression=preExpression.substring(0,prePosition)+"()^2"+preExpression.substring(prePosition);
+                prePosition+=1;
+            }
+            else if(input.equals("x^3")){
+                preExpression=preExpression.substring(0,prePosition)+"()^3"+preExpression.substring(prePosition);
+                prePosition+=1;
+            }
+            else if(input.equals("1/x")){
+                preExpression=preExpression.substring(0,prePosition)+"1/()"+preExpression.substring(prePosition);
+                prePosition+=3;
+            }
+            else if(input.equals("√x")){
+                preExpression=preExpression.substring(0,prePosition)+"Q()"+preExpression.substring(prePosition);
+                prePosition+=2;
+            }
+            else if(input.equals("Back")){
+                if(prePosition>0){
+                    int temp=Expre.getBackPosition(preExpression,prePosition);
+                    preExpression=Expre.goBack(preExpression,prePosition);
+                    prePosition=temp;
+                }
+            }
+            else if(input.equals("log")){
+                preExpression=preExpression.substring(0,prePosition)+"G,)"+preExpression.substring(prePosition);
+                prePosition+=1;
+            }
+            else if(input.equals("e^x")){
+                preExpression=preExpression.substring(0,prePosition)+"e^()"+preExpression.substring(prePosition);
+                prePosition+=3;
+            }
+            else if(input.equals("[x]")){
+                preExpression=preExpression.substring(0,prePosition)+"[]"+preExpression.substring(prePosition);
+                prePosition+=1;
+            }
+            else if(input.equals("Draw")){
 
-                //这里的代码实现逻辑我不太懂 记得改改！！！！！！！！！！！！！！！！！！！！！！！！！！！
-            }else if(input.equals("Save")){
-                function_expression = jTextField.getText();
-            }else if(input.equals("Draw")){
-                // 在这里调用绘图函数
-                Funcion_Draw graphicDrawer = new Funcion_Draw();
-                graphicDrawer.init();
-                setVisible(false);
             }
-            else if (input.equals("√x")) {
-                jTextField.setText(jTextField.getText().substring(0, cursorPosition) + "√()" + jTextField.getText().substring(cursorPosition));
-                cursorPosition += 2;
-            } else if (input.equals("x^y")) {
-                jTextField.setText(jTextField.getText().substring(0, cursorPosition) + "()^()" + jTextField.getText().substring(cursorPosition));
-                cursorPosition += 1;
-            } else if (input.equals("x^2")) {
-                jTextField.setText(jTextField.getText().substring(0, cursorPosition) + "()^2" + jTextField.getText().substring(cursorPosition));
-                cursorPosition += 1;
-            } else if (input.equals("10^x")) {
-                jTextField.setText(jTextField.getText().substring(0, cursorPosition) + "10^()" + jTextField.getText().substring(cursorPosition));
-                cursorPosition += 4;
-            } else if (input.equals("1/x")) {
-                jTextField.setText(jTextField.getText().substring(0, cursorPosition) + "1/()" + jTextField.getText().substring(cursorPosition));
-                cursorPosition += 3;
-            } else if (input.equals("sin") || input.equals("cos") || input.equals("tan") || input.equals("ln") || input.equals("lg")) {
-                jTextField.setText(jTextField.getText().substring(0, cursorPosition) + " " + input + " ()" + jTextField.getText().substring(cursorPosition));
-                cursorPosition += input.length() + 3;
-            } else if (input.equals("Back")) {
-                int temp = Expre.getPosition(jTextField.getText(), cursorPosition);
-                jTextField.setText(Expre.doBack(jTextField.getText(), cursorPosition));
-                cursorPosition = temp;
-            } else if (input.equals("|x|")) {
-                jTextField.setText(jTextField.getText().substring(0, cursorPosition) + "|()|" + jTextField.getText().substring(cursorPosition));
-                cursorPosition += 2;
-            } else if (input.equals("log")) {
-                jTextField.setText(jTextField.getText().substring(0, cursorPosition) + " log (,)" + jTextField.getText().substring(cursorPosition));
-                cursorPosition += 6;
-            } else if (input.equals("[x]")) {
-                jTextField.setText(jTextField.getText().substring(0, cursorPosition) + "[]" + jTextField.getText().substring(cursorPosition));
-                cursorPosition += 1;
-            } else if (input.equals("PI")) {
-                jTextField.setText(jTextField.getText().substring(0, cursorPosition) + input + jTextField.getText().substring(cursorPosition));
-                cursorPosition += 2;
-            } else {
-                jTextField.setText(jTextField.getText().substring(0, cursorPosition) + input + jTextField.getText().substring(cursorPosition));
-                cursorPosition += 1;
+            else if(input.equals("Save")){
+
             }
-            jTextField.setCaretPosition(cursorPosition);
+            else{
+                preExpression=preExpression.substring(0,prePosition)+input+preExpression.substring(prePosition);
+                prePosition++;
+            }
+            jTextField.setText(Expre.transition(preExpression,prePosition));
         }
+//        public void actionPerformed(ActionEvent e) {
+//            String input = e.getActionCommand();
+//            int cursorPosition = jTextField.getCaretPosition();
+//            //更新历史记录
+//            //优化鼠标位置
+//            if (cursorPosition != 0) {
+//                cursorPosition = Expre.updateCursorPosition(jTextField.getText(), cursorPosition);
+//            }
+//            //根据输入改变展示栏
+//            if (input.equals("C")) {
+//
+//                jTextField.setText("");
+//                cursorPosition = 0;
+//            } else if (input.equals("=")) {
+//                String temp = jTextField.getText();
+//                temp = Expre.translate(temp);
+//                try {
+//                    jTextField.setText(String.valueOf(Expre.count(temp)));
+//                } catch (StringIndexOutOfBoundsException exception) {
+//                    jTextField.setText("Grammar error");
+//                } catch (Exception exception) {
+//                    jTextField.setText("There is something wrong!");
+//                }
+//                cursorPosition = jTextField.getText().length();
+//
+//                //这里的代码实现逻辑我不太懂 记得改改！！！！！！！！！！！！！！！！！！！！！！！！！！！
+//            }else if(input.equals("Save")){
+//                function_expression = jTextField.getText();
+//            }else if(input.equals("Draw")){
+//                // 在这里调用绘图函数
+//                Funcion_Draw graphicDrawer = new Funcion_Draw();
+//                graphicDrawer.init();
+//                setVisible(false);
+//            }
+//            else if (input.equals("√x")) {
+//                jTextField.setText(jTextField.getText().substring(0, cursorPosition) + "√()" + jTextField.getText().substring(cursorPosition));
+//                cursorPosition += 2;
+//            } else if (input.equals("x^y")) {
+//                jTextField.setText(jTextField.getText().substring(0, cursorPosition) + "()^()" + jTextField.getText().substring(cursorPosition));
+//                cursorPosition += 1;
+//            } else if (input.equals("x^2")) {
+//                jTextField.setText(jTextField.getText().substring(0, cursorPosition) + "()^2" + jTextField.getText().substring(cursorPosition));
+//                cursorPosition += 1;
+//            } else if (input.equals("10^x")) {
+//                jTextField.setText(jTextField.getText().substring(0, cursorPosition) + "10^()" + jTextField.getText().substring(cursorPosition));
+//                cursorPosition += 4;
+//            } else if (input.equals("1/x")) {
+//                jTextField.setText(jTextField.getText().substring(0, cursorPosition) + "1/()" + jTextField.getText().substring(cursorPosition));
+//                cursorPosition += 3;
+//            } else if (input.equals("sin") || input.equals("cos") || input.equals("tan") || input.equals("ln") || input.equals("lg")) {
+//                jTextField.setText(jTextField.getText().substring(0, cursorPosition) + " " + input + " ()" + jTextField.getText().substring(cursorPosition));
+//                cursorPosition += input.length() + 3;
+//            } else if (input.equals("Back")) {
+//                int temp = Expre.getPosition(jTextField.getText(), cursorPosition);
+//                jTextField.setText(Expre.doBack(jTextField.getText(), cursorPosition));
+//                cursorPosition = temp;
+//            } else if (input.equals("|x|")) {
+//                jTextField.setText(jTextField.getText().substring(0, cursorPosition) + "|()|" + jTextField.getText().substring(cursorPosition));
+//                cursorPosition += 2;
+//            } else if (input.equals("log")) {
+//                jTextField.setText(jTextField.getText().substring(0, cursorPosition) + " log (,)" + jTextField.getText().substring(cursorPosition));
+//                cursorPosition += 6;
+//            } else if (input.equals("[x]")) {
+//                jTextField.setText(jTextField.getText().substring(0, cursorPosition) + "[]" + jTextField.getText().substring(cursorPosition));
+//                cursorPosition += 1;
+//            } else if (input.equals("PI")) {
+//                jTextField.setText(jTextField.getText().substring(0, cursorPosition) + input + jTextField.getText().substring(cursorPosition));
+//                cursorPosition += 2;
+//            } else {
+//                jTextField.setText(jTextField.getText().substring(0, cursorPosition) + input + jTextField.getText().substring(cursorPosition));
+//                cursorPosition += 1;
+//            }
+//            jTextField.setCaretPosition(cursorPosition);
+//        }
 
 
     }
