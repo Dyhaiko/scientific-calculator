@@ -3,7 +3,7 @@ import net.objecthunter.exp4j.function.Function;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import net.objecthunter.exp4j.Expression;
 public class Expre {
-    public static Function logAB=new Function("LogAB",2) {
+    public static Function logAB=new Function("logab",2) {
         public double apply(double... var1) {
             return Math.log(var1[1])/Math.log(var1[0]);
         }
@@ -18,212 +18,9 @@ public class Expre {
             return Math.log(doubles[0]);
         }
     };
-    static public String translate (String input)throws ArrayIndexOutOfBoundsException{//对字符串进行处理，使其能够被正确解析
-        boolean absState=true;//是否还有绝对值函数的标记
-        while(absState) {
-            int point1=-1;
-            for(int i=0;i<input.length();i++) {
-                if(input.charAt(i)=='|'){
-                    point1=i;
-                    break;
-                }
-            }
-            if(point1==-1) {
-                absState=false;
-            }
-            else {
-                boolean stateBegin=false;//是否开始的标记
-                int num=0;
-                int point2=-1;
-                for(int i=point1;i<input.length();i++) {
-                    if(input.charAt(i)=='|') {
-                        if(stateBegin&&num==0) {
-                            point2=i;
-                            break;
-                        }
-                    }
-                    else if(input.charAt(i)=='(') {
-                        num++;
-                        stateBegin=true;
-                    }
-                    else if(input.charAt(i)==')') {
-                        num--;
-                    }
-                }
-                if(point2==-1) {
-                    return "";
-                }
-                else {
-                    input=input.substring(0,point1)+"abs"+input.substring(point1+1,point2)+input.substring(point2+1);
-                }
-
-            }
-        }
-        boolean gaussState=true;//是否还有高斯函数的标记
-        while(gaussState) {
-            int point1=-1;
-            int point2=-1;
-            for(int i=0;i<input.length();i++) {
-                if(input.charAt(i)=='['){
-                    point1=i;
-                    break;
-                }
-            }
-            if(point1==-1) {
-                gaussState=false;
-            }
-            else {
-                int num=1;
-                for(int i=point1+1;i<input.length();i++){
-                    if(input.charAt(i)=='[') {
-                        num++;
-                    }
-                    else if(input.charAt(i)==']') {
-                        num--;
-                        if(num==0) {
-                            point2=i;
-                            break;
-                        }
-                    }
-                }
-                input=input.substring(0,point1)+"floor("+input.substring(point1+1,point2)+")"+input.substring(point2+1);
-            }
-        }
-        boolean piState=true;
-        while(piState){
-            int point=-1;
-            for(int i=0;i<input.length();i++){
-                if(input.charAt(i)=='P')
-                {
-                    point=i;
-                    break;
-                }
-            }
-            if(point==-1) {
-                piState=false;
-            }
-            else {
-                input=input.substring(0,point)+"pi"+input.substring(point+2);
-            }
-        }
-        while(input.contains("log")) {
-            int point = input.indexOf("log");
-            input=input.substring(0,point)+"LogAB"+input.substring(point+3);
-        }
-        return input;
-    }
     static public double count(String input){
         Expression e = new ExpressionBuilder(input).functions(logAB,ln,lg).build();
         return e.evaluate();
-    }
-    static public int getPosition(String input,int position) {
-        if((input.charAt(position-1)<='9'&&input.charAt(position-1)>='0')){
-            position=position-1;
-        }
-        else if(input.charAt(position-1)=='('||input.charAt(position-1)==')'||input.charAt(position-1)=='^'||input.charAt(position-1)=='√'||input.charAt(position-1)=='+'||input.charAt(position-1)=='-'||input.charAt(position-1)=='*'||input.charAt(position-1)=='/'||input.charAt(position-1)=='.'||input.charAt(position-1)=='|'||input.charAt(position-1)==','||input.charAt(position-1)=='e') {
-            position=position-1;
-        }
-        else if(input.charAt(position-1)=='c'||input.charAt(position-1)=='o'||input.charAt(position-1)=='s'||input.charAt(position-1)=='i'||input.charAt(position-1)=='n'||input.charAt(position-1)=='l'||input.charAt(position-1)=='g'||input.charAt(position-1)=='t') {
-            for(int i=position-1;i>=0;i--) {
-                if(input.charAt(i)==' ') {
-                    position=i;
-                    break;
-                }
-            }
-        }
-        else if(input.charAt(position-1)=='[') {
-            position=position-1;
-        }
-        else if(input.charAt(position-1)==']') {
-            position=position-2;
-        }
-        else if(input.charAt(position-1)=='I'){
-            position=position-2;
-        }
-        else if(input.charAt(position-1)=='P'){
-            position=position-1;
-        }
-        return position;
-    }
-    static public String doBack(String input,int position){
-        if(input.charAt(position-1)<='9'&&input.charAt(position-1)>='0') {
-            input=input.substring(0,position-1)+input.substring(position);
-        }
-        else if(input.charAt(position-1)=='('||input.charAt(position-1)==')'||input.charAt(position-1)=='^'||input.charAt(position-1)=='√'||input.charAt(position-1)=='+'||input.charAt(position-1)=='-'||input.charAt(position-1)=='*'||input.charAt(position-1)=='/'||input.charAt(position-1)=='.'||input.charAt(position-1)=='|'||input.charAt(position-1)==','||input.charAt(position-1)=='e'||input.charAt(position-1)=='!'){
-            input=input.substring(0,position-1)+input.substring(position);
-        }
-        else if(input.charAt(position-1)=='c'||input.charAt(position-1)=='o'||input.charAt(position-1)=='s'||input.charAt(position-1)=='i'||input.charAt(position-1)=='n'||input.charAt(position-1)=='l'||input.charAt(position-1)=='g'||input.charAt(position-1)=='t') {
-            int point1=-1;
-            int point2=-1;
-            for(int i=position-1;i>=0;i--) {
-                if(input.charAt(i)==' ')
-                {
-                    point1=i;
-                    break;
-                }
-            }
-            for(int i=position-1;i<input.length();i++) {
-                if (input.charAt(i) == ' ') {
-                    point2 = i;
-                    break;
-                }
-            }
-            input=input.substring(0,point1)+input.substring(point2+1);
-        }
-        else if(input.charAt(position-1)=='[') {
-            int point=-1;
-            int num=1;
-            for(int i=position;i<input.length();i++) {
-                if(input.charAt(i)=='[') {
-                    num++;
-                }
-                else if(input.charAt(i)==']'){
-                    num--;
-                    if(num==0)
-                    {
-                        point=i;
-                        break;
-                    }
-                }
-            }
-            input=input.substring(0,position-1)+input.substring(position,point)+input.substring(point+1);
-        }
-        else if(input.charAt(position-1)==']') {
-            int point=-1;
-            int num=1;
-            for(int i=position-2;i>=0;i--) {
-                if(input.charAt(i)==']') {
-                    num++;
-                }
-                else if(input.charAt(i)=='['){
-                    num--;
-                    if(num==0)
-                    {
-                        point=i;
-                        break;
-                    }
-                }
-            }
-            input=input.substring(0,point)+input.substring(point+1,position-1)+input.substring(position);
-        }
-        else if(input.charAt(position-1)=='I'){
-            input=input.substring(0,position-2)+input.substring(position);
-        }
-        else if(input.charAt(position-1)=='P'){
-            input=input.substring(0,position-1)+input.substring(position+1);
-        }
-        return input;
-    }
-    static public int updateCursorPosition(String input,int position){
-        if(input.charAt(position-1)=='c'||input.charAt(position-1)=='o'||input.charAt(position-1)=='s'||input.charAt(position-1)=='i'||input.charAt(position-1)=='n'){
-            for(int i=position-1;i<input.length();i++){
-                if(input.charAt(i)==' '){
-                    position=i+2;
-                    break;
-                }
-            }
-        }
-        return position;
     }
     static public String transition(String input,int prePosition){
         String temp=input;
@@ -259,11 +56,47 @@ public class Expre {
         }
         return temp;
     }
+    static public String transitionWithOutCursor(String input,int prePosition){
+        String temp=input;
+        for(int i=0;i<temp.length();i++){
+            if(temp.charAt(i)=='C'){
+                temp=temp.substring(0,i)+"cos("+temp.substring(i+1);
+            }
+            else if(temp.charAt(i)=='S'){
+                temp=temp.substring(0,i)+"sin("+temp.substring(i+1);
+            }
+            else if(temp.charAt(i)=='T'){
+                temp=temp.substring(0,i)+"tan("+temp.substring(i+1);
+            }
+            else if(temp.charAt(i)=='p'){
+                temp=temp.substring(0,i)+"PI"+temp.substring(i+1);
+            }
+            else if(temp.charAt(i)=='L'){
+                temp=temp.substring(0,i)+"lg("+temp.substring(i+1);
+            }
+            else if(temp.charAt(i)=='N'){
+                temp=temp.substring(0,i)+"ln("+temp.substring(i+1);
+            }
+            else if(temp.charAt(i)=='Q'){
+                temp=temp.substring(0,i)+"√("+temp.substring(i+1);
+            }
+            else if(temp.charAt(i)=='G'){
+                temp=temp.substring(0,i)+"log("+temp.substring(i+1);
+            }
+            else if(temp.charAt(i)=='A'){
+                temp=temp.substring(0,i)+"abs("+temp.substring(i+1);
+            }
+        }
+        return temp;
+    }
     static public int getBackPosition(String input,int prePosition){
+        if(input.charAt(prePosition-1)==','||input.charAt(prePosition-1)==']'){
+            return getBackPosition(input,prePosition-1);
+        }
         return prePosition-1;
     }
     static public String goBack(String input,int prePosition){
-        if(input.charAt(prePosition-1)==','){
+        if(input.charAt(prePosition-1)==','||input.charAt(prePosition-1)==']'){
             return goBack(input,prePosition-1);
         }
         else{
@@ -284,9 +117,140 @@ public class Expre {
                 }
                 return input.substring(0,prePosition-1)+input.substring(position+1);
             }
+            else if(input.charAt(prePosition-1)=='['){
+                int count =0;
+                int position = 0;
+                for(int i=prePosition-1;i<input.length();i++){
+                    if(input.charAt(i)=='['){
+                        count++;
+                    }
+                    else if(input.charAt(i)==']'){
+                        count--;
+                        if(count==0){
+                            position=i;
+                            break;
+                        }
+                    }
+                }
+                return input.substring(0,prePosition-1)+input.substring(prePosition,position)+input.substring(position+1);
+            }
             else {
                 return input.substring(0,prePosition-1)+input.substring(prePosition);
             }
+        }
+    }
+    static public String turnIntoExpression(String input){
+        String temp=input;
+        for(int i=0;i<temp.length();i++){
+            if(temp.charAt(i)=='C'){
+                temp=temp.substring(0,i)+"cos("+temp.substring(i+1);
+            }
+            else if(temp.charAt(i)=='S'){
+                temp=temp.substring(0,i)+"sin("+temp.substring(i+1);
+            }
+            else if(temp.charAt(i)=='T'){
+                temp=temp.substring(0,i)+"tan("+temp.substring(i+1);
+            }
+            else if(temp.charAt(i)=='p'){
+                temp=temp.substring(0,i)+"PI"+temp.substring(i+1);
+            }
+            else if(temp.charAt(i)=='L'){
+                temp=temp.substring(0,i)+"lg("+temp.substring(i+1);
+            }
+            else if(temp.charAt(i)=='N'){
+                temp=temp.substring(0,i)+"ln("+temp.substring(i+1);
+            }
+            else if(temp.charAt(i)=='Q'){
+                temp=temp.substring(0,i)+"sqrt("+temp.substring(i+1);
+            }
+            else if(temp.charAt(i)=='G'){
+                temp=temp.substring(0,i)+"logab("+temp.substring(i+1);
+            }
+            else if(temp.charAt(i)=='A'){
+                temp=temp.substring(0,i)+"abs("+temp.substring(i+1);
+            }
+            else if(temp.charAt(i)=='['){
+                int count=0;
+                int position=0;
+                for(int j=i;j<temp.length();j++){
+                    if(temp.charAt(j)=='['){
+                        count++;
+                    }
+                    else if(temp.charAt(j)==']'){
+                        count--;
+                        if(count==0){
+                            position=j;
+                            break;
+                        }
+                    }
+                }
+                temp=temp.substring(0,i)+"floor("+temp.substring(i+1,position)+")"+temp.substring(position+1);
+            }
+        }
+        return temp;
+    }
+    static public boolean haveValue(String input,int left,int right){
+        return true;
+    }
+    //这里的合法性只是说式子可以被正确解析，不代表可以一定能够求出值
+    static public boolean isLegal(String input){
+        for(int i=0;i<input.length();i++){
+            if(input.charAt(i)<='Z'&&input.charAt(i)>='A'){
+                input=input.substring(0,i+1)+"("+input.substring(i+1);
+            }
+        }
+        //判断是否合法先判断括号是否都有对应
+        int numOfSquareBrackets=0;
+        int numOfParentheses=0;
+        for(int i=0;i<input.length();i++){
+            if(input.charAt(i)=='['){
+                for(int j=i;j<input.length();j++){
+                    if(input.charAt(j)=='['){
+                        numOfSquareBrackets++;
+                    }
+                    else if(input.charAt(j)==']'){
+                        numOfSquareBrackets--;
+                        if(numOfSquareBrackets==0){
+                            break;
+                        }
+                    }
+                    else if(input.charAt(j)=='('){
+                        numOfParentheses++;
+                    }
+                    else if(input.charAt(j)==')'){
+                        numOfParentheses--;
+                    }
+                }
+                if(numOfParentheses!=0){
+                    return false;
+                }
+            }
+        }
+        for(int i=0;i<input.length();i++){
+            if(input.charAt(i)=='('){
+                numOfParentheses++;
+            }
+            else if(input.charAt(i)==')'){
+                numOfParentheses--;
+            }
+        }
+        if(numOfParentheses!=0){
+            return false;
+        }
+        else{
+            //接下来判断括号内是否都是非空的；
+            int frontParentheses=0;
+            for(int i=0;i<input.length();i++){
+                if(input.charAt(i)=='('||input.charAt(i)=='['){
+                    frontParentheses=i;
+                }
+                else if(input.charAt(i)==')'||input.charAt(i)==']'){
+                    if(i==frontParentheses+1){
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
     }
 }
