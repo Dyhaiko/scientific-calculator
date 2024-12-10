@@ -178,7 +178,13 @@ public class UncertaintyCalculator {
             public void actionPerformed(ActionEvent e) {
                 String inputText = inputField.getText();
                 if (!inputText.isEmpty()) {
-                    A_dataList.add(Double.parseDouble(inputText));
+                    try{
+                    A_dataList.add(Double.parseDouble(inputText));}
+                    catch (NumberFormatException ex){
+                        JOptionPane.showMessageDialog(null, "请输入数字！", "错误", JOptionPane.ERROR_MESSAGE);
+                        inputField.setText(""); // 清空输入框
+                        return;
+                    }
                     Acount++;
                     outputArea.append("第" + Acount + "个数据：" + inputText + "\n");
                     inputField.setText(""); // 清空输入框
@@ -192,7 +198,13 @@ public class UncertaintyCalculator {
             public void actionPerformed(ActionEvent e) {
                 String inputText = inputField.getText();
                 if (!inputText.isEmpty()) {
-                    A_dataList.add(Double.parseDouble(inputText));
+                    try{
+                        A_dataList.add(Double.parseDouble(inputText));}
+                    catch (NumberFormatException ex){
+                        JOptionPane.showMessageDialog(null, "请输入数字！", "错误", JOptionPane.ERROR_MESSAGE);
+                        inputField.setText(""); // 清空输入框
+                        return;
+                    }
                     Acount++;
                     outputArea.append("第" + Acount + "个数据：" + inputText + "\n");
                     inputField.setText(""); // 清空输入框
