@@ -39,12 +39,10 @@ public class ScientificCalculator extends JFrame {
         JMenuItem item1 = new JMenuItem("科学计算器");
         JMenuItem item2 = new JMenuItem("绘图计算器");
         JMenuItem item3 = new JMenuItem("不确定度计算器");
-        JMenuItem item4 = new JMenuItem("函数图像");
         JMenuItem item5 = new JMenuItem("定积分");
         menu.add(item1);
         menu.add(item2);
         menu.add(item3);
-        menu.add(item4);
         menu.add(item5);
         item2.addActionListener(new ActionListener() {
             @Override
@@ -60,16 +58,6 @@ public class ScientificCalculator extends JFrame {
                 // 创建绘图界面
                 UncertaintyCalculator uncertaintyCalculator = new UncertaintyCalculator();
                 uncertaintyCalculator.init();
-                // 隐藏当前界面
-                setVisible(false);
-            }
-        });
-        item4.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // 创建绘图界面
-                Function_Draw graphic_Drawer = new Function_Draw();
-                graphic_Drawer.init();
                 // 隐藏当前界面
                 setVisible(false);
             }
