@@ -35,15 +35,4 @@ public class ShowDialog {
     public void showMaxSavedDialog(JFrame jf){
         JOptionPane.showMessageDialog(jf, "已达到最大保存数！", "WARNING", JOptionPane.WARNING_MESSAGE);
     }
-
-
-
-
-
-
-
-
-
-
-
 }

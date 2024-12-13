@@ -52,8 +52,6 @@ public class Function_Draw {
         }
     }
 
-
-
     public Function_Draw(){
         for(int i = 0;i < 3;i++){
             function[i] = "";
@@ -67,7 +65,6 @@ public class Function_Draw {
             this.pre[i] = pre[i];
             System.out.println(this.pre[i]);
         }
-
         for(int i = 0;i < 3;i++){
             if(function[i].isEmpty()){
                 sd.showEmptyWarningDialog(jf);
@@ -86,12 +83,8 @@ public class Function_Draw {
             }
 
         }
-
         this.init();
-
     }
-
-
     public void init(){
 
         functionField.setEditable(false);
@@ -133,7 +126,6 @@ public class Function_Draw {
         clearButton.setBackground(Color.LIGHT_GRAY);
         backButton.setBackground(Color.LIGHT_GRAY);
 
-
         enlargerButton.setActionCommand("Enlarger");
         reduceButton.setActionCommand("Reduce");
         clearButton.setActionCommand("Clear");
@@ -153,8 +145,6 @@ public class Function_Draw {
         jPanel3.add(label);
         jPanel3.add(scaleField);
         jPanel1.add(jPanel3);
-
-
 
         //设置主窗口的大小，可见，默认关闭方式，位于windows窗口中间
         jf.setSize(MYWIDTH,MYHEIGHT);
@@ -249,7 +239,6 @@ public class Function_Draw {
         });
     }
 
-
     //内部类，画布
     class MyCanvas extends Canvas{
         @Override
@@ -323,7 +312,6 @@ public class Function_Draw {
             }
             //三个函数图像并行绘制
         }
-
     }
 
     public void addButtonListener(JButton b){
@@ -385,16 +373,9 @@ public class Function_Draw {
 //        }
 //    }
 
-
-
     public static void main(String[] args){
         new Function_Draw();
     }
-
-
-
 }
-
-
 
 //每次都只绘制一个函数图像 保存pre的时候出错了？检查绘图的部分有没有出错

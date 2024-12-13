@@ -145,7 +145,6 @@ public class Function_Input extends JFrame {
 
         // 创建历史记录列表模型
         historyModel = new DefaultListModel<>();
-
         // 创建历史记录列表组件
         historyList = new JList<>(historyModel);
         // 设置列表的可见行数
@@ -174,7 +173,6 @@ public class Function_Input extends JFrame {
         jf = this;
 
     }
-
     //事件监视器
     class MyActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e){
@@ -273,13 +271,10 @@ public class Function_Input extends JFrame {
                     if(historyModel.size()<i+1){
                         break;
                     }
-
                     function[i] = historyModel.elementAt(i);
                 }
                 new Function_Draw(function,pre);
                 setVisible(false);
-
-
 
             }
             else if(input.equals("Save")){
@@ -307,7 +302,6 @@ public class Function_Input extends JFrame {
         }
     }
     public static void main(String[] args){
-
         Function_Input fi = new Function_Input();
     }
 }
