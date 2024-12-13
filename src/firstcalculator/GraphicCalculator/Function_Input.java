@@ -19,8 +19,6 @@ public class Function_Input extends JFrame {
     private JPanel jPanel = new JPanel();
     private JButton[] jButtons;
     private int cursorPosition;//用于存放鼠标光标的位置
-//    private CardLayout cardLayout = new CardLayout();
-//    private JPanel cardPanel = new JPanel();
     public String function_expression;
     //用于存储历史记录的列表组件
     private JList<String> historyList;
@@ -158,7 +156,6 @@ public class Function_Input extends JFrame {
 //        historyList.setPreferredSize(new Dimension(300, 500));
 
         // 设置自定义的 ListCellRenderer 以增加间距和设置间距颜色
-//        historyList.setCellRenderer(new ScientificCalculator.HistoryListCellRenderer());
         JScrollPane scrollPane = new JScrollPane(historyList);
         // 设置滚动条的大小
         scrollPane.setPreferredSize(new Dimension(300, 500));

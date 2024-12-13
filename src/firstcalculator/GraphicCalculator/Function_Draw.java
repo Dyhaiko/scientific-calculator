@@ -105,8 +105,6 @@ public class Function_Draw {
         jPanel1.add(functionChooser);
         jPanel1.add(functionField);
         actionButton.setBackground(Color.GREEN);
-//        functionField.setForeground(Color.BLACK);
-//        jPanel1.add(actionButton);
         jf.setLayout(new BorderLayout());
         jf.add(jPanel1, BorderLayout.SOUTH);
 
@@ -207,13 +205,11 @@ public class Function_Draw {
         actionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 if(function[0].isEmpty() && function[1].isEmpty() && function[2].isEmpty()){
                     mc.repaint();
                     sd.showThreeFunctionsEmpty(jf);
                 }else{
                     mc.repaint();
-
                 }
             }
         });
@@ -258,7 +254,6 @@ public class Function_Draw {
             }
 
             g2.scale(myScale,myScale);
-
             g2.setColor(Color.BLACK);
 
             g2.drawLine(-MAXSIZE / 2, 0, MAXSIZE / 2, 0);
@@ -349,29 +344,6 @@ public class Function_Draw {
         });
         //自定义方法，为放大，缩小清空按钮添加监控事件，用一个方法去处理，减少代码冗余
     }
-
-//    public void saveFunction(String chosenFunction){
-//        for(int i = 0;i < 3;i++){
-//            if(chosenFunction.equals("function"+(i+1))){
-//                if(fs.getFunction(functionField.getText()).isEmpty()){
-//                    sd.showEmptyWarningDialog(jf);
-//                    canDraw[i] = false;
-//                    function[i] = "";
-//                }else{
-//                    function[i] = fs.getFunction(functionField.getText());
-//                    if(!new Function_Solution().checkFunction(function[i])){
-//                        canDraw[i] = false;
-//                        sd.showEnterWarningDialog(jf);
-//                        functionField.setText("");
-//                        function[i] = "";
-//                    }else{
-//                        canDraw[i] = true;
-//                        sd.showFunctionSavedDialog(jf,function[i]);
-//                    }
-//                }
-//            }
-//        }
-//    }
 
     public static void main(String[] args){
         new Function_Draw();
