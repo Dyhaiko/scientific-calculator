@@ -30,8 +30,7 @@ public class Function_Draw {
         Arrays.fill(canDraw,false);
     }
 
-    public JFrame jf = new JFrame("绘图计算器");
-    TextField tips = new TextField("请输入函数表达式，格式为y=... 回车保存");
+    public JFrame jf = new JFrame("函数图像");
     TextField functionField = new TextField();
 
     TextField scaleField = new TextField();
@@ -96,12 +95,7 @@ public class Function_Draw {
         functionChooser.add("function2");
         functionChooser.add("function3");
 
-        tips.setColumns(20);
-        tips.setEditable(false);
-        tips.setForeground(Color.RED);
-
         JPanel jPanel1 = new JPanel();
-        jPanel1.add(tips);
         jPanel1.add(functionChooser);
         jPanel1.add(functionField);
         actionButton.setBackground(Color.GREEN);
@@ -200,8 +194,6 @@ public class Function_Draw {
             }
         });
 
-        //Button?JButton? JButton应该是Button的子类吧
-
         actionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -273,6 +265,7 @@ public class Function_Draw {
             //绘制原点，用8x8的实心矩形覆盖(0,0) 实现坐标原点的绘制
             g2.setColor(Color.BLACK);
             g2.fillArc(-4, -4, 8, 8, 0, 360);
+            g2.setColor(Color.RED);
             if(canDraw[0]){
                 for (int x = -MAXSIZE * 2; x <= MAXSIZE * 2; x++) {
                     double y = Expre.count(Expre.turnIntoExpression(pre[0]), (double) x /100);  //该函数这里传入的是一个double的值
