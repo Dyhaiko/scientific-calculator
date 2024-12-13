@@ -271,7 +271,7 @@ public class Function_Draw {
             }
 
             //绘制原点，用8x8的实心矩形覆盖(0,0) 实现坐标原点的绘制
-            g2.setColor(Color.RED);
+            g2.setColor(Color.BLACK);
             g2.fillArc(-4, -4, 8, 8, 0, 360);
             if(canDraw[0]){
                 for (int x = -MAXSIZE * 2; x <= MAXSIZE * 2; x++) {

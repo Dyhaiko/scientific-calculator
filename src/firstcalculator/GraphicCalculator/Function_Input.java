@@ -137,7 +137,6 @@ public class Function_Input extends JFrame {
                 jButtons[i].setBackground(Color.GRAY);
             jButtons[i].setForeground(Color.black);
             jButtons[i].setFont(new Font("Arial", Font.PLAIN, 15));
-//            jButtons[i].addActionListener(new MyActionListener());
             jPanel.add(jButtons[i], "Center");
         }
 
@@ -148,12 +147,10 @@ public class Function_Input extends JFrame {
         // 设置列表的可见行数
         historyList.setVisibleRowCount(3);
         // 设置列表的背景色
-//        historyList.setBackground(Color.LIGHT_GRAY);
         // 设置列表的字体大小
         Font listFont = new Font("Arial", Font.PLAIN, 20);
         historyList.setFont(listFont);
 //        设置列表的大小
-//        historyList.setPreferredSize(new Dimension(300, 500));
 
         // 设置自定义的 ListCellRenderer 以增加间距和设置间距颜色
         JScrollPane scrollPane = new JScrollPane(historyList);
@@ -161,8 +158,6 @@ public class Function_Input extends JFrame {
         scrollPane.setPreferredSize(new Dimension(300, 500));
 
         this.add(scrollPane, "East");
-        this.add(jPanel);
-
         this.add(jPanel);
 
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -272,7 +267,6 @@ public class Function_Input extends JFrame {
                 }
                 new Function_Draw(function,pre);
                 setVisible(false);
-
             }
             else if(input.equals("Save")){
                 boolean isLegal = isLegal(preExpression);
