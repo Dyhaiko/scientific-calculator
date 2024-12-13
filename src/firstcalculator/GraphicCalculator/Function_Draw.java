@@ -53,8 +53,6 @@ public class Function_Draw {
     }
 
 
-    //函数解决方案的实例化对象
-    Function_Solution fs = new Function_Solution();
 
     public Function_Draw(){
         for(int i = 0;i < 3;i++){
@@ -71,12 +69,11 @@ public class Function_Draw {
         }
 
         for(int i = 0;i < 3;i++){
-            if(fs.getFunction(function[i]).isEmpty()){
+            if(function[i].isEmpty()){
                 sd.showEmptyWarningDialog(jf);
                 canDraw[i] = false;
                 function[i] = "";
             }else{
-                function[i] = fs.getFunction(function[i]);
                 if(!Expre.isLegal(pre[i])){
                     canDraw[i] = false;
                     sd.showEnterWarningDialog(jf);
