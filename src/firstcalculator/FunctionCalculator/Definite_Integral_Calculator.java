@@ -1,6 +1,6 @@
 package firstcalculator.FunctionCalculator;
 
-import firstcalculator.GraphicCalculator.Funcion_Draw;
+import firstcalculator.GraphicCalculator.Function_Draw;
 import firstcalculator.ScientificCalculator;
 
 import javax.swing.*;
@@ -42,7 +42,7 @@ public class Definite_Integral_Calculator {
         item2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Funcion_Draw funcion_draw = new Funcion_Draw();
+                Function_Draw funcion_draw = new Function_Draw();
                 funcion_draw.init();
                 jf.setVisible(false);
             }
@@ -60,7 +60,7 @@ public class Definite_Integral_Calculator {
         item4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Funcion_Draw funcion_draw = new Funcion_Draw();
+                Function_Draw funcion_draw = new Function_Draw();
                 funcion_draw.init();
                 jf.setVisible(false);
             }

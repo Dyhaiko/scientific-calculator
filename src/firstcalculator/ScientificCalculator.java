@@ -2,7 +2,7 @@ package firstcalculator;
 
 import firstcalculator.FunctionCalculator.Definite_Integral_Calculator;
 import firstcalculator.FunctionCalculator.UncertaintyCalculator;
-import firstcalculator.GraphicCalculator.Funcion_Draw;
+import firstcalculator.GraphicCalculator.Function_Draw;
 import firstcalculator.GraphicCalculator.Function_Input;
 import function.Expre;
 
@@ -10,11 +10,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.ArrayList;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
@@ -73,7 +68,7 @@ public class ScientificCalculator extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 创建绘图界面
-                Funcion_Draw graphic_Drawer = new Funcion_Draw();
+                Function_Draw graphic_Drawer = new Function_Draw();
                 graphic_Drawer.init();
                 // 隐藏当前界面
                 setVisible(false);
