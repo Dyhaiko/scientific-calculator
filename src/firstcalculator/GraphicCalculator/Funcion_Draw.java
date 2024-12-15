@@ -4,14 +4,13 @@ package firstcalculator.GraphicCalculator;
 import firstcalculator.FunctionCalculator.Definite_Integral_Calculator;
 import firstcalculator.FunctionCalculator.UncertaintyCalculator;
 import firstcalculator.ScientificCalculator;
-import function.Expre;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
 
-public class Function_Draw {
+public class Funcion_Draw {
     //窗口尺寸
     public static final int MYWIDTH = 1000;
     public static final int MYHEIGHT = 800;
@@ -30,63 +29,77 @@ public class Function_Draw {
         Arrays.fill(canDraw,false);
     }
 
-    public JFrame jf = new JFrame("函数图像");
+    public JFrame jf = new JFrame("绘图计算器");
+    TextField tips = new TextField("请输入函数表达式，格式为y=... 回车保存");
     TextField functionField = new TextField();
-
     TextField scaleField = new TextField();
 
     Button actionButton = new Button("Draw");
     JButton enlargerButton = new JButton("Enlarger");
     JButton reduceButton = new JButton("Reduce");
     JButton clearButton = new JButton("Clear");
-    JButton backButton = new JButton("Back");
 
     public double myScale = 1;
 
     MyCanvas mc = new MyCanvas();
     ShowDialog sd = new ShowDialog();
-    String[] pre = new String[3];{
-        for(int i = 0;i < 3;i++){
-            pre[i] = "";
-        }
-    }
 
-    public Function_Draw(){
-        for(int i = 0;i < 3;i++){
-            function[i] = "";
-        }
-        this.init();
-    }
+    //函数解决方案的实例化对象
+    Function_Solution fs = new Function_Solution();
 
-    public Function_Draw(String[] input,String[] pre) {
-        for(int i = 0;i < 3;i++){
-            this.function[i] =  input[i];
-            this.pre[i] = pre[i];
-            System.out.println(this.pre[i]);
-        }
-        for(int i = 0;i < 3;i++){
-            if(function[i].isEmpty()){
-                sd.showEmptyWarningDialog(jf);
-                canDraw[i] = false;
-                function[i] = "";
-            }else{
-                if(!Expre.isLegal(pre[i])){
-                    canDraw[i] = false;
-                    sd.showEnterWarningDialog(jf);
-                    functionField.setText("");
-                    function[i] = "";
-                }else{
-                    canDraw[i] = true;
-                    sd.showFunctionSavedDialog(jf,function[i]);
-                }
-            }
-
-        }
-        this.init();
-    }
     public void init(){
 
-        functionField.setEditable(false);
+        JMenuBar menuBar = new JMenuBar();
+        jf.setJMenuBar(menuBar);
+        JMenu menu = new JMenu("切换");
+        menuBar.add(menu);
+        JMenuItem item1 = new JMenuItem("科学计算器");
+        JMenuItem item2 = new JMenuItem("绘图计算器");
+        JMenuItem item3 = new JMenuItem("不确定度计算器");
+        JMenuItem item4 = new JMenuItem("函数图像");
+        JMenuItem item5 = new JMenuItem("定积分");
+        menu.add(item1);
+        menu.add(item2);
+        menu.add(item3);
+        menu.add(item4);
+        menu.add(item5);
+        item1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ScientificCalculator scientificCalculator = new ScientificCalculator();
+                scientificCalculator.setVisible(true);
+                jf.setVisible(false);
+            }
+        });
+        item2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Function_Input fi = new Function_Input();
+                // 隐藏当前界面
+                jf.setVisible(false);
+            }
+        });
+        item3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                UncertaintyCalculator uncertaintyCalculator = new UncertaintyCalculator();
+                uncertaintyCalculator.init();
+                jf.setVisible(false);
+            }
+        });
+        item5.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // 创建绘图界面
+                Definite_Integral_Calculator definite_Integral_Calculator = new Definite_Integral_Calculator();
+                definite_Integral_Calculator.init();
+                // 隐藏当前界面
+                jf.setVisible(false);
+            }
+        });
+
+
+
         functionField.setColumns(20);
         functionField.setText(function[0]);
         scaleField.setColumns(15);
@@ -95,10 +108,17 @@ public class Function_Draw {
         functionChooser.add("function2");
         functionChooser.add("function3");
 
+        tips.setColumns(20);
+        tips.setEditable(false);
+        tips.setForeground(Color.RED);
+
         JPanel jPanel1 = new JPanel();
+        jPanel1.add(tips);
         jPanel1.add(functionChooser);
         jPanel1.add(functionField);
         actionButton.setBackground(Color.GREEN);
+        functionField.setForeground(Color.BLACK);
+        jPanel1.add(actionButton);
         jf.setLayout(new BorderLayout());
         jf.add(jPanel1, BorderLayout.SOUTH);
 
@@ -116,27 +136,25 @@ public class Function_Draw {
         enlargerButton.setBackground(Color.LIGHT_GRAY);
         reduceButton.setBackground(Color.LIGHT_GRAY);
         clearButton.setBackground(Color.LIGHT_GRAY);
-        backButton.setBackground(Color.LIGHT_GRAY);
 
         enlargerButton.setActionCommand("Enlarger");
         reduceButton.setActionCommand("Reduce");
         clearButton.setActionCommand("Clear");
-        backButton.setActionCommand("Back");
 
         addButtonListener(enlargerButton);
         addButtonListener(reduceButton);
         addButtonListener(clearButton);
-        addButtonListener(backButton);
 
         jPanel3.add(enlargerButton);
         jPanel3.add(reduceButton);
         jPanel3.add(clearButton);
-        jPanel3.add(backButton);
 
         JLabel label = new JLabel(" scale:");
         jPanel3.add(label);
         jPanel3.add(scaleField);
         jPanel1.add(jPanel3);
+
+
 
         //设置主窗口的大小，可见，默认关闭方式，位于windows窗口中间
         jf.setSize(MYWIDTH,MYHEIGHT);
@@ -165,7 +183,11 @@ public class Function_Draw {
             @Override
             public void keyPressed(KeyEvent e) {
                 super.keyPressed(e);
-
+                if(e.getKeyCode() == KeyEvent.VK_ENTER){
+                    //toString()调用去除 回车保存函数
+                    String chosenFunction = functionChooser.getSelectedItem();
+                    saveFunction(chosenFunction);
+                }
                 if(e.getKeyCode() == KeyEvent.VK_UP){
                     int crtIndex = functionChooser.getSelectedIndex();
                     if(crtIndex > 0){
@@ -194,14 +216,18 @@ public class Function_Draw {
             }
         });
 
+        //Button?JButton? JButton应该是Button的子类吧
+
         actionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 if(function[0].isEmpty() && function[1].isEmpty() && function[2].isEmpty()){
                     mc.repaint();
                     sd.showThreeFunctionsEmpty(jf);
                 }else{
                     mc.repaint();
+
                 }
             }
         });
@@ -225,7 +251,11 @@ public class Function_Draw {
                 mc.repaint();
             }
         });
+
+
+
     }
+
 
     //内部类，画布
     class MyCanvas extends Canvas{
@@ -246,6 +276,7 @@ public class Function_Draw {
             }
 
             g2.scale(myScale,myScale);
+
             g2.setColor(Color.BLACK);
 
             g2.drawLine(-MAXSIZE / 2, 0, MAXSIZE / 2, 0);
@@ -263,12 +294,11 @@ public class Function_Draw {
             }
 
             //绘制原点，用8x8的实心矩形覆盖(0,0) 实现坐标原点的绘制
-            g2.setColor(Color.BLACK);
-            g2.fillArc(-4, -4, 8, 8, 0, 360);
             g2.setColor(Color.RED);
+            g2.fillArc(-4, -4, 8, 8, 0, 360);
             if(canDraw[0]){
                 for (int x = -MAXSIZE * 2; x <= MAXSIZE * 2; x++) {
-                    double y = Expre.count(Expre.turnIntoExpression(pre[0]), (double) x /100);  //该函数这里传入的是一个double的值
+                    double y = fs.calculateFunction(function[0], (double) x / 100);  //该函数这里传入的是一个double的值
                     if (y >= (double) -MAXSIZE / 2 && y <= (double) MAXSIZE / 2) {
                         g2.fillOval(x / 5, -(int) (y * 100) / 5, 2, 2);
                         //区分x,y的实际值和图像的值
@@ -277,29 +307,26 @@ public class Function_Draw {
                 }
             }
             g2.setColor(Color.BLUE);
-             if(canDraw[1]){
+            if(canDraw[1]){
                 for (int x = -MAXSIZE * 2; x <= MAXSIZE * 2; x++) {
-                    double y = Expre.count(Expre.turnIntoExpression(pre[1]), (double) x /100);  //该函数这里传入的是一个double的值
+                    double y = fs.calculateFunction(function[1], (double) x / 100);
                     if (y >= (double) -MAXSIZE / 2 && y <= (double) MAXSIZE / 2) {
                         g2.fillOval(x / 5, -(int) (y * 100) / 5, 2, 2);
-                        //区分x,y的实际值和图像的值
-                        //y的计算处/100之后又*20相当于x/5，保持了一样的缩放比例
                     }
                 }
             }
             g2.setColor(Color.GREEN);
-            if(canDraw[2]){
+            if (canDraw[2]) {
                 for (int x = -MAXSIZE * 2; x <= MAXSIZE * 2; x++) {
-                    double y = Expre.count(Expre.turnIntoExpression(pre[2]), (double) x /100);  //该函数这里传入的是一个double的值
-                    if (y >= (double) -MAXSIZE / 2 && y <= (double) MAXSIZE / 2) {
+                    double y = fs.calculateFunction(function[2], (double) x / 100);
+                    if (y >= -MAXSIZE / 2 && y <= MAXSIZE / 2) {
                         g2.fillOval(x / 5, -(int) (y * 100) / 5, 2, 2);
-                        //区分x,y的实际值和图像的值
-                        //y的计算处/100之后又*20相当于x/5，保持了一样的缩放比例
                     }
                 }
             }
             //三个函数图像并行绘制
         }
+
     }
 
     public void addButtonListener(JButton b){
@@ -327,10 +354,6 @@ public class Function_Draw {
                     canDraw[0] = false;
                     canDraw[1] = false;
                     canDraw[2] = false;
-                } else if(e.getActionCommand().equals("Back")){
-                    jf.setVisible(false);
-                    Function_Input fi = new Function_Input();
-                    fi.set_Function(function,pre);
                 }
                 mc.repaint();
             }
@@ -338,9 +361,35 @@ public class Function_Draw {
         //自定义方法，为放大，缩小清空按钮添加监控事件，用一个方法去处理，减少代码冗余
     }
 
-    public static void main(String[] args){
-        new Function_Draw();
+    public void saveFunction(String chosenFunction){
+        for(int i = 0;i < 3;i++){
+            if(chosenFunction.equals("function"+(i+1))){
+                if(fs.getFunction(functionField.getText()).isEmpty()){
+                    sd.showEmptyWarningDialog(jf);
+                    canDraw[i] = false;
+                    function[i] = "";
+                }else{
+                    function[i] = fs.getFunction(functionField.getText());
+                    if(!new Function_Solution().checkFunction(function[i])){
+                        canDraw[i] = false;
+                        sd.showEnterWarningDialog(jf);
+                        functionField.setText("");
+                        function[i] = "";
+                    }else{
+                        canDraw[i] = true;
+                        sd.showFunctionSavedDialog(jf,function[i]);
+                    }
+                }
+            }
+        }
     }
-}
 
-//每次都只绘制一个函数图像 保存pre的时候出错了？检查绘图的部分有没有出错
+
+
+    public static void main(String[] args){
+        new Funcion_Draw().init();
+    }
+
+
+
+}

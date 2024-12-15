@@ -12,37 +12,16 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static function.Expre.*;
-
 public class Function_Input extends JFrame {
     private JTextField jTextField;
     private JPanel jPanel = new JPanel();
     private JButton[] jButtons;
     private int cursorPosition;//用于存放鼠标光标的位置
+//    private CardLayout cardLayout = new CardLayout();
+//    private JPanel cardPanel = new JPanel();
     public String function_expression;
-    //用于存储历史记录的列表组件
-    private JList<String> historyList;
-    private DefaultListModel<String> historyModel;
-    private int historyNum;
     private String preExpression;
     private int prePosition;
-
-    private ShowDialog sd = new ShowDialog();
-    private JFrame jf;
-
-    public String[] pre = new String[3];{
-        for(int i = 0;i < 3;i++){
-            pre[i] = "";
-        }
-    }
-    private int pre_num = 0;
-
-    public void set_Function(String[] func,String[] pre){
-        System.arraycopy(pre, 0, this.pre, 0, 3);
-        for(int i = 0;i < 3;i++){
-            historyModel.addElement(func[i]);
-        }
-    }
 
     public Function_Input() {
         //切换界面
@@ -53,10 +32,12 @@ public class Function_Input extends JFrame {
         JMenuItem item1 = new JMenuItem("科学计算器");
         JMenuItem item2 = new JMenuItem("绘图计算器");
         JMenuItem item3 = new JMenuItem("不确定度计算器");
+        JMenuItem item4 = new JMenuItem("函数图像");
         JMenuItem item5 = new JMenuItem("定积分");
         menu.add(item1);
         menu.add(item2);
         menu.add(item3);
+        menu.add(item4);
         menu.add(item5);
         cursorPosition = 0;
         item1.addActionListener(new ActionListener() {
@@ -71,7 +52,8 @@ public class Function_Input extends JFrame {
         item2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Function_Input fi = new Function_Input();
+                Funcion_Draw graphicCalculator = new Funcion_Draw();
+                graphicCalculator.init();
                 // 隐藏当前界面
                 setVisible(false);
             }
@@ -82,6 +64,16 @@ public class Function_Input extends JFrame {
                 // 创建绘图界面
                 UncertaintyCalculator uncertaintyCalculator = new UncertaintyCalculator();
                 uncertaintyCalculator.init();
+                // 隐藏当前界面
+                setVisible(false);
+            }
+        });
+        item4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // 创建绘图界面
+                Funcion_Draw graphic_Drawer = new Funcion_Draw();
+                graphic_Drawer.init();
                 // 隐藏当前界面
                 setVisible(false);
             }
@@ -137,34 +129,17 @@ public class Function_Input extends JFrame {
                 jButtons[i].setBackground(Color.GRAY);
             jButtons[i].setForeground(Color.black);
             jButtons[i].setFont(new Font("Arial", Font.PLAIN, 15));
+//            jButtons[i].addActionListener(new MyActionListener());
             jPanel.add(jButtons[i], "Center");
         }
 
-        // 创建历史记录列表模型
-        historyModel = new DefaultListModel<>();
-        // 创建历史记录列表组件
-        historyList = new JList<>(historyModel);
-        // 设置列表的可见行数
-        historyList.setVisibleRowCount(3);
-        // 设置列表的背景色
-        // 设置列表的字体大小
-        Font listFont = new Font("Arial", Font.PLAIN, 20);
-        historyList.setFont(listFont);
-//        设置列表的大小
-
-        // 设置自定义的 ListCellRenderer 以增加间距和设置间距颜色
-        JScrollPane scrollPane = new JScrollPane(historyList);
-        // 设置滚动条的大小
-        scrollPane.setPreferredSize(new Dimension(300, 500));
-
-        this.add(scrollPane, "East");
         this.add(jPanel);
 
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setVisible(true);
-        jf = this;
 
     }
+
     //事件监视器
     class MyActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e){
@@ -255,33 +230,14 @@ public class Function_Input extends JFrame {
                 prePosition+=1;
             }
             else if(input.equals("Draw")){
-                String[] function = new String[3];{
-                    for(int i = 0;i < 3;i++)
-                        function[i] = "";
-                }
-                for(int i = 0;i < 3;i++){
-                    if(historyModel.size()<i+1){
-                        break;
-                    }
-                    function[i] = historyModel.elementAt(i);
-                }
-                new Function_Draw(function,pre);
-                setVisible(false);
+
             }
             else if(input.equals("Save")){
-                boolean isLegal = isLegal(preExpression);
-                if(isLegal){
-                    String expression = transitionWithOutCursor(preExpression,prePosition);
-                    if(historyModel.size() == 3){
-                        sd.showMaxSavedDialog(jf);
-                    }
-                    pre[pre_num++] = preExpression;
-                    historyModel.addElement(expression);
-                    prePosition = 0;
-                    preExpression = "";
-
-                }else{
-                    sd.showEnterWarningDialog(jf);
+                if(Expre.isLegal(preExpression)){
+                    preExpression="isLegal";
+                }
+                else{
+                    preExpression="grammar wrong";
                 }
             }
             else{
@@ -289,7 +245,6 @@ public class Function_Input extends JFrame {
                 prePosition++;
             }
             jTextField.setText(Expre.transition(preExpression,prePosition));
-
         }
     }
     public static void main(String[] args){

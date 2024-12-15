@@ -2,7 +2,7 @@ package firstcalculator;
 
 import firstcalculator.FunctionCalculator.Definite_Integral_Calculator;
 import firstcalculator.FunctionCalculator.UncertaintyCalculator;
-import firstcalculator.GraphicCalculator.Function_Draw;
+import firstcalculator.GraphicCalculator.Funcion_Draw;
 import firstcalculator.GraphicCalculator.Function_Input;
 import function.Expre;
 
@@ -10,6 +10,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.ArrayList;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
@@ -39,10 +44,12 @@ public class ScientificCalculator extends JFrame {
         JMenuItem item1 = new JMenuItem("科学计算器");
         JMenuItem item2 = new JMenuItem("绘图计算器");
         JMenuItem item3 = new JMenuItem("不确定度计算器");
+        JMenuItem item4 = new JMenuItem("函数图像");
         JMenuItem item5 = new JMenuItem("定积分");
         menu.add(item1);
         menu.add(item2);
         menu.add(item3);
+        menu.add(item4);
         menu.add(item5);
         item2.addActionListener(new ActionListener() {
             @Override
@@ -58,6 +65,16 @@ public class ScientificCalculator extends JFrame {
                 // 创建绘图界面
                 UncertaintyCalculator uncertaintyCalculator = new UncertaintyCalculator();
                 uncertaintyCalculator.init();
+                // 隐藏当前界面
+                setVisible(false);
+            }
+        });
+        item4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // 创建绘图界面
+                Funcion_Draw graphic_Drawer = new Funcion_Draw();
+                graphic_Drawer.init();
                 // 隐藏当前界面
                 setVisible(false);
             }

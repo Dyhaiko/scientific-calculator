@@ -1,7 +1,6 @@
 package firstcalculator.FunctionCalculator;
 
-import firstcalculator.GraphicCalculator.Function_Draw;
-import firstcalculator.GraphicCalculator.Function_Input;
+import firstcalculator.GraphicCalculator.Funcion_Draw;
 import firstcalculator.ScientificCalculator;
 
 import javax.swing.*;
@@ -24,10 +23,12 @@ public class Definite_Integral_Calculator {
         JMenuItem item1 = new JMenuItem("科学计算器");
         JMenuItem item2 = new JMenuItem("绘图计算器");
         JMenuItem item3 = new JMenuItem("不确定度计算器");
+        JMenuItem item4 = new JMenuItem("函数图像");
         JMenuItem item5 = new JMenuItem("定积分");
         menu.add(item1);
         menu.add(item2);
         menu.add(item3);
+        menu.add(item4);
         menu.add(item5);
 
         item1.addActionListener(new ActionListener() {
@@ -41,8 +42,8 @@ public class Definite_Integral_Calculator {
         item2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Function_Input fi = new Function_Input();
-                // 隐藏当前界面
+                Funcion_Draw funcion_draw = new Funcion_Draw();
+                funcion_draw.init();
                 jf.setVisible(false);
             }
         });
@@ -53,6 +54,14 @@ public class Definite_Integral_Calculator {
                 UncertaintyCalculator uncertaintyCalculator = new UncertaintyCalculator();
                 uncertaintyCalculator.init();
                 // 隐藏当前界面
+                jf.setVisible(false);
+            }
+        });
+        item4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Funcion_Draw funcion_draw = new Funcion_Draw();
+                funcion_draw.init();
                 jf.setVisible(false);
             }
         });
