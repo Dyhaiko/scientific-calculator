@@ -24,22 +24,15 @@ public class ShowDialog {
 
     //处理三个表达式均为空的情况
     public  void showThreeFunctionsEmpty(JFrame jf){
-        JOptionPane.showMessageDialog(jf, "你的三个函数表达式均为空！", "WARNING", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(jf, "三个函数表达式均为空！", "WARNING", JOptionPane.WARNING_MESSAGE);
     }
 
     //弹出保存信息
     public void showFunctionSavedDialog(JFrame jf,String function){
-        JOptionPane.showMessageDialog(jf, "你的表达式:"+function+"有效，已保存", "INFORMATION", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(jf, "表达式:"+function+"有效，已保存", "INFORMATION", JOptionPane.INFORMATION_MESSAGE);
     }
 
-
-
-
-
-
-
-
-
-
-
+    public void showMaxSavedDialog(JFrame jf){
+        JOptionPane.showMessageDialog(jf, "已达到最大保存数！", "WARNING", JOptionPane.WARNING_MESSAGE);
+    }
 }
