@@ -152,7 +152,7 @@ public class Expre {
                 temp=temp.substring(0,i)+"tan("+temp.substring(i+1);
             }
             else if(temp.charAt(i)=='p'){
-                temp=temp.substring(0,i)+"PI"+temp.substring(i+1);
+                temp=temp.substring(0,i)+"pi"+temp.substring(i+1);
             }
             else if(temp.charAt(i)=='L'){
                 temp=temp.substring(0,i)+"lg("+temp.substring(i+1);
@@ -253,4 +253,10 @@ public class Expre {
             return true;
         }
     }
+    static public double count(String input,double x){
+        Expression e = new ExpressionBuilder(input).functions(logAB,ln,lg).variables("x").build().setVariable("x",x);
+        return e.evaluate();
+    }
 }
+
+
