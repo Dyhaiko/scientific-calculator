@@ -10,7 +10,9 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UncertaintyCalculator {
 
@@ -295,11 +297,11 @@ public class UncertaintyCalculator {
         panel5.setBackground(Color.decode("#DDFFFF"));
 
         // 添加子面板到右侧面板
-        addSubPanel(panel1, 360, gbc); // 增加高度
-        addSubPanel(panel2, 200, gbc);
-        addSubPanel(panel3, 600, gbc);
-        addSubPanel(panel4, 250, gbc);
-        addSubPanel(panel5, 100, gbc);
+        addSubPanel(panel1, 420, gbc); // 增加高度
+        addSubPanel(panel2, 250, gbc);
+        addSubPanel(panel3, 650, gbc);
+        addSubPanel(panel4, 300, gbc);
+        addSubPanel(panel5, 300, gbc);
 
         // 创建滚动面板并添加右侧面板
         jScrollPaneRight = new JScrollPane(jPanelRight); // 直接将面板添加到滚动面板中
@@ -318,6 +320,9 @@ public class UncertaintyCalculator {
     }
 
 
+
+    private JComboBox<String> errorLimitComboBox;
+    private Map<String, Double> errorLimitsMap = new HashMap<>();
 
     Double BinitCommonUncertainty=0.0;
 
@@ -395,7 +400,7 @@ public class UncertaintyCalculator {
         });
 
         // 创建输出框
-        JTextArea outputArea = new JTextArea("合成不确定度时：\n请不要清除A类不确定度的计算结果。\n如果A类或B类未计算，默认为0。");
+        JTextArea outputArea = new JTextArea("可以在下方计算常用的仪器误差限后键入，选择需要的进行计算\n\n合成不确定度时：\n请不要清除A类不确定度的计算结果。\n如果A类或B类未计算，默认为0。");
         outputArea.setEditable(false);
         outputArea.setFont(new Font("SimSun", Font.PLAIN, 20)); // 设置输出框字体大小
         outputArea.setBorder(BorderFactory.createLineBorder(Color.GRAY)); // 添加边框
@@ -506,6 +511,29 @@ public class UncertaintyCalculator {
 
         instrumentErrorField.getDocument().addDocumentListener(documentListener);
         inclusionFactorField.getDocument().addDocumentListener(documentListener);
+
+        // 添加下拉菜单
+        errorLimitComboBox = new JComboBox<>();
+        errorLimitComboBox.addItem("请选择误差限");
+        errorLimitComboBox.setFont(new Font("SimSun", Font.PLAIN, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(0, 0, 0, 0); // 设置外边距
+        panel.add(errorLimitComboBox, gbc);
+
+        // 添加下拉菜单选择事件监听器
+        errorLimitComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selectedKey = (String) errorLimitComboBox.getSelectedItem();
+                if (errorLimitsMap.containsKey(selectedKey)) {
+                    instrumentErrorField.setText(String.valueOf(errorLimitsMap.get(selectedKey)));
+                }
+            }
+        });
+
 
         return panel;
     }
@@ -641,6 +669,51 @@ public class UncertaintyCalculator {
                 }
             }
         };
+
+        // 添加选择按钮
+        JButton selectButton = new JButton("键入此误差限");
+        selectButton.setFont(new Font("SimSun", Font.PLAIN, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 7;
+        gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
+        panel.add(selectButton, gbc);
+
+        // 添加名称输入框
+        JLabel nameLabel = new JLabel("误差限名称:");
+        nameLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        gbc.gridwidth = 1;
+        gbc.anchor = GridBagConstraints.EAST;
+        panel.add(nameLabel, gbc);
+
+        JTextField nameField = new JTextField(15);
+        nameField.setFont(new Font("SimSun", Font.PLAIN, 20)); // 设置输入框字体大小
+        nameField.setBorder(BorderFactory.createLineBorder(Color.GRAY)); // 添加边框
+        nameField.setBackground(Color.WHITE); // 设置背景色
+        gbc.gridx = 1;
+        gbc.gridy = 6;
+        gbc.gridwidth = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel.add(nameField, gbc);
+
+        // 添加按钮点击事件监听器
+        selectButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String key = nameField.getText().trim(); // 获取名称输入框中的文本
+                if (key.isEmpty()) {
+                    JOptionPane.showMessageDialog(panel, "请输入误差限名称", "错误", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                errorLimitsMap.put(key, deltaElectromagneticInstrument);
+                errorLimitComboBox.addItem(key);
+                nameField.setText(""); // 清空名称输入框
+            }
+        });
+
 
         accuracyField.getDocument().addDocumentListener(documentListener);
         rangeField.getDocument().addDocumentListener(documentListener);
@@ -852,10 +925,57 @@ public class UncertaintyCalculator {
             field.getDocument().addDocumentListener(listener);
         }
         r0Field.getDocument().addDocumentListener(listener);
+// 添加选择按钮
+        JButton selectButton = new JButton("键入此误差限");
+        selectButton.setFont(new Font("SimSun", Font.PLAIN, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 18;
+        gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
+        panel.add(selectButton, gbc);
+
+        // 添加名称输入框
+        JLabel nameLabel = new JLabel("误差限名称:");
+        nameLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 17;
+        gbc.gridwidth = 1;
+        gbc.anchor = GridBagConstraints.EAST;
+        panel.add(nameLabel, gbc);
+
+        JTextField nameField = new JTextField(15);
+        nameField.setFont(new Font("SimSun", Font.PLAIN, 20)); // 设置输入框字体大小
+        nameField.setBorder(BorderFactory.createLineBorder(Color.GRAY)); // 添加边框
+        nameField.setBackground(Color.WHITE); // 设置背景色
+        gbc.gridx = 1;
+        gbc.gridy = 17;
+        gbc.gridwidth = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel.add(nameField, gbc);
+
+        // 添加按钮点击事件监听器
+        selectButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String key = nameField.getText().trim(); // 获取名称输入框中的文本
+                if (key.isEmpty()) {
+                    JOptionPane.showMessageDialog(panel, "请输入误差限名称", "错误", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                errorLimitsMap.put(key, deltaElectromagneticInstrument);
+                errorLimitComboBox.addItem(key);
+                nameField.setText(""); // 清空名称输入框
+            }
+        });
+
 
         return panel;
     }
 
+
+
+    Double getDeltaDirectCurrentPotentiometer=0.0;
 
     private JPanel initDirectCurrentPotentiometerPanel() {
         JPanel panel = new JPanel();
@@ -1024,14 +1144,17 @@ public class UncertaintyCalculator {
                         resultArea.setText("U0 数据为空");
                         return;
                     }
-                    
+
 
                     double a = Double.parseDouble(aText) / 100;
                     double ux = Double.parseDouble(uxText);
                     double u0 = Double.parseDouble(u0Text);
 
                     double delta = a * (ux + u0 / 10);
-                    resultArea.setText(String.format("Δ = %.5f", delta));
+
+                    getDeltaDirectCurrentPotentiometer = delta;
+
+                    resultArea.setText(String.format("Δ =\n%.10f", delta));
                 } catch (NumberFormatException ex) {
                     resultArea.setText("输入不合法");
                 }
@@ -1042,9 +1165,55 @@ public class UncertaintyCalculator {
         uxField.getDocument().addDocumentListener(listener);
         u0Field.getDocument().addDocumentListener(listener);
 
+        // 添加选择按钮
+        JButton selectButton = new JButton("键入此误差限");
+        selectButton.setFont(new Font("SimSun", Font.PLAIN, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 7;
+        gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
+        panel.add(selectButton, gbc);
+
+        // 添加名称输入框
+        JLabel nameLabel = new JLabel("误差限名称:");
+        nameLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        gbc.gridwidth = 1;
+        gbc.anchor = GridBagConstraints.EAST;
+        panel.add(nameLabel, gbc);
+
+        JTextField nameField = new JTextField(15);
+        nameField.setFont(new Font("SimSun", Font.PLAIN, 20)); // 设置输入框字体大小
+        nameField.setBorder(BorderFactory.createLineBorder(Color.GRAY)); // 添加边框
+        nameField.setBackground(Color.WHITE); // 设置背景色
+        gbc.gridx = 1;
+        gbc.gridy = 6;
+        gbc.gridwidth = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel.add(nameField, gbc);
+
+        // 添加按钮点击事件监听器
+        selectButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String key = nameField.getText().trim(); // 获取名称输入框中的文本
+                if (key.isEmpty()) {
+                    JOptionPane.showMessageDialog(panel, "请输入误差限名称", "错误", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                errorLimitsMap.put(key, deltaElectromagneticInstrument);
+                errorLimitComboBox.addItem(key);
+                nameField.setText(""); // 清空名称输入框
+            }
+        });
+
+
         return panel;
     }
 
+    Double deltaDirectCurrentBridge=0.0;
 
     private JPanel initDirectCurrentBridgePanel() {
         JPanel panel = new JPanel();
@@ -1070,6 +1239,212 @@ public class UncertaintyCalculator {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
         panel.add(formulaLabel, gbc);
+
+        // 添加 a (%) 输入框
+        JLabel aLabel = new JLabel("a (%):", SwingConstants.RIGHT);
+        aLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
+        panel.add(aLabel, gbc);
+
+        JTextField aField = new JTextField(10); // 设置列数为 10
+        aField.setFont(new Font("SimSun", Font.PLAIN, 20));
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
+        panel.add(aField, gbc);
+
+        // 添加 Rx 输入框
+        JLabel rxLabel = new JLabel("Rx:", SwingConstants.RIGHT);
+        rxLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
+        panel.add(rxLabel, gbc);
+
+        JTextField rxField = new JTextField(10); // 设置列数为 10
+        rxField.setFont(new Font("SimSun", Font.PLAIN, 20));
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
+        panel.add(rxField, gbc);
+
+        // 添加 R0 输入框
+        JLabel r0Label = new JLabel("R0:", SwingConstants.RIGHT);
+        r0Label.setFont(new Font("SimSun", Font.PLAIN, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
+        panel.add(r0Label, gbc);
+
+        JTextField r0Field = new JTextField(10); // 设置列数为 10
+        r0Field.setFont(new Font("SimSun", Font.PLAIN, 20));
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
+        panel.add(r0Field, gbc);
+
+        // 添加结果输出框
+        JLabel resultLabel = new JLabel("结果:", SwingConstants.RIGHT);
+        resultLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
+        panel.add(resultLabel, gbc);
+
+        JTextArea resultArea = new JTextArea(3, 20);
+        resultArea.setEditable(false);
+        resultArea.setFont(new Font("SimSun", Font.PLAIN, 20));
+        resultArea.setLineWrap(true);
+        resultArea.setWrapStyleWord(true);
+        gbc.gridx = 1;
+        gbc.gridy = 5;
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
+        panel.add(resultArea, gbc);
+
+        // 添加 DocumentListener 到所有输入框
+        DocumentListener listener = new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                calculateResult();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                calculateResult();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                calculateResult();
+            }
+
+            private void calculateResult() {
+                try {
+                    String aText = aField.getText().trim();
+                    String rxText = rxField.getText().trim();
+                    String r0Text = r0Field.getText().trim();
+
+                    if (aText.isEmpty() && rxText.isEmpty() && r0Text.isEmpty()) {
+                        resultArea.setText("");
+                        return;
+                    }
+
+                    if (aText.isEmpty() && rxText.isEmpty()) {
+                        resultArea.setText("a (%) 数据为空\nRx 数据为空");
+                        return;
+                    }
+
+                    if(rxText.isEmpty() && r0Text.isEmpty()){
+                        resultArea.setText("Rx 数据为空\nR0 数据为空");
+                        return;
+                    }
+
+                    if (aText.isEmpty()&&r0Text.isEmpty()) {
+                        resultArea.setText("a (%) 数据为空\nR0 数据为空");
+                        return;
+                    }
+
+                    if (aText.isEmpty()) {
+                        resultArea.setText("a (%) 数据为空");
+                        return;
+                    }
+                    if (rxText.isEmpty()) {
+                        resultArea.setText("Rx 数据为空");
+                        return;
+                    }
+                    if (r0Text.isEmpty()) {
+                        resultArea.setText("R0 数据为空");
+                        return;
+                    }
+
+                    double a = Double.parseDouble(aText) / 100;
+                    double rx = Double.parseDouble(rxText);
+                    double r0 = Double.parseDouble(r0Text);
+
+                    double delta = a * (rx + r0 / 10);
+
+                    deltaDirectCurrentBridge = delta;
+
+                    resultArea.setText(String.format("Δ =\n%.10f", delta));
+                } catch (NumberFormatException ex) {
+                    resultArea.setText("输入不合法");
+                }
+            }
+        };
+
+        aField.getDocument().addDocumentListener(listener);
+        rxField.getDocument().addDocumentListener(listener);
+        r0Field.getDocument().addDocumentListener(listener);
+
+        // 添加选择按钮
+        JButton selectButton = new JButton("键入此误差限");
+        selectButton.setFont(new Font("SimSun", Font.PLAIN, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 7;
+        gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
+        panel.add(selectButton, gbc);
+
+        // 添加名称输入框
+        JLabel nameLabel = new JLabel("误差限名称:");
+        nameLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        gbc.gridwidth = 1;
+        gbc.anchor = GridBagConstraints.EAST;
+        panel.add(nameLabel, gbc);
+
+        JTextField nameField = new JTextField(15);
+        nameField.setFont(new Font("SimSun", Font.PLAIN, 20)); // 设置输入框字体大小
+        nameField.setBorder(BorderFactory.createLineBorder(Color.GRAY)); // 添加边框
+        nameField.setBackground(Color.WHITE); // 设置背景色
+        gbc.gridx = 1;
+        gbc.gridy = 6;
+        gbc.gridwidth = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel.add(nameField, gbc);
+
+        // 添加按钮点击事件监听器
+        selectButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String key = nameField.getText().trim(); // 获取名称输入框中的文本
+                if (key.isEmpty()) {
+                    JOptionPane.showMessageDialog(panel, "请输入误差限名称", "错误", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                errorLimitsMap.put(key, deltaElectromagneticInstrument);
+                errorLimitComboBox.addItem(key);
+                nameField.setText(""); // 清空名称输入框
+            }
+        });
 
 
         return panel;
