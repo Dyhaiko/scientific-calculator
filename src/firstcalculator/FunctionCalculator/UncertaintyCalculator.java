@@ -298,7 +298,7 @@ public class UncertaintyCalculator {
         addSubPanel(panel1, 360, gbc); // 增加高度
         addSubPanel(panel2, 200, gbc);
         addSubPanel(panel3, 600, gbc);
-        addSubPanel(panel4, 100, gbc);
+        addSubPanel(panel4, 250, gbc);
         addSubPanel(panel5, 100, gbc);
 
         // 创建滚动面板并添加右侧面板
@@ -862,7 +862,7 @@ public class UncertaintyCalculator {
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
-        // 第三个子面板命名为“直流电阻器仪器误差限”
+        // 第三个子面板命名为“直流电位差计仪器误差限”
         JLabel directCurrentResistorLabel = new JLabel("直流电位差计仪器误差限", SwingConstants.CENTER);
         directCurrentResistorLabel.setFont(new Font("SimSun", Font.BOLD, 30));
         gbc.gridx = 0;
@@ -882,9 +882,169 @@ public class UncertaintyCalculator {
         gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
         panel.add(formulaLabel, gbc);
 
+        // 添加 a (%) 输入框
+        JLabel aLabel = new JLabel("a (%):", SwingConstants.RIGHT);
+        aLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
+        panel.add(aLabel, gbc);
+
+        JTextField aField = new JTextField(10); // 设置列数为 10
+        aField.setFont(new Font("SimSun", Font.PLAIN, 20));
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
+        panel.add(aField, gbc);
+
+        // 添加 Ux 输入框
+        JLabel uxLabel = new JLabel("Ux:", SwingConstants.RIGHT);
+        uxLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
+        panel.add(uxLabel, gbc);
+
+        JTextField uxField = new JTextField(10); // 设置列数为 10
+        uxField.setFont(new Font("SimSun", Font.PLAIN, 20));
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
+        panel.add(uxField, gbc);
+
+        // 添加 U0 输入框
+        JLabel u0Label = new JLabel("U0:", SwingConstants.RIGHT);
+        u0Label.setFont(new Font("SimSun", Font.PLAIN, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
+        panel.add(u0Label, gbc);
+
+        JTextField u0Field = new JTextField(10); // 设置列数为 10
+        u0Field.setFont(new Font("SimSun", Font.PLAIN, 20));
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
+        panel.add(u0Field, gbc);
+
+        // 添加结果输出框
+        JLabel resultLabel = new JLabel("结果:", SwingConstants.RIGHT);
+        resultLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
+        panel.add(resultLabel, gbc);
+
+        JTextArea resultArea = new JTextArea(3, 20);
+        resultArea.setEditable(false);
+        resultArea.setFont(new Font("SimSun", Font.PLAIN, 20));
+        resultArea.setLineWrap(true);
+        resultArea.setWrapStyleWord(true);
+        gbc.gridx = 1;
+        gbc.gridy = 5;
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
+        panel.add(resultArea, gbc);
+
+        // 添加 DocumentListener 到所有输入框
+        DocumentListener listener = new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                calculateResult();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                calculateResult();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                calculateResult();
+            }
+
+            private void calculateResult() {
+                try {
+                    String aText = aField.getText().trim();
+                    String uxText = uxField.getText().trim();
+                    String u0Text = u0Field.getText().trim();
+
+                    if (aText.isEmpty() && uxText.isEmpty() && u0Text.isEmpty()) {
+                        resultArea.setText("");
+                        return;
+                    }
+
+                    if(aText.isEmpty()&&uxText.isEmpty()){
+                        resultArea.setText("a (%) 数据为空\nUx 数据为空");
+                        return;
+                    }
+
+                    if(aText.isEmpty()&&u0Text.isEmpty()){
+                        resultArea.setText("a (%) 数据为空\nU0 数据为空");
+                        return;
+                    }
+
+                    if(uxText.isEmpty()&&u0Text.isEmpty()){
+                        resultArea.setText("Ux 数据为空\nU0 数据为空");
+                        return;
+                    }
+
+                    if (aText.isEmpty()) {
+                        resultArea.setText("a (%) 数据为空");
+                        return;
+                    }
+                    if (uxText.isEmpty()) {
+                        resultArea.setText("Ux 数据为空");
+                        return;
+                    }
+                    if (u0Text.isEmpty()) {
+                        resultArea.setText("U0 数据为空");
+                        return;
+                    }
+                    
+
+                    double a = Double.parseDouble(aText) / 100;
+                    double ux = Double.parseDouble(uxText);
+                    double u0 = Double.parseDouble(u0Text);
+
+                    double delta = a * (ux + u0 / 10);
+                    resultArea.setText(String.format("Δ = %.5f", delta));
+                } catch (NumberFormatException ex) {
+                    resultArea.setText("输入不合法");
+                }
+            }
+        };
+
+        aField.getDocument().addDocumentListener(listener);
+        uxField.getDocument().addDocumentListener(listener);
+        u0Field.getDocument().addDocumentListener(listener);
 
         return panel;
     }
+
 
     private JPanel initDirectCurrentBridgePanel() {
         JPanel panel = new JPanel();
