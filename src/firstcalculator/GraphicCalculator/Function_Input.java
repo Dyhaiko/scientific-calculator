@@ -108,11 +108,11 @@ public class Function_Input extends JFrame {
         String name[] = {
                 "x^2", "1/x", "[x]", "x", "C","Back",
                 "√x", "sin", "cos", "tan", "<-","->",
-                "x^y", "e^x", "(", ")", "/","*",
+                "x^y", "e", "(", ")", "/","*",
                 "10^x", "7", "8", "9", "-","+",
                 "log", "4", "5", "6", "Del","↑",
                 "lg", "1", "2", "3", "PI","Draw",
-                "ln", "abs", "0", ".", "e","Save"
+                "ln", "abs", "0", ".", "DI","Save"
         };
         jButtons = new JButton[name.length];
         MyActionListener actionListener = new MyActionListener();
@@ -278,6 +278,9 @@ public class Function_Input extends JFrame {
                 }else{
                     sd.showEnterWarningDialog(jf);
                 }
+            }else if(input.equals("DI")){
+                DefiniteIntegralCalculator di = new DefiniteIntegralCalculator();
+                di.DefiniteIntegralCalculatorStarter(pre);
             }
             else{
                 preExpression=preExpression.substring(0,prePosition)+input+preExpression.substring(prePosition);
