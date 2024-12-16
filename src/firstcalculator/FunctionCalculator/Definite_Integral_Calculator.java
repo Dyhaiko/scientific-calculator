@@ -1,6 +1,5 @@
 package firstcalculator.FunctionCalculator;
 
-import firstcalculator.GraphicCalculator.Function_Draw;
 import firstcalculator.GraphicCalculator.Function_Input;
 import firstcalculator.ScientificCalculator;
 

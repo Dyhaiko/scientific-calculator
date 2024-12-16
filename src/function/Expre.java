@@ -2,6 +2,7 @@ package function;
 import net.objecthunter.exp4j.function.Function;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import net.objecthunter.exp4j.Expression;
+
 public class Expre {
     public static Function logAB=new Function("logab",2) {
         public double apply(double... var1) {
@@ -258,7 +259,25 @@ public class Expre {
         return e.evaluate();
     }
     static public double countDefiniteIntegral(String input,double a,double b){
-        return a;
+        double value=0;
+        try{
+            count(transitionWithOutCursor(input,0),a);
+            count(transitionWithOutCursor(input,0),b);
+        }
+        catch (RuntimeException o){
+            throw o;
+        }
+        for(int i=0;i<100000;i++){
+            double temp;
+            try{
+                temp=count(transitionWithOutCursor(input,0),a+ (b-a)* (i+0.5) /100000)/100000;
+                value+=temp;
+            }
+            catch(RuntimeException o){
+                throw o;
+            }
+        }
+        return value;
     }
 }
 

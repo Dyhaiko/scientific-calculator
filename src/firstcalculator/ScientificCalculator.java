@@ -2,7 +2,6 @@ package firstcalculator;
 
 import firstcalculator.FunctionCalculator.Definite_Integral_Calculator;
 import firstcalculator.FunctionCalculator.UncertaintyCalculator;
-import firstcalculator.GraphicCalculator.Function_Draw;
 import firstcalculator.GraphicCalculator.Function_Input;
 import function.Expre;
 
@@ -233,7 +232,7 @@ public class ScientificCalculator extends JFrame {
                     if(Expre.isLegal(preExpression)){
                         try{
                             ans=Expre.count(Expre.turnIntoExpression(preExpression));
-                            historyModel.addElement(Expre.transitionWithOutCursor(preExpression,prePosition)+" = "+Double.toString(ans));
+                            historyModel.addElement(Expre.transitionWithOutCursor(preExpression,prePosition)+" = "+ans);
                             prePosition=0;
                             preExpression="";
                         }catch (RuntimeException o){
