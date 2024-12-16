@@ -18,15 +18,12 @@ public class Function_Input extends JFrame {
     private JTextField jTextField;
     private JPanel jPanel = new JPanel();
     private JButton[] jButtons;
-    private int cursorPosition;//用于存放鼠标光标的位置
-    public String function_expression;
     //用于存储历史记录的列表组件
     private JList<String> historyList;
     private DefaultListModel<String> historyModel;
     private int historyNum;
     private String preExpression;
     private int prePosition;
-
     private ShowDialog sd = new ShowDialog();
     private JFrame jf;
 
@@ -35,15 +32,14 @@ public class Function_Input extends JFrame {
             pre[i] = "";
         }
     }
-    private int pre_num = 0;
-
+    private int prePointer;
+    private int preNum;
     public void set_Function(String[] func,String[] pre){
         System.arraycopy(pre, 0, this.pre, 0, 3);
         for(int i = 0;i < 3;i++){
             historyModel.addElement(func[i]);
         }
     }
-
     public Function_Input() {
         //切换界面
         JMenuBar menuBar = new JMenuBar();
@@ -58,7 +54,6 @@ public class Function_Input extends JFrame {
         menu.add(item2);
         menu.add(item3);
         menu.add(item5);
-        cursorPosition = 0;
         item1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -96,11 +91,9 @@ public class Function_Input extends JFrame {
                 setVisible(false);
             }
         });
-
         this.setTitle("输入函数表达式");
         this.setSize(800, 600);
         this.setLocationRelativeTo(null);
-
         Border margain = new EmptyBorder(new Insets(100, 0, 100, 0));
         jTextField = new JTextField(30);
         jTextField.setText("\uFFFD");
@@ -110,21 +103,20 @@ public class Function_Input extends JFrame {
         this.add(jTextField, "North");
         preExpression="";
         prePosition=0;
-
+        preNum=0;
         jPanel.setLayout(new GridLayout(7, 6, 3, 3));
         String name[] = {
-                "x^2", "x^3", "1/x", "[x]", "C","Back",
+                "x^2", "1/x", "[x]", "x", "C","Back",
                 "√x", "sin", "cos", "tan", "<-","->",
                 "x^y", "e^x", "(", ")", "/","*",
                 "10^x", "7", "8", "9", "-","+",
-                "log", "4", "5", "6", "x","y",
+                "log", "4", "5", "6", "Del","↑",
                 "lg", "1", "2", "3", "PI","Draw",
                 "ln", "abs", "0", ".", "e","Save"
         };
         jButtons = new JButton[name.length];
         MyActionListener actionListener = new MyActionListener();
         for (int i = 0; i < name.length; i++) {
-
             jButtons[i] = new JButton(name[i]);
             jButtons[i].addActionListener(actionListener);//为按钮添加到监视器
             jButtons[i].setBackground(Color.lightGray);
@@ -139,24 +131,17 @@ public class Function_Input extends JFrame {
             jButtons[i].setFont(new Font("Arial", Font.PLAIN, 15));
             jPanel.add(jButtons[i], "Center");
         }
-
-        // 创建历史记录列表模型
-        historyModel = new DefaultListModel<>();
-        // 创建历史记录列表组件
-        historyList = new JList<>(historyModel);
-        // 设置列表的可见行数
-        historyList.setVisibleRowCount(3);
-        // 设置列表的背景色
-        // 设置列表的字体大小
-        Font listFont = new Font("Arial", Font.PLAIN, 20);
+        historyModel = new DefaultListModel<>();// 创建历史记录列表模型
+        historyList = new JList<>(historyModel);// 创建历史记录列表组件
+        historyModel.addElement("");
+        historyModel.addElement("");
+        historyModel.addElement("");
+        prePointer=0;
+        historyList.setVisibleRowCount(3);// 设置列表的可见行数
+        Font listFont = new Font("Arial", Font.PLAIN, 20);// 设置列表的字体大小
         historyList.setFont(listFont);
-//        设置列表的大小
-
-        // 设置自定义的 ListCellRenderer 以增加间距和设置间距颜色
         JScrollPane scrollPane = new JScrollPane(historyList);
-        // 设置滚动条的大小
-        scrollPane.setPreferredSize(new Dimension(300, 500));
-
+        scrollPane.setPreferredSize(new Dimension(300, 500));// 设置滚动条的大小
         this.add(scrollPane, "East");
         this.add(jPanel);
 
@@ -172,6 +157,21 @@ public class Function_Input extends JFrame {
             if(input.equals("C")){
                 preExpression="";
                 prePosition=0;
+            }
+            else if(input.equals("↑")){
+                prePointer=(prePointer+Math.min(3,preNum+1)-1)%Math.min(3,preNum+1);
+            }
+            else if(input.equals("Del")){
+                if(preNum!=0&&!pre[prePointer].isEmpty()) {
+                    for (int i = prePointer; i < 2; i++) {
+                        pre[i] = pre[i + 1];
+                    }
+                    if(preNum==3){
+                        pre[2]="";
+                    }
+                    preNum--;
+                    prePointer=(prePointer+Math.min(3,preNum+1)-1)%Math.min(3,preNum+1);
+                }
             }
             else if(input.equals("sin")){
                 preExpression=preExpression.substring(0,prePosition)+"S"+preExpression.substring(prePosition);
@@ -223,10 +223,6 @@ public class Function_Input extends JFrame {
                 preExpression=preExpression.substring(0,prePosition)+"()^2"+preExpression.substring(prePosition);
                 prePosition+=1;
             }
-            else if(input.equals("x^3")){
-                preExpression=preExpression.substring(0,prePosition)+"()^3"+preExpression.substring(prePosition);
-                prePosition+=1;
-            }
             else if(input.equals("1/x")){
                 preExpression=preExpression.substring(0,prePosition)+"1/()"+preExpression.substring(prePosition);
                 prePosition+=3;
@@ -263,7 +259,7 @@ public class Function_Input extends JFrame {
                     if(historyModel.size()<i+1){
                         break;
                     }
-                    function[i] = historyModel.elementAt(i);
+                    function[i] = transitionWithOutCursor(pre[i],0);
                 }
                 new Function_Draw(function,pre);
                 setVisible(false);
@@ -271,12 +267,11 @@ public class Function_Input extends JFrame {
             else if(input.equals("Save")){
                 boolean isLegal = isLegal(preExpression);
                 if(isLegal){
-                    String expression = transitionWithOutCursor(preExpression,prePosition);
-                    if(historyModel.size() == 3){
-                        sd.showMaxSavedDialog(jf);
+                    if(pre[prePointer].isEmpty()){
+                        preNum++;
                     }
-                    pre[pre_num++] = preExpression;
-                    historyModel.addElement(expression);
+                    pre[prePointer] = preExpression;
+                    prePointer=(prePointer+1)%3;
                     prePosition = 0;
                     preExpression = "";
 
@@ -289,7 +284,14 @@ public class Function_Input extends JFrame {
                 prePosition++;
             }
             jTextField.setText(Expre.transition(preExpression,prePosition));
-
+            for(int i=0;i<3;i++){
+                if(i==prePointer){
+                    historyModel.setElementAt("->"+transitionWithOutCursor(pre[i],0),i);
+                }
+                else{
+                    historyModel.setElementAt(transitionWithOutCursor(pre[i],0),i);
+                }
+            }
         }
     }
     public static void main(String[] args){

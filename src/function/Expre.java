@@ -189,11 +189,11 @@ public class Expre {
         }
         return temp;
     }
-    static public boolean haveValue(String input,int left,int right){
-        return true;
-    }
     //这里的合法性只是说式子可以被正确解析，不代表可以一定能够求出值
     static public boolean isLegal(String input){
+        if(input.isEmpty()){
+            return false;
+        }
         for(int i=0;i<input.length();i++){
             if(input.charAt(i)<='Z'&&input.charAt(i)>='A'){
                 input=input.substring(0,i+1)+"("+input.substring(i+1);
@@ -256,6 +256,9 @@ public class Expre {
     static public double count(String input,double x){
         Expression e = new ExpressionBuilder(input).functions(logAB,ln,lg).variables("x").build().setVariable("x",x);
         return e.evaluate();
+    }
+    static public double countDefiniteIntegral(String input,double a,double b){
+        return a;
     }
 }
 

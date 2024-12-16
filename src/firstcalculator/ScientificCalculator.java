@@ -24,8 +24,6 @@ public class ScientificCalculator extends JFrame {
     private int historyNum;
     private String preExpression;
     private int prePosition;
-//    private CardLayout cardLayout = new CardLayout();
-//    private JPanel cardPanel = new JPanel();
 
     public ScientificCalculator(){
         //切换界面
@@ -111,34 +109,18 @@ public class ScientificCalculator extends JFrame {
                 jButtons[i].setBackground(Color.GRAY);
             jButtons[i].setForeground(Color.black);
             jButtons[i].setFont(new Font("Arial", Font.PLAIN, 15));
-//            jButtons[i].addActionListener(new MyActionListener());
             jPanel.add(jButtons[i],"Center");
         }
-
-        // 创建历史记录列表模型
-        historyModel = new DefaultListModel<>();
-
-        // 创建历史记录列表组件
-        historyList = new JList<>(historyModel);
-        // 设置列表的可见行数
-        historyList.setVisibleRowCount(30);
-        // 设置列表的背景色
-//        historyList.setBackground(Color.LIGHT_GRAY);
-        // 设置列表的字体大小
-        Font listFont = new Font("Arial", Font.PLAIN, 20);
+        historyModel = new DefaultListModel<>();// 创建历史记录列表模型
+        historyList = new JList<>(historyModel);// 创建历史记录列表组件
+        historyList.setVisibleRowCount(30);// 设置列表的可见行数
+        Font listFont = new Font("Arial", Font.PLAIN, 20);// 设置列表的字体大小
         historyList.setFont(listFont);
-//        设置列表的大小
-//        historyList.setPreferredSize(new Dimension(300, 500));
-
-        // 设置自定义的 ListCellRenderer 以增加间距和设置间距颜色
-        historyList.setCellRenderer(new HistoryListCellRenderer());
+        historyList.setCellRenderer(new HistoryListCellRenderer());// 设置自定义的 ListCellRenderer 以增加间距和设置间距颜色
         JScrollPane scrollPane = new JScrollPane(historyList);
-        // 设置滚动条的大小
-        scrollPane.setPreferredSize(new Dimension(300, 500));
-
+        scrollPane.setPreferredSize(new Dimension(300, 500));// 设置滚动条的大小
         this.add(scrollPane, "East");
         this.add(jPanel);
-
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setVisible(true);
 
@@ -280,9 +262,7 @@ public class ScientificCalculator extends JFrame {
                 else {
                     jTextField.setText(Expre.transition(preExpression,prePosition));
                 }
-
             }
-
         }
     }
 
@@ -290,18 +270,13 @@ public class ScientificCalculator extends JFrame {
         ScientificCalculator scientificCalculator = new ScientificCalculator();
     }
 
-
-
 static class HistoryListCellRenderer extends DefaultListCellRenderer {
     @Override
     public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        // 设置背景颜色
-        c.setBackground(Color.WHITE);
-        // 为每个元素添加底部边框作为间距，并设置为白色
-        ((JComponent) c).setBorder(BorderFactory.createMatteBorder(5, 0, 5, 0, Color.WHITE));
+        c.setBackground(Color.WHITE);// 设置背景颜色
+        ((JComponent) c).setBorder(BorderFactory.createMatteBorder(5, 0, 5, 0, Color.WHITE));// 为每个元素添加底部边框作为间距，并设置为白色
         return c;
     }
 }
-
 }

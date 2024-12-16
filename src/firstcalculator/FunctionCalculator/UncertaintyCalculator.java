@@ -1,6 +1,5 @@
 package firstcalculator.FunctionCalculator;
 
-import firstcalculator.GraphicCalculator.Function_Draw;
 import firstcalculator.GraphicCalculator.Function_Input;
 import firstcalculator.ScientificCalculator;
 
@@ -18,7 +17,6 @@ public class UncertaintyCalculator {
 
     private JFrame jf = new JFrame("不确定度计算器");
     private Container con = jf.getContentPane();
-    // 窗口尺寸可以修改 请自行设计
     private static final int MYWIDTH = 1000;
     private static final int MYHEIGHT = 800;
 
@@ -63,18 +61,14 @@ public class UncertaintyCalculator {
                 jf.setVisible(false);
             }
         });
-
         // 初始化不确定度计算器的内容
         uncertaintityCalculatorInitializer();
-
         // 设置主窗口的大小，可见，默认关闭方式，位于windows窗口中间
         jf.setSize(MYWIDTH, MYHEIGHT);
         jf.setVisible(true);
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jf.setLocationRelativeTo(null);
     }
-
-
     public void uncertaintityCalculatorInitializer() {
         A_UncertaintyViewInit();
         B_uncertaintyViewInit();
@@ -84,7 +78,6 @@ public class UncertaintyCalculator {
         con.add(jSplitPane);
         jf.setVisible(true);
     }
-
     private JPanel jPanelLeft; // 左侧面板
     private JPanel headerPanel; // 左侧标题面板
     int Acount = 0;
@@ -96,24 +89,17 @@ public class UncertaintyCalculator {
         jPanelLeft.setLayout(new BorderLayout());
         jPanelLeft.setBackground(Color.LIGHT_GRAY);
         jPanelLeft.setPreferredSize(new Dimension(MYWIDTH / 2, MYHEIGHT));
-
-    /*
-      创建标题面板
-     */
+        //创建标题面板
         headerPanel = new JPanel();
         headerPanel.setPreferredSize(new Dimension(MYWIDTH / 2, 50));
         headerPanel.setLayout(new FlowLayout(FlowLayout.CENTER)); // 使用 FlowLayout 并设置居中对齐
-
         // 创建标题标签
         JLabel titleLabelLeft = new JLabel("A类不确定度", SwingConstants.CENTER);
         titleLabelLeft.setFont(new Font("SimSun", Font.BOLD, 35));
         headerPanel.add(titleLabelLeft);
 
         jPanelLeft.add(headerPanel, BorderLayout.NORTH);
-
-    /*
-      创建输入面板
-     */
+        //创建输入面板
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new FlowLayout());
 
@@ -128,7 +114,6 @@ public class UncertaintyCalculator {
         inputPanel.add(inputField);
         inputPanel.add(inputButton);
         inputPanel.add(calculateButton);
-
         // 存储输入的数据
         JTextArea outputArea = new JTextArea(); // 不设置行数，让其自动调整
         outputArea.setEditable(false);
@@ -137,7 +122,6 @@ public class UncertaintyCalculator {
         outputArea.setWrapStyleWord(true); // 按单词换行
 
         JScrollPane scrollPane = new JScrollPane(outputArea); // 将 JTextArea 放在 JScrollPane 中
-
         // 输入按钮事件监听器
         inputButton.addActionListener(new ActionListener() {
             @Override
@@ -157,7 +141,6 @@ public class UncertaintyCalculator {
                 }
             }
         });
-
         // 输入框回车事件监听器
         inputField.addActionListener(new ActionListener() {
             @Override
@@ -177,7 +160,6 @@ public class UncertaintyCalculator {
                 }
             }
         });
-
         // 计算按钮事件监听器
         calculateButton.addActionListener(new ActionListener() {
             @Override
@@ -186,9 +168,7 @@ public class UncertaintyCalculator {
                     outputArea.append("没有输入数据。\n");
                     return;
                 }
-
                 outputArea.append("输入数据的个数: " + Acount + "\n");
-
                 // 计算平均值
                 Double sum = 0.0;
                 for (Double num : A_dataList) {
@@ -196,7 +176,6 @@ public class UncertaintyCalculator {
                 }
                 Double mean = sum / Acount;
                 outputArea.append("平均值: " + mean + "\n");
-
                 // 计算标准偏差
                 if (Acount <= 1) {
                     outputArea.append("A类不确定度 (标准偏差): 无法计算，数据量必须大于1\n");
@@ -209,11 +188,9 @@ public class UncertaintyCalculator {
                     AuncertaintyResult = standardDeviation;
                     outputArea.append("A类不确定度 (标准偏差): " + standardDeviation + "\n");
                 }
-
                 outputArea.append("\n" + "提示：继续输入可以累加计算" + "\n");
             }
         });
-
         // 清除按钮事件监听器
         clearButton.addActionListener(new ActionListener() {
             @Override
@@ -226,44 +203,32 @@ public class UncertaintyCalculator {
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.WARNING_MESSAGE
                 );
-
                 // 如果用户点击了“确定”
                 if (response == JOptionPane.YES_OPTION) {
                     // 清空输出区域
                     outputArea.setText("");
-
                     // 重置计数器
                     Acount = 0;
-
                     // 清空数据列表
                     A_dataList.clear();
-
                     AuncertaintyResult = 0.0;
-
                     // 提示信息
                     outputArea.append("所有数据已清除，准备进行新计算。\n");
                 }
             }
         });
-
-
-    /*
-      创建输出面板
-     */
+        //创建输出面板
         JPanel outputPanel = new JPanel();
         outputPanel.setLayout(new BorderLayout());
         outputPanel.add(scrollPane, BorderLayout.CENTER);
-
         // 将输入和输出面板添加到左侧面板
         jPanelLeft.add(inputPanel, BorderLayout.SOUTH);
         jPanelLeft.add(outputPanel, BorderLayout.CENTER);
     }
 
-
     private JPanel jPanelRight; // 右侧侧面板
     private JScrollPane jScrollPaneRight; // 右侧侧面板的滚动面板
     private JSplitPane jSplitPane; // 分割面板
-
 
     void B_uncertaintyViewInit() {
         jPanelRight = new JPanel(); // 创建右侧面板
@@ -275,34 +240,29 @@ public class UncertaintyCalculator {
         gbc.insets = new Insets(10, 10, 10, 10); // 设置间距
         gbc.fill = GridBagConstraints.HORIZONTAL; // 水平填充
         gbc.anchor = GridBagConstraints.CENTER; // 居中对齐
-
         // 创建标题标签
         JLabel titleLabel = new JLabel("B类不确定度", SwingConstants.CENTER);
         titleLabel.setFont(new Font("SimSun", Font.BOLD, 35)); // 设置字体样式
         titleLabel.setPreferredSize(new Dimension(MYWIDTH / 2, 50)); // 设置大小
         jPanelRight.add(titleLabel, gbc);
-
         // 初始化五个子面板
         JPanel panel1 = initCommonUncertaintyPanel();
         JPanel panel2 = initElectromagneticInstrumentPanel();
         JPanel panel3 = initDirectCurrentResistorPanel();
         JPanel panel4 = initDirectCurrentPotentiometerPanel();
         JPanel panel5 = initDirectCurrentBridgePanel();
-
         // 设置每个子面板的背景颜色以便区分
         panel1.setBackground(Color.decode("#FFDDDD"));
         panel2.setBackground(Color.decode("#DDFFDD"));
         panel3.setBackground(Color.decode("#DDDDFF"));
         panel4.setBackground(Color.decode("#FFFFDD"));
         panel5.setBackground(Color.decode("#DDFFFF"));
-
         // 添加子面板到右侧面板
         addSubPanel(panel1, 420, gbc); // 增加高度
         addSubPanel(panel2, 250, gbc);
         addSubPanel(panel3, 650, gbc);
         addSubPanel(panel4, 300, gbc);
         addSubPanel(panel5, 300, gbc);
-
         // 创建滚动面板并添加右侧面板
         jScrollPaneRight = new JScrollPane(jPanelRight); // 直接将面板添加到滚动面板中
         jScrollPaneRight.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS); // 设置垂直滚动条始终显示
@@ -319,18 +279,14 @@ public class UncertaintyCalculator {
         jPanelRight.repaint(); // 重新绘制面板
     }
 
-
-
     private JComboBox<String> errorLimitComboBox;
     private Map<String, Double> errorLimitsMap = new HashMap<>();
-
     Double BinitCommonUncertainty=0.0;
 
     private JPanel initCommonUncertaintyPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-
         // 第一个子面板命名为“常见不确定度计算”
         JLabel commonUncertaintyLabel = new JLabel("常见不确定度计算", SwingConstants.CENTER);
         commonUncertaintyLabel.setFont(new Font("SimSun", Font.BOLD, 30));
@@ -340,7 +296,6 @@ public class UncertaintyCalculator {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 0, 0, 0); // 设置外边距
         panel.add(commonUncertaintyLabel, gbc);
-
         // 仪器误差限标签和输入框
         JLabel instrumentErrorLabel = new JLabel("仪器误差限:");
         instrumentErrorLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
@@ -359,7 +314,6 @@ public class UncertaintyCalculator {
         gbc.gridwidth = 1;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(instrumentErrorField, gbc);
-
         // 包含因子K标签和输入框
         JLabel inclusionFactorLabel = new JLabel("包含因子K:");
         inclusionFactorLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
@@ -379,7 +333,6 @@ public class UncertaintyCalculator {
         gbc.gridwidth = 1;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(inclusionFactorField, gbc);
-
         // 添加 FocusListener 处理焦点事件
         inclusionFactorField.addFocusListener(new FocusListener() {
             @Override
@@ -389,7 +342,6 @@ public class UncertaintyCalculator {
                     inclusionFactorField.setForeground(Color.BLACK); // 恢复输入框颜色
                 }
             }
-
             @Override
             public void focusLost(FocusEvent e) {
                 if (inclusionFactorField.getText().isEmpty()) {
@@ -398,7 +350,6 @@ public class UncertaintyCalculator {
                 }
             }
         });
-
         // 创建输出框
         JTextArea outputArea = new JTextArea("可以在下方计算常用的仪器误差限后键入，选择需要的进行计算\n\n合成不确定度时：\n请不要清除A类不确定度的计算结果。\n如果A类或B类未计算，默认为0。");
         outputArea.setEditable(false);
@@ -417,7 +368,6 @@ public class UncertaintyCalculator {
         gbc.weighty = 1.0; // 设置权重为1，使其能够占据剩余的空间
         gbc.insets = new Insets(0, 0, 0, 0); // 设置外边距
         panel.add(scrollPane, gbc);
-
         // 添加标签说明
         JLabel outputLabel = new JLabel("B类不确定度输出:", SwingConstants.LEFT);
         outputLabel.setFont(new Font("SimSun", Font.BOLD, 20));
@@ -427,7 +377,6 @@ public class UncertaintyCalculator {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 0, 0, 0); // 设置外边距
         panel.add(outputLabel, gbc);
-
         // 添加 DocumentListener 监听输入框的变化
         DocumentListener documentListener = new DocumentListener() {
             @Override
@@ -448,7 +397,6 @@ public class UncertaintyCalculator {
             private void updateOutput() {
                 String instrumentErrorText = instrumentErrorField.getText();
                 String inclusionFactorText = inclusionFactorField.getText();
-
                 boolean instrumentErrorEmpty = instrumentErrorText.isEmpty();
 
                 if (instrumentErrorEmpty) {
@@ -511,7 +459,6 @@ public class UncertaintyCalculator {
 
         instrumentErrorField.getDocument().addDocumentListener(documentListener);
         inclusionFactorField.getDocument().addDocumentListener(documentListener);
-
         // 添加下拉菜单
         errorLimitComboBox = new JComboBox<>();
         errorLimitComboBox.addItem("请选择误差限");
@@ -522,7 +469,6 @@ public class UncertaintyCalculator {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 0, 0, 0); // 设置外边距
         panel.add(errorLimitComboBox, gbc);
-
         // 添加下拉菜单选择事件监听器
         errorLimitComboBox.addActionListener(new ActionListener() {
             @Override
@@ -533,12 +479,8 @@ public class UncertaintyCalculator {
                 }
             }
         });
-
-
         return panel;
     }
-
-
 
     Double deltaElectromagneticInstrument = 0.0;
 
@@ -546,7 +488,6 @@ public class UncertaintyCalculator {
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-
         // 第二个子面板命名为“电磁仪表仪器误差限”
         JLabel electromagneticInstrumentLabel = new JLabel("电磁仪表仪器误差限", SwingConstants.CENTER);
         electromagneticInstrumentLabel.setFont(new Font("SimSun", Font.BOLD, 30));
@@ -556,7 +497,6 @@ public class UncertaintyCalculator {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
         panel.add(electromagneticInstrumentLabel, gbc);
-
         // 添加公式标签
         JLabel formulaLabel = new JLabel("Δ = a% · Nm", SwingConstants.CENTER);
         formulaLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
@@ -566,7 +506,6 @@ public class UncertaintyCalculator {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
         panel.add(formulaLabel, gbc);
-
         // 准确度等级输入框
         JLabel accuracyLabel = new JLabel("准确度等级 (a%):", SwingConstants.RIGHT);
         accuracyLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
@@ -587,7 +526,6 @@ public class UncertaintyCalculator {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
         panel.add(accuracyField, gbc);
-
         // 电表量程输入框
         JLabel rangeLabel = new JLabel("电表量程 (Nm):", SwingConstants.RIGHT);
         rangeLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
@@ -608,7 +546,6 @@ public class UncertaintyCalculator {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
         panel.add(rangeField, gbc);
-
         // 输出框
         JLabel resultLabel = new JLabel("结果: ", SwingConstants.RIGHT);
         resultLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
@@ -630,7 +567,6 @@ public class UncertaintyCalculator {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
         panel.add(resultField, gbc);
-
         // 添加文档变化事件监听器
         DocumentListener documentListener = new DocumentListener() {
             @Override
@@ -669,7 +605,6 @@ public class UncertaintyCalculator {
                 }
             }
         };
-
         // 添加选择按钮
         JButton selectButton = new JButton("键入此误差限");
         selectButton.setFont(new Font("SimSun", Font.PLAIN, 20));
@@ -679,7 +614,6 @@ public class UncertaintyCalculator {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
         panel.add(selectButton, gbc);
-
         // 添加名称输入框
         JLabel nameLabel = new JLabel("误差限名称:");
         nameLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
@@ -698,7 +632,6 @@ public class UncertaintyCalculator {
         gbc.gridwidth = 1;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(nameField, gbc);
-
         // 添加按钮点击事件监听器
         selectButton.addActionListener(new ActionListener() {
             @Override
@@ -713,14 +646,11 @@ public class UncertaintyCalculator {
                 nameField.setText(""); // 清空名称输入框
             }
         });
-
-
         accuracyField.getDocument().addDocumentListener(documentListener);
         rangeField.getDocument().addDocumentListener(documentListener);
 
         return panel;
     }
-
 
     Double deltaDirectCurrentResistor = 0.0;
 
@@ -728,7 +658,6 @@ public class UncertaintyCalculator {
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-
         // 第三个子面板命名为“直流电阻器仪器误差限”
         JLabel directCurrentResistorLabel = new JLabel("直流电阻器仪器误差限", SwingConstants.CENTER);
         directCurrentResistorLabel.setFont(new Font("SimSun", Font.BOLD, 30));
@@ -739,7 +668,6 @@ public class UncertaintyCalculator {
         gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
         gbc.anchor = GridBagConstraints.CENTER;
         panel.add(directCurrentResistorLabel, gbc);
-
         // 添加公式标签
         JLabel formulaLabel = new JLabel("Δ = Sigma[ ai% * Ri ] + R0", SwingConstants.CENTER);
         formulaLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
@@ -750,7 +678,6 @@ public class UncertaintyCalculator {
         gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
         gbc.anchor = GridBagConstraints.CENTER;
         panel.add(formulaLabel, gbc);
-
         // 动态生成 ai 和 Ri 的输入框
         List<JTextField> aiFields = new ArrayList<>();
         List<JTextField> riFields = new ArrayList<>();
@@ -777,7 +704,6 @@ public class UncertaintyCalculator {
             gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
             panel.add(aiField, gbc);
             aiFields.add(aiField);
-
             // Ri 标签和输入框
             JLabel riLabel = new JLabel("R" + (i + 1) + ":", SwingConstants.LEFT);
             riLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
@@ -800,7 +726,6 @@ public class UncertaintyCalculator {
             panel.add(riField, gbc);
             riFields.add(riField);
         }
-
         // 添加 R0 输入框
         JLabel r0Label = new JLabel("R0:", SwingConstants.RIGHT);
         r0Label.setFont(new Font("SimSun", Font.PLAIN, 20));
@@ -821,7 +746,6 @@ public class UncertaintyCalculator {
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
         panel.add(r0Field, gbc);
-
         // 添加结果输出框
         JLabel resultLabel = new JLabel("结果:", SwingConstants.RIGHT);
         resultLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
@@ -843,7 +767,6 @@ public class UncertaintyCalculator {
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
         panel.add(resultField, gbc);
-
         // 添加 DocumentListener 到所有输入框
         DocumentListener listener = new DocumentListener() {
             @Override
@@ -883,12 +806,10 @@ public class UncertaintyCalculator {
                             double ai = Double.parseDouble(aiText) / 100;
                             double ri = Double.parseDouble(riText);
                             sum += ai * ri;
-
                             hasData = true;
                             allPairsEmpty = false;
                         }
                     }
-
                     String r0Text = r0Field.getText().trim();
                     if (!r0Text.isEmpty()) {
                         double r0 = Double.parseDouble(r0Text);
@@ -898,26 +819,21 @@ public class UncertaintyCalculator {
                         resultField.setText("R0 数据为空");
                         return;
                     }
-
                     if (allPairsEmpty && r0Text.isEmpty()) {
                         resultField.setText("");
                         return;
                     }
-
                     if (!hasData) {
                         resultField.setText("");
                         return;
                     }
-
                     deltaDirectCurrentResistor = sum;
-
                     resultField.setText(String.format("%.5f", sum));
                 } catch (NumberFormatException ex) {
                     resultField.setText("请输入有效的数字");
                 }
             }
         };
-
         for (JTextField field : aiFields) {
             field.getDocument().addDocumentListener(listener);
         }
@@ -925,7 +841,7 @@ public class UncertaintyCalculator {
             field.getDocument().addDocumentListener(listener);
         }
         r0Field.getDocument().addDocumentListener(listener);
-// 添加选择按钮
+        // 添加选择按钮
         JButton selectButton = new JButton("键入此误差限");
         selectButton.setFont(new Font("SimSun", Font.PLAIN, 20));
         gbc.gridx = 0;
@@ -934,7 +850,6 @@ public class UncertaintyCalculator {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
         panel.add(selectButton, gbc);
-
         // 添加名称输入框
         JLabel nameLabel = new JLabel("误差限名称:");
         nameLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
@@ -953,7 +868,6 @@ public class UncertaintyCalculator {
         gbc.gridwidth = 1;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(nameField, gbc);
-
         // 添加按钮点击事件监听器
         selectButton.addActionListener(new ActionListener() {
             @Override
@@ -968,12 +882,8 @@ public class UncertaintyCalculator {
                 nameField.setText(""); // 清空名称输入框
             }
         });
-
-
         return panel;
     }
-
-
 
     Double getDeltaDirectCurrentPotentiometer=0.0;
 
@@ -981,7 +891,6 @@ public class UncertaintyCalculator {
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-
         // 第三个子面板命名为“直流电位差计仪器误差限”
         JLabel directCurrentResistorLabel = new JLabel("直流电位差计仪器误差限", SwingConstants.CENTER);
         directCurrentResistorLabel.setFont(new Font("SimSun", Font.BOLD, 30));
@@ -991,7 +900,6 @@ public class UncertaintyCalculator {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
         panel.add(directCurrentResistorLabel, gbc);
-
         // 添加公式标签
         JLabel formulaLabel = new JLabel("Δ =  ai% * ( Ux + U0/10 )", SwingConstants.CENTER);
         formulaLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
@@ -1001,7 +909,6 @@ public class UncertaintyCalculator {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
         panel.add(formulaLabel, gbc);
-
         // 添加 a (%) 输入框
         JLabel aLabel = new JLabel("a (%):", SwingConstants.RIGHT);
         aLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
@@ -1022,7 +929,6 @@ public class UncertaintyCalculator {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
         panel.add(aField, gbc);
-
         // 添加 Ux 输入框
         JLabel uxLabel = new JLabel("Ux:", SwingConstants.RIGHT);
         uxLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
@@ -1043,7 +949,6 @@ public class UncertaintyCalculator {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
         panel.add(uxField, gbc);
-
         // 添加 U0 输入框
         JLabel u0Label = new JLabel("U0:", SwingConstants.RIGHT);
         u0Label.setFont(new Font("SimSun", Font.PLAIN, 20));
@@ -1064,7 +969,6 @@ public class UncertaintyCalculator {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
         panel.add(u0Field, gbc);
-
         // 添加结果输出框
         JLabel resultLabel = new JLabel("结果:", SwingConstants.RIGHT);
         resultLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
@@ -1088,7 +992,6 @@ public class UncertaintyCalculator {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
         panel.add(resultArea, gbc);
-
         // 添加 DocumentListener 到所有输入框
         DocumentListener listener = new DocumentListener() {
             @Override
@@ -1116,22 +1019,18 @@ public class UncertaintyCalculator {
                         resultArea.setText("");
                         return;
                     }
-
                     if(aText.isEmpty()&&uxText.isEmpty()){
                         resultArea.setText("a (%) 数据为空\nUx 数据为空");
                         return;
                     }
-
                     if(aText.isEmpty()&&u0Text.isEmpty()){
                         resultArea.setText("a (%) 数据为空\nU0 数据为空");
                         return;
                     }
-
                     if(uxText.isEmpty()&&u0Text.isEmpty()){
                         resultArea.setText("Ux 数据为空\nU0 数据为空");
                         return;
                     }
-
                     if (aText.isEmpty()) {
                         resultArea.setText("a (%) 数据为空");
                         return;
@@ -1145,26 +1044,21 @@ public class UncertaintyCalculator {
                         return;
                     }
 
-
                     double a = Double.parseDouble(aText) / 100;
                     double ux = Double.parseDouble(uxText);
                     double u0 = Double.parseDouble(u0Text);
-
                     double delta = a * (ux + u0 / 10);
 
                     getDeltaDirectCurrentPotentiometer = delta;
-
                     resultArea.setText(String.format("Δ =\n%.10f", delta));
                 } catch (NumberFormatException ex) {
                     resultArea.setText("输入不合法");
                 }
             }
         };
-
         aField.getDocument().addDocumentListener(listener);
         uxField.getDocument().addDocumentListener(listener);
         u0Field.getDocument().addDocumentListener(listener);
-
         // 添加选择按钮
         JButton selectButton = new JButton("键入此误差限");
         selectButton.setFont(new Font("SimSun", Font.PLAIN, 20));
@@ -1174,7 +1068,6 @@ public class UncertaintyCalculator {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
         panel.add(selectButton, gbc);
-
         // 添加名称输入框
         JLabel nameLabel = new JLabel("误差限名称:");
         nameLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
@@ -1193,7 +1086,6 @@ public class UncertaintyCalculator {
         gbc.gridwidth = 1;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(nameField, gbc);
-
         // 添加按钮点击事件监听器
         selectButton.addActionListener(new ActionListener() {
             @Override
@@ -1208,18 +1100,14 @@ public class UncertaintyCalculator {
                 nameField.setText(""); // 清空名称输入框
             }
         });
-
-
         return panel;
     }
 
     Double deltaDirectCurrentBridge=0.0;
-
     private JPanel initDirectCurrentBridgePanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-
         // 第三个子面板命名为“直流电阻器仪器误差限”
         JLabel directCurrentResistorLabel = new JLabel("直流电桥仪器误差限", SwingConstants.CENTER);
         directCurrentResistorLabel.setFont(new Font("SimSun", Font.BOLD, 30));
@@ -1229,7 +1117,6 @@ public class UncertaintyCalculator {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
         panel.add(directCurrentResistorLabel, gbc);
-
         // 添加公式标签
         JLabel formulaLabel = new JLabel("Δ =  ai% * ( Rx + R0/10 )", SwingConstants.CENTER);
         formulaLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
@@ -1239,7 +1126,6 @@ public class UncertaintyCalculator {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
         panel.add(formulaLabel, gbc);
-
         // 添加 a (%) 输入框
         JLabel aLabel = new JLabel("a (%):", SwingConstants.RIGHT);
         aLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
@@ -1260,7 +1146,6 @@ public class UncertaintyCalculator {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
         panel.add(aField, gbc);
-
         // 添加 Rx 输入框
         JLabel rxLabel = new JLabel("Rx:", SwingConstants.RIGHT);
         rxLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
@@ -1281,7 +1166,6 @@ public class UncertaintyCalculator {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
         panel.add(rxField, gbc);
-
         // 添加 R0 输入框
         JLabel r0Label = new JLabel("R0:", SwingConstants.RIGHT);
         r0Label.setFont(new Font("SimSun", Font.PLAIN, 20));
@@ -1302,7 +1186,6 @@ public class UncertaintyCalculator {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
         panel.add(r0Field, gbc);
-
         // 添加结果输出框
         JLabel resultLabel = new JLabel("结果:", SwingConstants.RIGHT);
         resultLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
@@ -1326,7 +1209,6 @@ public class UncertaintyCalculator {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
         panel.add(resultArea, gbc);
-
         // 添加 DocumentListener 到所有输入框
         DocumentListener listener = new DocumentListener() {
             @Override
@@ -1354,22 +1236,18 @@ public class UncertaintyCalculator {
                         resultArea.setText("");
                         return;
                     }
-
                     if (aText.isEmpty() && rxText.isEmpty()) {
                         resultArea.setText("a (%) 数据为空\nRx 数据为空");
                         return;
                     }
-
                     if(rxText.isEmpty() && r0Text.isEmpty()){
                         resultArea.setText("Rx 数据为空\nR0 数据为空");
                         return;
                     }
-
                     if (aText.isEmpty()&&r0Text.isEmpty()) {
                         resultArea.setText("a (%) 数据为空\nR0 数据为空");
                         return;
                     }
-
                     if (aText.isEmpty()) {
                         resultArea.setText("a (%) 数据为空");
                         return;
@@ -1386,7 +1264,6 @@ public class UncertaintyCalculator {
                     double a = Double.parseDouble(aText) / 100;
                     double rx = Double.parseDouble(rxText);
                     double r0 = Double.parseDouble(r0Text);
-
                     double delta = a * (rx + r0 / 10);
 
                     deltaDirectCurrentBridge = delta;
@@ -1401,7 +1278,6 @@ public class UncertaintyCalculator {
         aField.getDocument().addDocumentListener(listener);
         rxField.getDocument().addDocumentListener(listener);
         r0Field.getDocument().addDocumentListener(listener);
-
         // 添加选择按钮
         JButton selectButton = new JButton("键入此误差限");
         selectButton.setFont(new Font("SimSun", Font.PLAIN, 20));
@@ -1411,7 +1287,6 @@ public class UncertaintyCalculator {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 5, 5, 5); // 设置外边距
         panel.add(selectButton, gbc);
-
         // 添加名称输入框
         JLabel nameLabel = new JLabel("误差限名称:");
         nameLabel.setFont(new Font("SimSun", Font.PLAIN, 20));
@@ -1430,7 +1305,6 @@ public class UncertaintyCalculator {
         gbc.gridwidth = 1;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(nameField, gbc);
-
         // 添加按钮点击事件监听器
         selectButton.addActionListener(new ActionListener() {
             @Override
@@ -1445,8 +1319,6 @@ public class UncertaintyCalculator {
                 nameField.setText(""); // 清空名称输入框
             }
         });
-
-
         return panel;
     }
 

@@ -1,11 +1,7 @@
 
 package firstcalculator.GraphicCalculator;
 
-import firstcalculator.FunctionCalculator.Definite_Integral_Calculator;
-import firstcalculator.FunctionCalculator.UncertaintyCalculator;
-import firstcalculator.ScientificCalculator;
 import function.Expre;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -15,7 +11,6 @@ public class Function_Draw {
     //窗口尺寸
     public static final int MYWIDTH = 1000;
     public static final int MYHEIGHT = 800;
-
     //缩放需求
     public static final int MAXSIZE = 5000;
 
@@ -80,12 +75,10 @@ public class Function_Draw {
                     sd.showFunctionSavedDialog(jf,function[i]);
                 }
             }
-
         }
         this.init();
     }
     public void init(){
-
         functionField.setEditable(false);
         functionField.setColumns(20);
         functionField.setText(function[0]);
@@ -108,11 +101,9 @@ public class Function_Draw {
         jPanel2.setLayout(new BorderLayout());
         jPanel2.add(mc, BorderLayout.CENTER);
         jf.add(jPanel2, BorderLayout.CENTER);
-
         JPanel jPanel3 = new JPanel();
         jPanel3.setLayout(new FlowLayout());
         //设置布局管理器：顺序水平放置
-
         enlargerButton.setBackground(Color.LIGHT_GRAY);
         reduceButton.setBackground(Color.LIGHT_GRAY);
         clearButton.setBackground(Color.LIGHT_GRAY);
@@ -137,13 +128,11 @@ public class Function_Draw {
         jPanel3.add(label);
         jPanel3.add(scaleField);
         jPanel1.add(jPanel3);
-
         //设置主窗口的大小，可见，默认关闭方式，位于windows窗口中间
         jf.setSize(MYWIDTH,MYHEIGHT);
         jf.setVisible(true);
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jf.setLocationRelativeTo(null);
-
         //从三个函数中选择一个输入文本框中
         functionChooser.addItemListener(new ItemListener() {
             @Override
@@ -159,13 +148,11 @@ public class Function_Draw {
                 }
             }
         });
-
         //监听键盘，实现回车解析，ok保存，上下左右键切换选择框
         functionField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 super.keyPressed(e);
-
                 if(e.getKeyCode() == KeyEvent.VK_UP){
                     int crtIndex = functionChooser.getSelectedIndex();
                     if(crtIndex > 0){
@@ -226,13 +213,11 @@ public class Function_Draw {
             }
         });
     }
-
     //内部类，画布
     class MyCanvas extends Canvas{
         @Override
         public void paint(Graphics g){
             scaleField.setText(Double.toString(myScale));
-
             //获取画笔
             Graphics2D g2  = (Graphics2D) g;
             g2.translate(MYWIDTH / 2,MYHEIGHT / 2 + 30);
@@ -250,7 +235,6 @@ public class Function_Draw {
 
             g2.drawLine(-MAXSIZE / 2, 0, MAXSIZE / 2, 0);
             g2.drawLine(0, -MAXSIZE / 2, 0, MAXSIZE / 2);
-
             //绘制刻度
             for (int i = -MAXSIZE / 2; i <= MAXSIZE / 2; i += 20) {
                 g2.drawLine(i, -5, i, 5);
@@ -261,7 +245,6 @@ public class Function_Draw {
                 g2.drawLine(-5, i, 5, i);
                 g2.drawString(Integer.toString(-i / 20), 10, i);
             }
-
             //绘制原点，用8x8的实心矩形覆盖(0,0) 实现坐标原点的绘制
             g2.setColor(Color.BLACK);
             g2.fillArc(-4, -4, 8, 8, 0, 360);
@@ -342,5 +325,3 @@ public class Function_Draw {
         new Function_Draw();
     }
 }
-
-//每次都只绘制一个函数图像 保存pre的时候出错了？检查绘图的部分有没有出错

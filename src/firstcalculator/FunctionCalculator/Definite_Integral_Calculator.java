@@ -10,8 +10,6 @@ import java.awt.event.ActionListener;
 
 public class Definite_Integral_Calculator {
     private JFrame jf = new JFrame("不确定度计算器");
-
-    //窗口尺寸可以修改 请自行设计
     private static final int MYWIDTH = 1000;
     private static final int MYHEIGHT = 800;
 
