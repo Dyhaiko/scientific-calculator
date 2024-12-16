@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Definite_Integral_Calculator {
+public class DefiniteIntegralCalculator {
     private JFrame jf = new JFrame("不确定度计算器");
     private static final int MYWIDTH = 1000;
     private static final int MYHEIGHT = 800;

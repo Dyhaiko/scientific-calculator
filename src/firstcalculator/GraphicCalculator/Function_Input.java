@@ -1,6 +1,6 @@
 package firstcalculator.GraphicCalculator;
 
-import firstcalculator.FunctionCalculator.Definite_Integral_Calculator;
+import firstcalculator.FunctionCalculator.DefiniteIntegralCalculator;
 import firstcalculator.FunctionCalculator.UncertaintyCalculator;
 import firstcalculator.ScientificCalculator;
 import function.Expre;
@@ -85,7 +85,7 @@ public class Function_Input extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 创建绘图界面
-                Definite_Integral_Calculator definite_Integral_Calculator = new Definite_Integral_Calculator();
+                DefiniteIntegralCalculator definite_Integral_Calculator = new DefiniteIntegralCalculator();
                 definite_Integral_Calculator.init();
                 // 隐藏当前界面
                 setVisible(false);
