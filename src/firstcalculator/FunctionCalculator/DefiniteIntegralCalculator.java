@@ -34,13 +34,11 @@ public class DefiniteIntegralCalculator {
         JMenu menu = new JMenu("切换");
         menuBar.add(menu);
         JMenuItem item1 = new JMenuItem("科学计算器");
-        JMenuItem item2 = new JMenuItem("绘图计算器");
+        JMenuItem item2 = new JMenuItem("函数输入");
         JMenuItem item3 = new JMenuItem("不确定度计算器");
-        JMenuItem item5 = new JMenuItem("定积分");
         menu.add(item1);
         menu.add(item2);
         menu.add(item3);
-        menu.add(item5);
 
         item1.addActionListener(new ActionListener() {
             @Override

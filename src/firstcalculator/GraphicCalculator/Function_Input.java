@@ -47,13 +47,11 @@ public class Function_Input extends JFrame {
         JMenu menu = new JMenu("切换");
         menuBar.add(menu);
         JMenuItem item1 = new JMenuItem("科学计算器");
-        JMenuItem item2 = new JMenuItem("绘图计算器");
+        JMenuItem item2 = new JMenuItem("函数输入");
         JMenuItem item3 = new JMenuItem("不确定度计算器");
-        JMenuItem item5 = new JMenuItem("定积分");
         menu.add(item1);
         menu.add(item2);
         menu.add(item3);
-        menu.add(item5);
         item1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -77,15 +75,6 @@ public class Function_Input extends JFrame {
                 // 创建绘图界面
                 UncertaintyCalculator uncertaintyCalculator = new UncertaintyCalculator();
                 uncertaintyCalculator.init();
-                // 隐藏当前界面
-                setVisible(false);
-            }
-        });
-        item5.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // 创建绘图界面
-                Function_Input fi = new Function_Input();
                 // 隐藏当前界面
                 setVisible(false);
             }
