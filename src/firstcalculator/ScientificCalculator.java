@@ -63,8 +63,7 @@ public class ScientificCalculator extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 创建绘图界面
-                DefiniteIntegralCalculator definite_Integral_Calculator = new DefiniteIntegralCalculator();
-                definite_Integral_Calculator.init();
+                Function_Input fi = new Function_Input();
                 // 隐藏当前界面
                 setVisible(false);
             }

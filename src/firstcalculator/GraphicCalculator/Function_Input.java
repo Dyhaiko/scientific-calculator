@@ -85,8 +85,7 @@ public class Function_Input extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 创建绘图界面
-                DefiniteIntegralCalculator definite_Integral_Calculator = new DefiniteIntegralCalculator();
-                definite_Integral_Calculator.init();
+                Function_Input fi = new Function_Input();
                 // 隐藏当前界面
                 setVisible(false);
             }
@@ -281,6 +280,7 @@ public class Function_Input extends JFrame {
             }else if(input.equals("DI")){
                 DefiniteIntegralCalculator di = new DefiniteIntegralCalculator();
                 di.DefiniteIntegralCalculatorStarter(pre);
+                setVisible(false);
             }
             else{
                 preExpression=preExpression.substring(0,prePosition)+input+preExpression.substring(prePosition);
