@@ -3,6 +3,9 @@ import net.objecthunter.exp4j.function.Function;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import net.objecthunter.exp4j.Expression;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class Expre {
     public static Function logAB=new Function("logab",2) {
         public double apply(double... var1) {
@@ -259,7 +262,7 @@ public class Expre {
         return e.evaluate();
     }
     static public double countDefiniteIntegral(String input,double a,double b){
-
+        double delta=0.000001;
         double value=0;
         try{
             count(transitionWithOutCursor(input,0),a);
@@ -268,17 +271,38 @@ public class Expre {
         catch (RuntimeException o){
             throw o;
         }
-        for(int i=0;i<100000;i++){
-            double temp;
-            try{
-                temp=count(transitionWithOutCursor(input,0),a+ (b-a)* (i+0.5) /100000)/100000;
-                value+=temp;
+        double temp;
+        double fore = 0;
+        int density=10;
+        while(true){
+            value=0;
+            for(int i=0;i<density;i++){
+                try{
+                    temp=count(transitionWithOutCursor(input,0),a+ (b-a)* (i+0.5) /density)/density*(b-a);
+                    value+=temp;
+                }
+                catch(RuntimeException o){
+                    throw o;
+                }
             }
-            catch(RuntimeException o){
-                throw o;
+            if(density==10){
+                fore=value;
+                density*=10;
+            }
+            else{
+                if((-delta<=value-fore&&value-fore<=delta)||density>=10000000){
+                    break;
+                }
+                else{
+                    fore=value;
+                    density*=10;
+                }
             }
         }
-        return value*(b-a);
+        BigDecimal bigDecimal = new BigDecimal(value);
+        bigDecimal = bigDecimal.setScale(6, RoundingMode.HALF_UP);
+        value=bigDecimal.doubleValue();
+        return value;
     }
 }
 

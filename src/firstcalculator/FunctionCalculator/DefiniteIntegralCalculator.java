@@ -130,33 +130,35 @@ public class DefiniteIntegralCalculator {
         // 第二行：上限标签
         gbc.gridx = 1;
         gbc.gridy = 0;  // 设置行号为0
-        JLabel upperLimitLabel = new JLabel("上限：");
-        upperLimitLabel.setFont(new Font(upperLimitLabel.getFont().getName(), upperLimitLabel.getFont().getStyle(), 16)); // 调大字体
-        panel.add(upperLimitLabel, gbc);
+        JLabel lowLabel = new JLabel("下限：");
+        lowLabel.setFont(new Font(lowLabel.getFont().getName(), lowLabel.getFont().getStyle(), 16)); // 调大字体
+        panel.add(lowLabel, gbc);
+
 
 
         // 第二行：上限输入框
         gbc.gridx = 2;  // 继续在这一行
         gbc.gridwidth = 1;
-        JTextField upperLimitField = new JTextField(10);
-        upperLimitField.setFont(new Font(upperLimitField.getFont().getName(), upperLimitField.getFont().getStyle(), 16)); // 调大字体
-        panel.add(upperLimitField, gbc);
+        JTextField lowLimitField = new JTextField(10);
+        lowLimitField.setFont(new Font(lowLimitField.getFont().getName(), lowLimitField.getFont().getStyle(), 16)); // 调大字体
+        panel.add(lowLimitField, gbc);
 //        String upperLimit = "";
 
         // 第三行：下限标签
         gbc.gridx = 3;
         gbc.gridy = 0; // 设置行号为 0
+
         gbc.gridwidth = 1;
-        JLabel lowerLimitLabel = new JLabel("下限：");
-        lowerLimitLabel.setFont(new Font(lowerLimitLabel.getFont().getName(), lowerLimitLabel.getFont().getStyle(), 16)); // 调大字体
-        panel.add(lowerLimitLabel, gbc);
+        JLabel upperLimitLabel = new JLabel("上限：");
+        upperLimitLabel.setFont(new Font(upperLimitLabel.getFont().getName(), upperLimitLabel.getFont().getStyle(), 16)); // 调大字体
+        panel.add(upperLimitLabel, gbc);
 
         // 第四行：下限输入框
         gbc.gridx = 4; // 继续在这一行
         gbc.gridwidth = 1;
-        JTextField lowerLimitField = new JTextField(10);
-        lowerLimitField.setFont(new Font(lowerLimitField.getFont().getName(), lowerLimitField.getFont().getStyle(), 16)); // 调大字体
-        panel.add(lowerLimitField, gbc);
+        JTextField upperLimitField = new JTextField(10);
+        upperLimitField.setFont(new Font(upperLimitField.getFont().getName(), upperLimitField.getFont().getStyle(), 16)); // 调大字体
+        panel.add(upperLimitField, gbc);
 //        String lowerLimit = "";
 
         // 第二行：结果标签
@@ -182,13 +184,13 @@ public class DefiniteIntegralCalculator {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 在这里编写按钮点击时的处理逻辑
-                String upperLimit = upperLimitField.getText();
-                String lowerLimit = lowerLimitField.getText();
+                String upperLimit = lowLimitField.getText();
+                String lowerLimit = upperLimitField.getText();
                 double upperLimitValue;
                 try{
                     upperLimitValue = Double.parseDouble(upperLimit);
                 }catch (Exception ex){
-                    JOptionPane.showMessageDialog(null, "请输入正确的上限值！");
+                    JOptionPane.showMessageDialog(null, "请输入正确的下限值！");
                     upperLimitValue = 0.0;
                     return;
                 }
@@ -196,7 +198,7 @@ public class DefiniteIntegralCalculator {
                 try{
                     lowerLimitValue = Double.parseDouble(lowerLimit);
                 }catch (Exception ex){
-                    JOptionPane.showMessageDialog(null, "请输入正确的下限值！");
+                    JOptionPane.showMessageDialog(null, "请输入正确的上限值！");
                     lowerLimitValue = 0.0;
                     return;
                 }
