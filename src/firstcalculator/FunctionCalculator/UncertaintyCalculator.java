@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+
 public class UncertaintyCalculator {
 
     private JFrame jf = new JFrame("不确定度计算器");
@@ -447,17 +449,28 @@ public class UncertaintyCalculator {
 
         instrumentErrorField.getDocument().addDocumentListener(documentListener);
         inclusionFactorField.getDocument().addDocumentListener(documentListener);
-        // 添加下拉菜单
+// 添加下拉菜单
         errorLimitComboBox = new JComboBox<>();
         errorLimitComboBox.addItem("请选择误差限");
         errorLimitComboBox.setFont(new Font("SimSun", Font.PLAIN, 20));
-        gbc.gridx = 0;
-        gbc.gridy = 6;
-        gbc.gridwidth = 2;
+        gbc.gridx = 0; // 设置为第0列
+        gbc.gridy = 6; // 设置为第6行
+        gbc.gridwidth = 1; // 占据1列宽
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(0, 0, 0, 0); // 设置外边距
+        gbc.insets = new Insets(0, 0, 0, 5); // 设置外边距，右侧留出一些空间
         panel.add(errorLimitComboBox, gbc);
-        // 添加下拉菜单选择事件监听器
+
+// 添加清除按钮
+        JButton clearButton = new JButton("清除");
+        clearButton.setFont(new Font("SimSun", Font.PLAIN, 20));
+        gbc.gridx = 1; // 设置为第1列
+        gbc.gridy = 6; // 设置为第6行，与下拉菜单在同一行
+        gbc.gridwidth = 1; // 占据1列宽
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(5, 5, 5, 0); // 设置外边距，左侧留出一些空间
+        panel.add(clearButton, gbc);
+
+// 添加下拉菜单选择事件监听器
         errorLimitComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -467,8 +480,34 @@ public class UncertaintyCalculator {
                 }
             }
         });
+
+// 添加清除按钮事件监听器
+        clearButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                clearAllContent();
+            }
+        });
+
         return panel;
     }
+
+    private void clearAllContent() {
+        // 清除A类不确定度的数据
+        A_dataList.clear();
+        Acount = 0;
+        AuncertaintyResult = 0.0;
+        // 清除B类不确定度的数据
+        BinitCommonUncertainty = 0.0;
+        deltaElectromagneticInstrument = 0.0;
+        // 清除界面内容
+        JTextArea outputArea = (JTextArea) ((JScrollPane) ((JPanel) jPanelLeft.getComponent(2)).getComponent(0)).getViewport().getView();
+        outputArea.setText("");
+        outputArea.append("所有数据已清除，准备进行新计算。\n");
+    }
+
+
+
 
     Double deltaElectromagneticInstrument = 0.0;
 
