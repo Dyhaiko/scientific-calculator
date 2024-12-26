@@ -111,6 +111,7 @@ public class DefiniteIntegralCalculator {
     }
 
     private void addComponent(JPanel panel) {
+        int ptr = cnt;
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -122,7 +123,7 @@ public class DefiniteIntegralCalculator {
         gbc.gridy = 0;
         //TODO
 
-        JLabel label = new JLabel("函数表达式：f(x) =" + " " + Expre.turnIntoExpression(pre[cnt++]));//请直接在这里添加传入的函数表达式
+        JLabel label = new JLabel("函数表达式：f(x) =" + " " + Expre.turnIntoExpression(pre[cnt++]));
         label.setFont(new Font(label.getFont().getName(), label.getFont().getStyle(), 16)); // 调大字体
         panel.add(label, gbc);
 
@@ -133,12 +134,14 @@ public class DefiniteIntegralCalculator {
         upperLimitLabel.setFont(new Font(upperLimitLabel.getFont().getName(), upperLimitLabel.getFont().getStyle(), 16)); // 调大字体
         panel.add(upperLimitLabel, gbc);
 
+
         // 第二行：上限输入框
         gbc.gridx = 2;  // 继续在这一行
         gbc.gridwidth = 1;
         JTextField upperLimitField = new JTextField(10);
         upperLimitField.setFont(new Font(upperLimitField.getFont().getName(), upperLimitField.getFont().getStyle(), 16)); // 调大字体
         panel.add(upperLimitField, gbc);
+//        String upperLimit = "";
 
         // 第三行：下限标签
         gbc.gridx = 3;
@@ -154,6 +157,7 @@ public class DefiniteIntegralCalculator {
         JTextField lowerLimitField = new JTextField(10);
         lowerLimitField.setFont(new Font(lowerLimitField.getFont().getName(), lowerLimitField.getFont().getStyle(), 16)); // 调大字体
         panel.add(lowerLimitField, gbc);
+//        String lowerLimit = "";
 
         // 第二行：结果标签
         gbc.gridx = 0;
@@ -178,7 +182,35 @@ public class DefiniteIntegralCalculator {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 在这里编写按钮点击时的处理逻辑
-                System.out.println("lol");
+                String upperLimit = upperLimitField.getText();
+                String lowerLimit = lowerLimitField.getText();
+                double upperLimitValue;
+                try{
+                    upperLimitValue = Double.parseDouble(upperLimit);
+                }catch (Exception ex){
+                    JOptionPane.showMessageDialog(null, "请输入正确的上限值！");
+                    upperLimitValue = 0.0;
+                    return;
+                }
+                double lowerLimitValue;
+                try{
+                    lowerLimitValue = Double.parseDouble(lowerLimit);
+                }catch (Exception ex){
+                    JOptionPane.showMessageDialog(null, "请输入正确的下限值！");
+                    lowerLimitValue = 0.0;
+                    return;
+                }
+                double result = 0.0;
+                try{
+                    result = Expre.countDefiniteIntegral(pre[ptr],upperLimitValue,lowerLimitValue);
+                }catch (Exception ex){
+                    JOptionPane.showMessageDialog(null, "空表达式！");
+                    outputArea.setText("0");
+                    return;
+                }
+                result = Expre.countDefiniteIntegral(pre[ptr],upperLimitValue,lowerLimitValue);
+                System.out.println(pre[ptr]);
+                outputArea.setText(String.valueOf(result));
             }
         });
 
