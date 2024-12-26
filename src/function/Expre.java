@@ -259,6 +259,7 @@ public class Expre {
         return e.evaluate();
     }
     static public double countDefiniteIntegral(String input,double a,double b){
+
         double value=0;
         try{
             count(transitionWithOutCursor(input,0),a);
@@ -277,7 +278,7 @@ public class Expre {
                 throw o;
             }
         }
-        return value;
+        return value*(b-a);
     }
 }
 

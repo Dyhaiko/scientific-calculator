@@ -36,8 +36,18 @@ public class Function_Input extends JFrame {
     private int preNum;
     public void set_Function(String[] func,String[] pre){
         System.arraycopy(pre, 0, this.pre, 0, 3);
-        for(int i = 0;i < 3;i++){
-            historyModel.addElement(func[i]);
+        for(int i=0;i<3;i++){
+            if(!pre[i].isEmpty()){
+                preNum++;
+            }
+        }
+        for(int i=0;i<3;i++){
+            if(i==prePointer){
+                historyModel.setElementAt("->"+transitionWithOutCursor(pre[i],0),i);
+            }
+            else{
+                historyModel.setElementAt(transitionWithOutCursor(pre[i],0),i);
+            }
         }
     }
     public Function_Input() {
