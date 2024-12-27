@@ -16,5 +16,9 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="exp4j-0.4.8" level="project" />
+    <orderEntry type="library" name="log4j-core-2.19.0" level="project" />
+    <orderEntry type="library" name="opencsv-5.5.2" level="project" />
+    <orderEntry type="library" name="poi-ooxml-5.2.3" level="project" />
   </component>
 </module>
