@@ -1,9 +1,9 @@
-package firstcalculator.GraphicCalculator;
+package src.firstcalculator.GraphicCalculator;
 
-import firstcalculator.FunctionCalculator.DefiniteIntegralCalculator;
-import firstcalculator.FunctionCalculator.UncertaintyCalculator;
-import firstcalculator.ScientificCalculator;
-import function.Expre;
+import src.firstcalculator.FunctionCalculator.DefiniteIntegralCalculator;
+import src.firstcalculator.FunctionCalculator.UncertaintyCalculator;
+import src.firstcalculator.ScientificCalculator;
+import src.function.Expre;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -12,7 +12,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static function.Expre.*;
+import static src.function.Expre.*;
 
 public class Function_Input extends JFrame {
     private JTextField jTextField;

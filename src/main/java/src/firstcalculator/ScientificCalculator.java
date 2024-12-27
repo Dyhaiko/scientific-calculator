@@ -1,16 +1,15 @@
-package firstcalculator;
+package src.firstcalculator;
 
-import firstcalculator.FunctionCalculator.DefiniteIntegralCalculator;
-import firstcalculator.FunctionCalculator.UncertaintyCalculator;
-import firstcalculator.GraphicCalculator.Function_Input;
-import function.Expre;
+import src.firstcalculator.FunctionCalculator.UncertaintyCalculator;
+import src.firstcalculator.GraphicCalculator.Function_Input;
+import src.function.Expre;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ScientificCalculator extends JFrame {
     private JTextField jTextField;

@@ -1,4 +1,4 @@
-package firstcalculator.GraphicCalculator;
+package src.firstcalculator.GraphicCalculator;
 
 import javax.swing.*;
 

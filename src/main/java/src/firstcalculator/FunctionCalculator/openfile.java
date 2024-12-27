@@ -1,4 +1,4 @@
-package firstcalculator.FunctionCalculator;
+package src.firstcalculator.FunctionCalculator;
 
 import javax.swing.*;
 import java.io.File;

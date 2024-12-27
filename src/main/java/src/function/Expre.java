@@ -1,7 +1,8 @@
-package function;
-import net.objecthunter.exp4j.function.Function;
-import net.objecthunter.exp4j.ExpressionBuilder;
+package src.function;
+
 import net.objecthunter.exp4j.Expression;
+import net.objecthunter.exp4j.ExpressionBuilder;
+import net.objecthunter.exp4j.function.Function;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

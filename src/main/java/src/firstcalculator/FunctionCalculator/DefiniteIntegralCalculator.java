@@ -1,8 +1,9 @@
-package firstcalculator.FunctionCalculator;
+package src.firstcalculator.FunctionCalculator;
 
-import firstcalculator.GraphicCalculator.Function_Input;
-import firstcalculator.ScientificCalculator;
-import function.Expre;
+import src.firstcalculator.GraphicCalculator.Function_Input;
+import src.firstcalculator.ScientificCalculator;
+import src.function.Expre;
+import src.firstcalculator.GraphicCalculator.Function_Input;
 
 import javax.swing.*;
 import java.awt.*;

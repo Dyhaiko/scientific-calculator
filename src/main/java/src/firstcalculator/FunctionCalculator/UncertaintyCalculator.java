@@ -1,12 +1,12 @@
-package firstcalculator.FunctionCalculator;
+package src.firstcalculator.FunctionCalculator;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.opencsv.CSVReader;
 
-import firstcalculator.GraphicCalculator.Function_Input;
-import firstcalculator.ScientificCalculator;
+import src.firstcalculator.GraphicCalculator.Function_Input;
+import src.firstcalculator.ScientificCalculator;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;

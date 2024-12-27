@@ -1,7 +1,7 @@
 
-package firstcalculator.GraphicCalculator;
+package src.firstcalculator.GraphicCalculator;
 
-import function.Expre;
+import src.function.Expre;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -134,6 +134,8 @@ public class Function_Draw {
                 }catch (Exception ex){
                     sd.showEmptyOffsetDialog(jf);
                 }
+
+
             }
         });
 
