@@ -16,6 +16,12 @@ public class ShowDialog {
 
     }
 
+    public void showEmptyOffsetDialog(JFrame jf){
+        String message = "输入的偏移量为空！";
+        JOptionPane.showMessageDialog(jf,message,"WARNING",JOptionPane.WARNING_MESSAGE);
+    }
+
+
     //处理放缩过度
     public void showScaleMessageDialog(JFrame jf){
         JOptionPane.showMessageDialog(jf, "尺寸过大/过小\n" +

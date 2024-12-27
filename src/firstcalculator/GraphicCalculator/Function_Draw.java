@@ -14,11 +14,14 @@ public class Function_Draw {
     //缩放需求
     public static final int MAXSIZE = 5000;
 
+    private double offsetx = 0;
+    private double offsety = 0;
+
     public String[] function = new String[3];
     {
         Arrays.fill(function, "");
     }
-    Choice functionChooser = new Choice();
+//    Choice functionChooser = new Choice();
 
     public boolean[] canDraw = new boolean[3];
     {
@@ -26,7 +29,6 @@ public class Function_Draw {
     }
 
     public JFrame jf = new JFrame("函数图像");
-    TextField functionField = new TextField();
 
     TextField scaleField = new TextField();
 
@@ -68,7 +70,7 @@ public class Function_Draw {
                 if(!Expre.isLegal(pre[i])){
                     canDraw[i] = false;
                     sd.showEnterWarningDialog(jf);
-                    functionField.setText("");
+//                    functionField.setText("");
                     function[i] = "";
                 }else{
                     canDraw[i] = true;
@@ -79,18 +81,11 @@ public class Function_Draw {
         this.init();
     }
     public void init(){
-        functionField.setEditable(false);
-        functionField.setColumns(20);
-        functionField.setText(function[0]);
         scaleField.setColumns(15);
-        //将三个函数表达式添加到下拉框中
-        functionChooser.add("function1");
-        functionChooser.add("function2");
-        functionChooser.add("function3");
 
         JPanel jPanel1 = new JPanel();
-        jPanel1.add(functionChooser);
-        jPanel1.add(functionField);
+//        jPanel1.add(functionChooser);
+//        jPanel1.add(functionField);
         actionButton.setBackground(Color.GREEN);
         jf.setLayout(new BorderLayout());
         jf.add(jPanel1, BorderLayout.SOUTH);
@@ -113,6 +108,40 @@ public class Function_Draw {
         reduceButton.setActionCommand("Reduce");
         clearButton.setActionCommand("Clear");
         backButton.setActionCommand("Back");
+        JTextField inputField1 = new JTextField(10);
+        JTextField inputField2 = new JTextField(10);
+
+// 添加一个JButton用于获取输入框数值
+        JButton getValuesButton = new JButton("设置偏移");
+
+// 为按钮添加ActionListener
+        getValuesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // 获取输入框中的数值
+                try{
+                    String value1 = inputField1.getText();
+                    String value2 = inputField2.getText();
+
+                    double centerX = Double.parseDouble(value1);
+                    double centerY = Double.parseDouble(value2);
+
+                    // 计算偏移量
+                     offsetx = centerX;
+                     offsety = centerY ;
+                     mc.setOffset(offsetx,offsety);
+                     mc.repaint();
+                }catch (Exception ex){
+                    sd.showEmptyOffsetDialog(jf);
+                }
+            }
+        });
+
+// 将输入框和按钮添加到相应的容器中
+        jPanel3.add(inputField1);
+        jPanel3.add(inputField2);
+        jPanel3.add(getValuesButton);
+
 
         addButtonListener(enlargerButton);
         addButtonListener(reduceButton);
@@ -133,54 +162,6 @@ public class Function_Draw {
         jf.setVisible(true);
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jf.setLocationRelativeTo(null);
-        //从三个函数中选择一个输入文本框中
-        functionChooser.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                //toString 调用去除
-                String chosenFunction = functionChooser.getSelectedItem();
-                if(chosenFunction.equals("function1")){
-                    functionField.setText(function[0]);
-                }else if(chosenFunction.equals("function2")){
-                    functionField.setText(function[1]);
-                }else if(chosenFunction.equals("function3")){
-                    functionField.setText(function[2]);
-                }
-            }
-        });
-        //监听键盘，实现回车解析，ok保存，上下左右键切换选择框
-        functionField.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                super.keyPressed(e);
-                if(e.getKeyCode() == KeyEvent.VK_UP){
-                    int crtIndex = functionChooser.getSelectedIndex();
-                    if(crtIndex > 0){
-                        functionChooser.select(crtIndex-1);
-                        if(crtIndex == 1){
-                            functionField.setText(function[0]);
-                        }
-                        if(crtIndex == 2){
-                            functionField.setText(function[1]);
-                        }
-                    }
-                }
-                if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                    int currentIndex = functionChooser.getSelectedIndex();
-                    if (currentIndex < functionChooser.getItemCount() - 1) {
-                        functionChooser.select(currentIndex + 1);
-                        if (currentIndex == 0) {
-                            functionField.setText(function[1]);
-                        }
-                        if (currentIndex == 1) {
-                            functionField.setText(function[2]);
-                        }
-                    }
-                    // 当按下下键时，如果当前选项不是最后一个选项，那么选项向下移动一位
-                }
-            }
-        });
-
         actionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -215,12 +196,21 @@ public class Function_Draw {
     }
     //内部类，画布
     class MyCanvas extends Canvas{
+
+        private double offsetX;
+        private double offsetY;
+        public void setOffset(double offsetX,double offsetY){
+            this.offsetX = offsetX;
+            this.offsetY = offsetY;
+        }
+
         @Override
         public void paint(Graphics g){
             scaleField.setText(Double.toString(myScale));
             //获取画笔
             Graphics2D g2  = (Graphics2D) g;
-            g2.translate(MYWIDTH / 2,MYHEIGHT / 2 + 30);
+
+            g2.translate((double) MYWIDTH / 2-offsetX*20/myScale, (double) MYHEIGHT / 2 + 30 + offsetY*20/myScale);
             g2.setColor(Color.LIGHT_GRAY);
             //绘制方格图
             for (int i = -MAXSIZE; i <= MAXSIZE; i += 20) {
@@ -249,22 +239,30 @@ public class Function_Draw {
             g2.setColor(Color.BLACK);
             g2.fillArc(-4, -4, 8, 8, 0, 360);
             g2.setColor(Color.RED);
+
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
             if(canDraw[0]){
                 for (int x = -MAXSIZE * 2; x <= MAXSIZE * 2; x++) {
-                    double y = Expre.count(Expre.turnIntoExpression(pre[0]), (double) x /100);  //该函数这里传入的是一个double的值
-                    if (y >= (double) -MAXSIZE / 2 && y <= (double) MAXSIZE / 2) {
-                        g2.fillOval(x / 5, -(int) (y * 100) / 5, 2, 2);
+                    double y1 = Expre.count(Expre.turnIntoExpression(pre[0]), (double) x /100);
+                    double y2 = Expre.count(Expre.turnIntoExpression(pre[0]), (double) (x + 1) /100);
+                    if (y1 >= (double) -MAXSIZE / 2 && y1 <= (double) MAXSIZE / 2 &&
+                            y2 >= (double) -MAXSIZE / 2 && y2 <= (double) MAXSIZE / 2) {
+                        g2.drawLine(x/5, (int) -(y1 * 100)/5 , (x+1)/5 , (int) -(y2 * 100)/5 );
                         //区分x,y的实际值和图像的值
                         //y的计算处/100之后又*20相当于x/5，保持了一样的缩放比例
                     }
+
                 }
             }
             g2.setColor(Color.BLUE);
              if(canDraw[1]){
                 for (int x = -MAXSIZE * 2; x <= MAXSIZE * 2; x++) {
-                    double y = Expre.count(Expre.turnIntoExpression(pre[1]), (double) x /100);  //该函数这里传入的是一个double的值
-                    if (y >= (double) -MAXSIZE / 2 && y <= (double) MAXSIZE / 2) {
-                        g2.fillOval(x / 5, -(int) (y * 100) / 5, 2, 2);
+                    double y1 = Expre.count(Expre.turnIntoExpression(pre[1]), (double) x /100);
+                    double y2 = Expre.count(Expre.turnIntoExpression(pre[1]), (double) (x + 1) /100);
+                    if (y1 >= (double) -MAXSIZE / 2 && y1 <= (double) MAXSIZE / 2 &&
+                            y2 >= (double) -MAXSIZE / 2 && y2 <= (double) MAXSIZE / 2) {
+                        g2.drawLine(x/5, (int) -(y1 * 100)/5, (x+1)/5 , (int) -(y2 * 100)/5);
                         //区分x,y的实际值和图像的值
                         //y的计算处/100之后又*20相当于x/5，保持了一样的缩放比例
                     }
@@ -273,9 +271,11 @@ public class Function_Draw {
             g2.setColor(Color.GREEN);
             if(canDraw[2]){
                 for (int x = -MAXSIZE * 2; x <= MAXSIZE * 2; x++) {
-                    double y = Expre.count(Expre.turnIntoExpression(pre[2]), (double) x /100);  //该函数这里传入的是一个double的值
-                    if (y >= (double) -MAXSIZE / 2 && y <= (double) MAXSIZE / 2) {
-                        g2.fillOval(x / 5, -(int) (y * 100) / 5, 2, 2);
+                    double y1 = Expre.count(Expre.turnIntoExpression(pre[2]), (double) x /100);
+                    double y2 = Expre.count(Expre.turnIntoExpression(pre[2]), (double) (x + 1) /100);
+                    if (y1 >= (double) -MAXSIZE / 2 && y1 <= (double) MAXSIZE / 2 &&
+                            y2 >= (double) -MAXSIZE / 2 && y2 <= (double) MAXSIZE / 2) {
+                        g2.drawLine(x/5, (int) -(y1 * 100)/5, (x+1)/5 , (int) -(y2 * 100)/5);
                         //区分x,y的实际值和图像的值
                         //y的计算处/100之后又*20相当于x/5，保持了一样的缩放比例
                     }
@@ -303,7 +303,7 @@ public class Function_Draw {
                         myScale /= 1.1;
                 } else if (e.getActionCommand().equals("Clear")) {
                     myScale = 1;
-                    functionField.setText("");
+//                    functionField.setText("");
                     function[0] = "";
                     function[1] = "";
                     function[2] = "";
