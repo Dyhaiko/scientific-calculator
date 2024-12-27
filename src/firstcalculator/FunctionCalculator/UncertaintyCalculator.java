@@ -1,18 +1,31 @@
 package firstcalculator.FunctionCalculator;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import com.opencsv.CSVReader;
+
 import firstcalculator.GraphicCalculator.Function_Input;
 import firstcalculator.ScientificCalculator;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-
 
 
 public class UncertaintyCalculator {
@@ -87,6 +100,7 @@ public class UncertaintyCalculator {
         JLabel titleLabelLeft = new JLabel("A类不确定度", SwingConstants.CENTER);
         titleLabelLeft.setFont(new Font("SimSun", Font.BOLD, 35));
         headerPanel.add(titleLabelLeft);
+
 
         jPanelLeft.add(headerPanel, BorderLayout.NORTH);
         //创建输入面板
@@ -214,7 +228,108 @@ public class UncertaintyCalculator {
         // 将输入和输出面板添加到左侧面板
         jPanelLeft.add(inputPanel, BorderLayout.SOUTH);
         jPanelLeft.add(outputPanel, BorderLayout.CENTER);
+
+        // 创建文件读取按钮
+        JButton fileReadButton = new JButton("读取文件");
+        inputPanel.add(fileReadButton);
+
+        // 文件读取按钮事件监听器
+        fileReadButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                // 显示提示框
+                JOptionPane.showMessageDialog(jf, "请读取存有一行或者一列数据的CSV或Excel文件。", "提示", JOptionPane.INFORMATION_MESSAGE);
+
+
+                try {
+                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                } catch (Exception eee) {
+                    eee.printStackTrace();
+                }
+
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setDialogTitle("选择一个文件");
+
+                // 添加文件过滤器，只允许选择CSV和Excel文件
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV and Excel Files", "csv", "xls", "xlsx");
+                fileChooser.setFileFilter(filter);
+
+                int result = fileChooser.showOpenDialog(jf);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    try {
+                        if (selectedFile.getName().endsWith(".csv")) {
+                            readCSVFile(selectedFile, outputArea);
+                        } else if (selectedFile.getName().endsWith(".xls") || selectedFile.getName().endsWith(".xlsx")) {
+                            readExcelFile(selectedFile, outputArea);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "文件类型不支持！", "错误", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(null, "读取文件时发生错误！", "错误", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        });
+
     }
+    private void readCSVFile(File file ,JTextArea outputArea) throws IOException {
+        List<String> lines = Files.readAllLines(Paths.get(file.getAbsolutePath()));
+        for (String line : lines) {
+            String[] values = line.split(",");
+            for (String value : values) {
+                try {
+                    A_dataList.add(Double.parseDouble(value));
+                    Acount++;
+                    outputArea.append("第" + Acount + "个数据：" + value + "\n");
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "文件中包含非数字数据！", "错误", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+    }
+
+    private void readExcelFile(File file,JTextArea outputArea) throws IOException {
+        FileInputStream fis = new FileInputStream(file);
+        Workbook workbook = null;
+        if (file.getName().endsWith(".xls")) {
+            workbook = new HSSFWorkbook(fis);
+        } else if (file.getName().endsWith(".xlsx")) {
+            workbook = new XSSFWorkbook(fis);
+        }
+
+        if (workbook != null) {
+            Sheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheet.iterator();
+            while (rowIterator.hasNext()) {
+                Row row = rowIterator.next();
+                Iterator<Cell> cellIterator = row.cellIterator();
+                while (cellIterator.hasNext()) {
+                    Cell cell = cellIterator.next();
+                    try {
+                        double value = cell.getNumericCellValue();
+                        A_dataList.add(value);
+                        Acount++;
+                        outputArea.append("第" + Acount + "个数据：" + value + "\n");
+                    } catch (IllegalStateException ex) {
+                        try {
+                            String value = cell.getStringCellValue();
+                            double numericValue = Double.parseDouble(value);
+                            A_dataList.add(numericValue);
+                            Acount++;
+                            outputArea.append("第" + Acount + "个数据：" + numericValue + "\n");
+                        } catch (NumberFormatException ex2) {
+                            JOptionPane.showMessageDialog(null, "文件中包含非数字数据！", "错误", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                }
+            }
+            workbook.close();
+        }
+        fis.close();
+    }
+
 
     private JPanel jPanelRight; // 右侧侧面板
     private JScrollPane jScrollPaneRight; // 右侧侧面板的滚动面板
