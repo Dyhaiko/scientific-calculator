@@ -78,7 +78,7 @@ public class ScientificCalculator extends JFrame {
                 "10^x", "7", "8", "9", "-","+",
                 "log", "4", "5", "6", "e","PI",
                 "lg", "1", "2", "3", "<<",">>",
-                "ln", "abs", "0", ".", "=","t"
+                "ln", "abs", "0", ".", "="
         };
         jButtons = new JButton[name.length];
         MyActionListener actionListener = new MyActionListener();
