@@ -35,7 +35,7 @@ public class Function_Draw {
     Button actionButton = new Button("Draw");
     JButton enlargerButton = new JButton("Enlarger");
     JButton reduceButton = new JButton("Reduce");
-    JButton clearButton = new JButton("Clear");
+
     JButton backButton = new JButton("Back");
 
     public double myScale = 1;
@@ -101,12 +101,10 @@ public class Function_Draw {
         //设置布局管理器：顺序水平放置
         enlargerButton.setBackground(Color.LIGHT_GRAY);
         reduceButton.setBackground(Color.LIGHT_GRAY);
-        clearButton.setBackground(Color.LIGHT_GRAY);
         backButton.setBackground(Color.LIGHT_GRAY);
 
         enlargerButton.setActionCommand("Enlarger");
         reduceButton.setActionCommand("Reduce");
-        clearButton.setActionCommand("Clear");
         backButton.setActionCommand("Back");
         JTextField inputField1 = new JTextField(10);
         JTextField inputField2 = new JTextField(10);
@@ -147,12 +145,10 @@ public class Function_Draw {
 
         addButtonListener(enlargerButton);
         addButtonListener(reduceButton);
-        addButtonListener(clearButton);
         addButtonListener(backButton);
 
         jPanel3.add(enlargerButton);
         jPanel3.add(reduceButton);
-        jPanel3.add(clearButton);
         jPanel3.add(backButton);
 
         JLabel label = new JLabel(" scale:");
@@ -303,16 +299,7 @@ public class Function_Draw {
                         sd.showScaleMessageDialog(jf);
                     } else
                         myScale /= 1.1;
-                } else if (e.getActionCommand().equals("Clear")) {
-                    myScale = 1;
-//                    functionField.setText("");
-                    function[0] = "";
-                    function[1] = "";
-                    function[2] = "";
-                    canDraw[0] = false;
-                    canDraw[1] = false;
-                    canDraw[2] = false;
-                } else if(e.getActionCommand().equals("Back")){
+                }else if(e.getActionCommand().equals("Back")){
                     jf.setVisible(false);
                     Function_Input fi = new Function_Input();
                     fi.set_Function(function,pre);
