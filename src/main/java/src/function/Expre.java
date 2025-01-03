@@ -47,9 +47,7 @@ public class Expre {
             double ans2=tempE.evaluate();
             if(ans1<0){
                 if(ans2<-ans1){
-                    if(ans2<ans1){
-                        input=input.substring(0,begin)+Double.toString(-ans2)+input.substring(end+1);
-                    }
+                    input=input.substring(0,begin)+Double.toString(-ans2)+input.substring(end+1);
                 }
                 else{
                     input=input.substring(0,begin)+Double.toString(ans1)+input.substring(end+1);
@@ -87,9 +85,44 @@ public class Expre {
             double ans2=tempE.evaluate();
             if(ans1<0){
                 if(ans2<-ans1){
-                    if(ans2<ans1){
-                        input=input.substring(0,begin)+Double.toString(-ans2)+input.substring(end+1);
-                    }
+                    input=input.substring(0,begin)+Double.toString(-ans2)+input.substring(end+1);
+                }
+                else{
+                    input=input.substring(0,begin)+Double.toString(ans1)+input.substring(end+1);
+                }
+            }
+            else{
+                if(ans2<ans1){
+                    input=input.substring(0,begin)+Double.toString(ans2)+input.substring(end+1);
+                }
+                else{
+                    input=input.substring(0,begin)+Double.toString(ans1)+input.substring(end+1);
+                }
+            }
+        }
+        while(input.contains("tan")){
+            int begin=input.indexOf("tan");
+            int num=1;
+            int end=begin+4;
+            for(;end<input.length();end++){
+                if(input.charAt(end)=='('){
+                    num++;
+                }
+                else if(input.charAt(end)==')'){
+                    num--;
+                }
+                if(num==0){
+                    break;
+                }
+            }
+            String temp=input.substring(begin,end+1);
+            Expression tempE=new ExpressionBuilder(temp).functions(logAB,ln,lg).build();
+            double ans1=tempE.evaluate();
+            temp="(sin"+temp.substring(3)+")/cos"+temp.substring(3);
+            double ans2=count(temp);
+            if(ans1<0){
+                if(ans2<-ans1){
+                    input=input.substring(0,begin)+Double.toString(-ans2)+input.substring(end+1);
                 }
                 else{
                     input=input.substring(0,begin)+Double.toString(ans1)+input.substring(end+1);
