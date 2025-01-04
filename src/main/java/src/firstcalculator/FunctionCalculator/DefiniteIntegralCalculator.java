@@ -3,7 +3,6 @@ package src.firstcalculator.FunctionCalculator;
 import src.firstcalculator.GraphicCalculator.Function_Input;
 import src.firstcalculator.ScientificCalculator;
 import src.function.Expre;
-import src.firstcalculator.GraphicCalculator.Function_Input;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,7 +25,6 @@ public class DefiniteIntegralCalculator {
         this.pre = pre;
         init();
     }
-
 
     public void init(){
         //设置菜单栏
@@ -84,8 +82,6 @@ public class DefiniteIntegralCalculator {
         jp = new JPanel();
         jp.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-//        gbc.gridx = 0;
-//        gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.CENTER;
         jp = new JPanel();
@@ -135,15 +131,12 @@ public class DefiniteIntegralCalculator {
         lowLabel.setFont(new Font(lowLabel.getFont().getName(), lowLabel.getFont().getStyle(), 16)); // 调大字体
         panel.add(lowLabel, gbc);
 
-
-
         // 第二行：上限输入框
         gbc.gridx = 2;  // 继续在这一行
         gbc.gridwidth = 1;
         JTextField lowLimitField = new JTextField(10);
         lowLimitField.setFont(new Font(lowLimitField.getFont().getName(), lowLimitField.getFont().getStyle(), 16)); // 调大字体
         panel.add(lowLimitField, gbc);
-//        String upperLimit = "";
 
         // 第三行：下限标签
         gbc.gridx = 3;
@@ -160,7 +153,6 @@ public class DefiniteIntegralCalculator {
         JTextField upperLimitField = new JTextField(10);
         upperLimitField.setFont(new Font(upperLimitField.getFont().getName(), upperLimitField.getFont().getStyle(), 16)); // 调大字体
         panel.add(upperLimitField, gbc);
-//        String lowerLimit = "";
 
         // 第二行：结果标签
         gbc.gridx = 0;
@@ -242,8 +234,6 @@ public class DefiniteIntegralCalculator {
             });
         }
     }
-
-
     public static void main(String[] args){
         new DefiniteIntegralCalculator().init();
     }

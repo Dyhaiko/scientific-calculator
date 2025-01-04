@@ -3,7 +3,6 @@ package src.firstcalculator.FunctionCalculator;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import com.opencsv.CSVReader;
 
 import src.firstcalculator.GraphicCalculator.Function_Input;
 import src.firstcalculator.ScientificCalculator;
@@ -26,7 +25,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.List;
-
 
 public class UncertaintyCalculator {
 
@@ -101,7 +99,6 @@ public class UncertaintyCalculator {
         titleLabelLeft.setFont(new Font("SimSun", Font.BOLD, 35));
         headerPanel.add(titleLabelLeft);
 
-
         jPanelLeft.add(headerPanel, BorderLayout.NORTH);
         //创建输入面板
         JPanel inputPanel = new JPanel();
@@ -112,7 +109,6 @@ public class UncertaintyCalculator {
         JButton inputButton = new JButton("输入");
         JButton calculateButton = new JButton("计算");
         JButton clearButton = new JButton("清除");
-
 
         inputPanel.add(clearButton);
         inputPanel.add(inputField);
@@ -240,8 +236,6 @@ public class UncertaintyCalculator {
 
                 // 显示提示框
                 JOptionPane.showMessageDialog(jf, "请读取存有一行或者一列数据的CSV或Excel文件。", "提示", JOptionPane.INFORMATION_MESSAGE);
-
-
                 try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                 } catch (Exception eee) {
@@ -272,7 +266,6 @@ public class UncertaintyCalculator {
                 }
             }
         });
-
     }
     private void readCSVFile(File file ,JTextArea outputArea) throws IOException {
         List<String> lines = Files.readAllLines(Paths.get(file.getAbsolutePath()));
@@ -620,9 +613,6 @@ public class UncertaintyCalculator {
         outputArea.setText("");
         outputArea.append("所有数据已清除，准备进行新计算。\n");
     }
-
-
-
 
     Double deltaElectromagneticInstrument = 0.0;
 

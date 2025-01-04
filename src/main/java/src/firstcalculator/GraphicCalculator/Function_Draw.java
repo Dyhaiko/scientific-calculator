@@ -21,7 +21,6 @@ public class Function_Draw {
     {
         Arrays.fill(function, "");
     }
-//    Choice functionChooser = new Choice();
 
     public boolean[] canDraw = new boolean[3];
     {
@@ -35,9 +34,7 @@ public class Function_Draw {
     Button actionButton = new Button("Draw");
     JButton enlargerButton = new JButton("Enlarger");
     JButton reduceButton = new JButton("Reduce");
-
     JButton backButton = new JButton("Back");
-
     public double myScale = 1;
 
     MyCanvas mc = new MyCanvas();
@@ -70,7 +67,6 @@ public class Function_Draw {
                 if(!Expre.isLegal(pre[i])){
                     canDraw[i] = false;
                     sd.showEnterWarningDialog(jf);
-//                    functionField.setText("");
                     function[i] = "";
                 }else{
                     canDraw[i] = true;
@@ -84,8 +80,6 @@ public class Function_Draw {
         scaleField.setColumns(15);
 
         JPanel jPanel1 = new JPanel();
-//        jPanel1.add(functionChooser);
-//        jPanel1.add(functionField);
         actionButton.setBackground(Color.GREEN);
         jf.setLayout(new BorderLayout());
         jf.add(jPanel1, BorderLayout.SOUTH);
@@ -120,7 +114,6 @@ public class Function_Draw {
                 try{
                     String value1 = inputField1.getText();
                     String value2 = inputField2.getText();
-
                     double centerX = Double.parseDouble(value1);
                     double centerY = Double.parseDouble(value2);
 
@@ -132,8 +125,6 @@ public class Function_Draw {
                 }catch (Exception ex){
                     sd.showEmptyOffsetDialog(jf);
                 }
-
-
             }
         });
 
@@ -141,7 +132,6 @@ public class Function_Draw {
         jPanel3.add(inputField1);
         jPanel3.add(inputField2);
         jPanel3.add(getValuesButton);
-
 
         addButtonListener(enlargerButton);
         addButtonListener(reduceButton);
@@ -171,7 +161,6 @@ public class Function_Draw {
                 }
             }
         });
-
         jf.addMouseWheelListener(new MouseWheelListener() {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
@@ -194,7 +183,6 @@ public class Function_Draw {
     }
     //内部类，画布
     class MyCanvas extends Canvas{
-
         private double offsetX;
         private double offsetY;
         public void setOffset(double offsetX,double offsetY){
@@ -282,7 +270,6 @@ public class Function_Draw {
             //三个函数图像并行绘制
         }
     }
-
     public void addButtonListener(JButton b){
         b.addActionListener(new ActionListener() {
             @Override

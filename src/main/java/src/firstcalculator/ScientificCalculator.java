@@ -57,7 +57,6 @@ public class ScientificCalculator extends JFrame {
             }
         });
 
-
         this.setTitle("科学计算器");
         this.setSize(800,600);
         this.setLocationRelativeTo(null);
