@@ -189,7 +189,7 @@ public class DefiniteIntegralCalculator {
                 String lowerLimit = upperLimitField.getText();
                 double upperLimitValue;
                 try{
-                    upperLimitValue = Double.parseDouble(upperLimit);
+                    upperLimitValue = Expre.count(upperLimit);
                 }catch (Exception ex){
                     JOptionPane.showMessageDialog(null, "请输入正确的下限值！");
                     upperLimitValue = 0.0;
@@ -197,7 +197,7 @@ public class DefiniteIntegralCalculator {
                 }
                 double lowerLimitValue;
                 try{
-                    lowerLimitValue = Double.parseDouble(lowerLimit);
+                    lowerLimitValue = Expre.count(lowerLimit);
                 }catch (Exception ex){
                     JOptionPane.showMessageDialog(null, "请输入正确的上限值！");
                     lowerLimitValue = 0.0;
