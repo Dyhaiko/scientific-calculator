@@ -203,12 +203,15 @@ public class DefiniteIntegralCalculator {
                     lowerLimitValue = 0.0;
                     return;
                 }
+                if(pre[ptr].isEmpty()){
+                    JOptionPane.showMessageDialog(null, "空表达式！");
+                    return;
+                }
                 double result = 0.0;
                 try{
                     result = Expre.countDefiniteIntegral(pre[ptr],upperLimitValue,lowerLimitValue);
                 }catch (Exception ex){
-                    JOptionPane.showMessageDialog(null, "空表达式！");
-                    outputArea.setText("0");
+                    JOptionPane.showMessageDialog(null, "积分值无法计算或不存在！");
                     return;
                 }
                 result = Expre.countDefiniteIntegral(pre[ptr],upperLimitValue,lowerLimitValue);

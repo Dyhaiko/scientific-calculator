@@ -404,7 +404,7 @@ public class Expre {
                 density*=10;
             }
             else{
-                if((-delta<=value-fore&&value-fore<=delta)||density>=10000000){
+                if((-delta<=value-fore&&value-fore<=delta)||density>=1000000){
                     break;
                 }
                 else{
