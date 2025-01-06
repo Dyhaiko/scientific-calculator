@@ -24,119 +24,125 @@ public class Expre {
         }
     };
     static public double count(String input){
-        while(input.contains("sin")){
-            int begin=input.indexOf("sin");
-            int num=1;
-            int end=begin+4;
-            for(;end<input.length();end++){
-                if(input.charAt(end)=='('){
-                    num++;
+        for(int i=0;i<input.length()-2;i++){
+            if(input.charAt(i)=='t'&&input.charAt(i+1)=='a'&&input.charAt(i+2)=='n'){
+                int num=1;
+                int end= i +4;
+                for(;end<input.length();end++){
+                    if(input.charAt(end)=='('){
+                        num++;
+                    }
+                    else if(input.charAt(end)==')'){
+                        num--;
+                    }
+                    if(num==0){
+                        break;
+                    }
                 }
-                else if(input.charAt(end)==')'){
-                    num--;
-                }
-                if(num==0){
-                    break;
-                }
-            }
-            String temp=input.substring(begin,end+1);
-            Expression tempE=new ExpressionBuilder(temp).functions(logAB,ln,lg).build();
-            double ans1=tempE.evaluate();
-            temp="sqrt(1-(cos"+temp.substring(3)+")^2)";
-            tempE=new ExpressionBuilder(temp).functions(logAB,ln,lg).build();
-            double ans2=tempE.evaluate();
-            if(ans1<0){
-                if(ans2<-ans1){
-                    input=input.substring(0,begin)+Double.toString(-ans2)+input.substring(end+1);
-                }
-                else{
-                    input=input.substring(0,begin)+Double.toString(ans1)+input.substring(end+1);
-                }
-            }
-            else{
-                if(ans2<ans1){
-                    input=input.substring(0,begin)+Double.toString(ans2)+input.substring(end+1);
+                String temp=input.substring(i,end+1);
+                Expression tempE=new ExpressionBuilder(temp).functions(logAB,ln,lg).build();
+                double ans1=tempE.evaluate();
+                temp="(sin"+temp.substring(3)+")/cos"+temp.substring(3);
+                double ans2=count(temp);
+                if(ans1<0){
+                    if(ans2<-ans1){
+                        input=input.substring(0, i)+"(-"+temp+")"+input.substring(end+1);
+                    }
+                    else{
+                        input=input.substring(0, i)+Double.toString(ans1)+input.substring(end+1);
+                    }
                 }
                 else{
-                    input=input.substring(0,begin)+Double.toString(ans1)+input.substring(end+1);
+                    if(ans2<ans1){
+                        input=input.substring(0, i)+"("+temp+")"+input.substring(end+1);
+                    }
+                    else{
+                        input=input.substring(0, i)+Double.toString(ans1)+input.substring(end+1);
+                    }
+                }
+            }
+
+        }
+        for(int i=0;i<input.length()-2;i++){
+            if(input.charAt(i)=='s'&&input.charAt(i+1)=='i'&&input.charAt(i+2)=='n'){
+                int num=1;
+                int end= i +4;
+                for(;end<input.length();end++){
+                    if(input.charAt(end)=='('){
+                        num++;
+                    }
+                    else if(input.charAt(end)==')'){
+                        num--;
+                    }
+                    if(num==0){
+                        break;
+                    }
+                }
+                String temp=input.substring(i,end+1);
+                Expression tempE=new ExpressionBuilder(temp).functions(logAB,ln,lg).build();
+                double ans1=tempE.evaluate();
+                temp="sqrt(1-(cos"+temp.substring(3)+")^2)";
+                tempE=new ExpressionBuilder(temp).functions(logAB,ln,lg).build();
+                double ans2=tempE.evaluate();
+                if(ans1<0){
+                    if(ans2<-ans1){
+                        input=input.substring(0, i)+"(-"+temp+")"+input.substring(end+1);
+                    }
+                    else{
+                        input=input.substring(0, i)+Double.toString(ans1)+input.substring(end+1);
+                    }
+                }
+                else{
+                    if(ans2<ans1){
+                        input=input.substring(0, i)+"("+temp+")"+input.substring(end+1);
+                    }
+                    else{
+                        input=input.substring(0, i)+Double.toString(ans1)+input.substring(end+1);
+                    }
                 }
             }
         }
-        while(input.contains("cos")){
-            int begin=input.indexOf("cos");
-            int num=1;
-            int end=begin+4;
-            for(;end<input.length();end++){
-                if(input.charAt(end)=='('){
-                    num++;
+        for(int i=0;i<input.length()-2;i++){
+            if(input.charAt(i)=='c'&&input.charAt(i)=='o'&&input.charAt(i)=='s'){
+                int num=1;
+                int end= i +4;
+                for(;end<input.length();end++){
+                    if(input.charAt(end)=='('){
+                        num++;
+                    }
+                    else if(input.charAt(end)==')'){
+                        num--;
+                    }
+                    if(num==0){
+                        break;
+                    }
                 }
-                else if(input.charAt(end)==')'){
-                    num--;
-                }
-                if(num==0){
-                    break;
-                }
-            }
-            String temp=input.substring(begin,end+1);
-            Expression tempE=new ExpressionBuilder(temp).functions(logAB,ln,lg).build();
-            double ans1=tempE.evaluate();
-            temp="sqrt(1-(sin"+temp.substring(3)+")^2)";
-            tempE=new ExpressionBuilder(temp).functions(logAB,ln,lg).build();
-            double ans2=tempE.evaluate();
-            if(ans1<0){
-                if(ans2<-ans1){
-                    input=input.substring(0,begin)+Double.toString(-ans2)+input.substring(end+1);
-                }
-                else{
-                    input=input.substring(0,begin)+Double.toString(ans1)+input.substring(end+1);
-                }
-            }
-            else{
-                if(ans2<ans1){
-                    input=input.substring(0,begin)+Double.toString(ans2)+input.substring(end+1);
+                String temp=input.substring(i,end+1);
+                Expression tempE=new ExpressionBuilder(temp).functions(logAB,ln,lg).build();
+                double ans1=tempE.evaluate();
+                temp="sqrt(1-(sin"+temp.substring(3)+")^2)";
+                tempE=new ExpressionBuilder(temp).functions(logAB,ln,lg).build();
+                double ans2=tempE.evaluate();
+                if(ans1<0){
+                    if(ans2<-ans1){
+                        input=input.substring(0, i)+"(-"+temp+")"+input.substring(end+1);
+                    }
+                    else{
+                        input=input.substring(0, i)+Double.toString(ans1)+input.substring(end+1);
+                    }
                 }
                 else{
-                    input=input.substring(0,begin)+Double.toString(ans1)+input.substring(end+1);
+                    if(ans2<ans1){
+                        input=input.substring(0, i)+"("+temp+")"+input.substring(end+1);
+                    }
+                    else{
+                        input=input.substring(0, i)+Double.toString(ans1)+input.substring(end+1);
+                    }
                 }
             }
+
         }
-        while(input.contains("tan")){
-            int begin=input.indexOf("tan");
-            int num=1;
-            int end=begin+4;
-            for(;end<input.length();end++){
-                if(input.charAt(end)=='('){
-                    num++;
-                }
-                else if(input.charAt(end)==')'){
-                    num--;
-                }
-                if(num==0){
-                    break;
-                }
-            }
-            String temp=input.substring(begin,end+1);
-            Expression tempE=new ExpressionBuilder(temp).functions(logAB,ln,lg).build();
-            double ans1=tempE.evaluate();
-            temp="(sin"+temp.substring(3)+")/cos"+temp.substring(3);
-            double ans2=count(temp);
-            if(ans1<0){
-                if(ans2<-ans1){
-                    input=input.substring(0,begin)+Double.toString(-ans2)+input.substring(end+1);
-                }
-                else{
-                    input=input.substring(0,begin)+Double.toString(ans1)+input.substring(end+1);
-                }
-            }
-            else{
-                if(ans2<ans1){
-                    input=input.substring(0,begin)+Double.toString(ans2)+input.substring(end+1);
-                }
-                else{
-                    input=input.substring(0,begin)+Double.toString(ans1)+input.substring(end+1);
-                }
-            }
-        }
+
         Expression e = new ExpressionBuilder(input).functions(logAB,ln,lg).build();
         return e.evaluate();
     }

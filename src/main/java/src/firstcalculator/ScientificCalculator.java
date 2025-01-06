@@ -127,7 +127,6 @@ public class ScientificCalculator extends JFrame {
                 else if(input.equals("Back")){
                     jTextField.setText(Expre.transition(preExpression,prePosition));
                 }
-
             }
             else {
                 if(input.equals("C")){
